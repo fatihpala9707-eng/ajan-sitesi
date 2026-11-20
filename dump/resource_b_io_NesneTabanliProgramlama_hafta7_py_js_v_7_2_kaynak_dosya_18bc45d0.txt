@@ -1,0 +1,41 @@
+URL: https://busraozcann.github.io/NesneTabanliProgramlama/hafta7-py.js?v=7.2#kaynak-dosya
+BAŞLIK: hafta7-py.js?v=7.2
+TÜR: resource
+
+let py = null;
+self.onmessage = async (e) => {
+  const m = e.data;
+  try {
+    if (m.cmd === 'init') {
+      importScripts(m.base + 'pyodide.js');
+      py = await loadPyodide({ indexURL: m.base });
+      py.runPython(m.harness);
+      self.postMessage({ id: m.id, ok: true });
+      return;
+    }
+    py.globals.set('_REQ', JSON.stringify(m));
+    const out = py.runPython('_dispatch(_REQ)');
+    self.postMessage({ id: m.id, ok: true, data: out });
+  } catch (err) {
+    self.postMessage({ id: m.id, ok: false, error: String((err && err.message) || err) });
+  }
+};
+Tarayıcı Python motorunu başlatamadı (Web Worker yok).
+Python motoru yüklenemedi. İnternet bağlantını kontrol et.
+Python motoru çok yavaş yüklendi. Sayfayı yenileyip tekrar dene.
+Bir metot sonuç döndürmemiş (None)
+Toplamaya çalışılan değerlerden biri None. Büyük ihtimalle bir fiyat() metodunda return unutulmuş: print ekrana yazar, return sonucu geri verir.
+Liste bekleniyordu, None geldi
+Bir özellik ya da metot sonucu None. __init__ içinde listeyi başlattın mı?
+${x[1]} nesnesinde '${x[2]}' yok
+${x[1]} kendi __init__'ini yazmış ama miras aldığı sınıfın __init__ metodunu çağırmamış olabilir. Alt sınıf __init__ yazınca üst sınıfınki kendiliğinden çalışmaz.
+Metot kendini çağırıp duruyor
+Override ettiğin metodun içinden aynı nesnenin aynı metodunu çağırırsan yine kendine dönersin. Miras aldığın sınıfın metodunu çağırman gerekiyor.
+__init__ fazla değer aldı
+Miras aldığın sınıfın metodunu çağırırken self'i sen vermezsin; Python onu kendisi ekler. Değilse nesneyi üretirken verdiğin değerlerin sayısı __init__ parametreleriyle tutmuyor.
+super() yanlış yerde
+super() yalnızca bir sınıfın metodunun içinde çalışır.
+Hata mesajını oku; satır numarası nereye bakacağını söyler.
+
+BAĞLANTILAR:
+

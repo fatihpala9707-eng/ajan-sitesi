@@ -1,0 +1,156 @@
+URL: https://busraozcann.github.io/NesneTabanliProgramlama/hafta6.js?v=6.1#kod-parcalari
+BAŞLIK: JS verisindeki kod parçaları (hafta6.js?v=6.1)
+TÜR: source
+
+<p><b>Muhtar Hüsnü'den not:</b> Hoş geldin mimar! Masal Mahallesi'ni birlikte kuracağız. Ama önce geçen yılın derdini dinle: herkes evinin rengini kendi yazdı. Biri <code>"mavi"</code>, biri <code>"Mavi"</code>, biri <code>"mavı"</code> yazdı. Boya ustası şaşırdı, bir ev pembeye boyandı! 😅</p>
+<p>Bu yıl seçenekler <b>önceden belli</b> olacak:</p>
+<ul>
+<li><b>Renk</b>: mahallede kullanılabilecek renkler, en az <b>5</b> tane. Her rengin bir <i>adı</i> (<code>KIRMIZI</code>) ve bir <i>değeri</i> var: boya ustasının anladığı renk kodu <code>"#E5484D"</code>.</li>
+<li><b>CatiTipi</b>: yalnızca üç çeşit çatı yapılabilir: <code>UCGEN</code>, <code>DUZ</code>, <code>KUBBE</code>. Değerleri önemli değil (1, 2, 3 ya da <code>auto()</code>).</li>
+</ul>
+<p>Önce 📐 <b>Plan</b>'da iki «enumeration» kutusu çiz, sonra ⌨️ <b>Kod</b>'da yaz. Renkleri yazdıkça maketin paletinde belirecekler.</p>
+<p class="w6-q">🤔 Düşün: Renkleri neden metin (str) olarak değil de bir enum olarak tutuyoruz?</p>
+
+<b>Enum (numaralandırma)</b>, seçenekleri <u>önceden belli ve sınırlı</u> olan bir türdür: haftanın günleri, trafik ışığının renkleri, tişört bedenleri...
+<ul><li>Enum bir <b>sınıftır</b>. İçindeki her <b>sabit</b> (KIRMIZI, MAVI...) o sınıfın <b>önceden üretilmiş bir nesnesidir</b>. Yeni nesne üretilmez, sabitler değiştirilemez.</li>
+<li>Her sabitin bir adı (<code>Renk.MAVI.name</code> → <code>'MAVI'</code>) ve bir değeri (<code>Renk.MAVI.value</code> → <code>'#3D8BFF'</code>) vardır.</li>
+<li><b>UML</b>: kutunun başında «enumeration», bölmede yalnızca sabit adları (tip ve + işareti yok).</li>
+<li><b>Python</b>: <code>from enum import Enum</code> → <code>class Renk(Enum):</code> → <code>KIRMIZI = "#E5484D"</code>. Kullanırken: <code>Renk.KIRMIZI</code></li>
+<li>Yanlış yazarsan (<code>Renk.MAVİ</code>) Python hemen hata verir. Metinde (<code>"mavı"</code>) ise hata sessizce geçer.</li></ul>
+
+<b>Sınıf = kalıp, nesne = kalıptan çıkan ürün.</b> <code>class Ev</code> hangi özelliklerin olacağını söyler ama değer taşımaz. <code>Ev(...)</code> her çağrıldığında <b>yeni</b> bir nesne üretilir ve <code>__init__</code> çalışarak değerleri o nesneye yazar (<code>self.renk = renk</code>).<br>
+<b>UML</b>: özellik satırı <code>+ renk: Renk</code>. Tipi bir enum olan özellik böyle yazılır.<br>
+<b>Nesne gösterimi</b>: UML'de bir nesne <u>ayse_evi : Ev</u> diye altı çizili yazılır; maketteki kartlar gibi.
+
+class Renk(Enum):
+    KIRMIZI = "#E5484D"
+    MAVI = "#3D8BFF"
+    SARI = "#FFC53D"
+
+Her enum sabiti, o enum sınıfının önceden üretilmiş bir nesnesidir.
+
+Her sabitin programda tek bir kopyası vardır; bu yüzden enum karşılaştırmasında is de kullanılabilir.
+
+class Boy(Enum):
+    KISA = 1
+    MINI = 1
+    UZUN = 2
+print(len(Boy))
+
+from enum import Enum
+
+class Gun(Enum):
+    PAZARTESI = 1
+    SALI = 2
+    CARSAMBA = 3
+
+print(Gun.SALI)          # Gun.SALI
+print(Gun.SALI.name)     # SALI
+print(Gun.SALI.value)    # 2
+
+from enum import Enum, auto
+
+class Beden(Enum):
+    S = auto()      # 1
+    M = auto()      # 2
+    L = auto()      # 3
+
+class Kupa:
+    def __init__(self, sahip, hacim):
+        self.sahip = sahip
+        self.hacim = hacim
+
+k1 = Kupa("Ece", 300)      # nesne üret
+k2 = Kupa("Can", 450)      # başka bir nesne
+print(k1.sahip, k2.hacim)
+
+class Tisort:
+    def __init__(self, sahip, beden):
+        self.sahip = sahip
+        self.beden = beden       # bir Beden sabiti
+
+t = Tisort("Ece", Beden.M)
+if t.beden is Beden.M:
+    print("Orta beden")
+
+Değer olarak metin değil, enum sabiti ver: Beden.M
+
+class Termometre:
+    def __init__(self, derece):
+        self.derece = derece
+
+    def isit(self):
+        if self.derece < 100:     # sınır kuralı
+            self.derece += 10
+
+    def fahrenhayt(self):
+        return self.derece * 9 / 5 + 32
+
+t = Termometre(20)
+t.isit()
+print(t.fahrenhayt())
+
+class Kitaplik:
+    def __init__(self, ad):
+        self.ad = ad
+        self.kitaplar = []      # dışarıdan gelenler
+        self.raflar = []        # kitaplığın kendi ürettikleri
+
+    def kitap_ekle(self, kitap):
+        self.kitaplar.append(kitap)      # toplama ◇
+
+    def raf_tak(self, no):
+        self.raflar.append(Raf(no))      # bileşim ◆
+
+${name} bir sınıf olmalı, enum değil.
+
+<h3>📘 Enum nedir?</h3>
+      <p class="w6-sub">Değerleri <b>önceden belli ve sınırlı</b> olan bir türdür. Haftanın günleri, trafik ışığı, tişört bedenleri... Seçenekler bellidir, dışarıdan yenisi uydurulamaz.</p>
+      <div class="w6-tbl"><table>
+        <tr><th></th><th>Metin (str) ile</th><th>Enum ile</th></tr>
+        <tr><th>Tanım</th><td><code>renk = "mavi"</code></td><td><code>class Renk(Enum):</code><br><code>&nbsp;&nbsp;&nbsp;&nbsp;MAVI = "#3D8BFF"</code></td></tr>
+        <tr><th>Yazım hatası</th><td><code>"mavı"</code> sessizce geçer 😬</td><td><code>Renk.MAVİ</code> → hemen hata ✅</td></tr>
+        <tr><th>Seçenekleri görmek</th><td>bilinmez</td><td><code>for r in Renk: print(r.name)</code></td></tr>
+        <tr><th>Ek bilgi taşımak</th><td>ayrı bir değişken gerekir</td><td><code>Renk.MAVI.value</code> → renk kodu</td></tr>
+      </table></div>
+      <h4>Enum sabiti bir nesnedir</h4>
+      <ul class="w6-faq">
+        <li><code>Renk</code> bir sınıftır; <code>Renk.MAVI</code> ise o sınıfın <b>önceden üretilmiş</b> bir nesnesidir: <code>isinstance(Renk.MAVI, Renk)</code> → <code>True</code>.</li>
+        <li>Her sabitin adı ve değeri vardır: <code>Renk.MAVI.name</code> → <code>'MAVI'</code>, <code>Renk.MAVI.value</code> → <code>'#3D8BFF'</code></li>
+        <li>Sabite iki yoldan ulaşılır: adıyla <code>Renk["MAVI"]</code>, değeriyle <code>Renk("#3D8BFF")</code>.</li>
+        <li>Sabitler değiştirilemez ve yenisi üretilemez. Aynı değeri iki sabite verirsen ikincisi yeni sabit olmaz, birincinin <b>takma adı</b> (alias) olur.</li>
+        <li>Değer önemli değilse <code>auto()</code> kullan: <code>UCGEN = auto()</code></li>
+      </ul>
+      <h4>UML'de</h4>
+      <div class="w6-umlmini"><div class="h"><small>«enumeration»</small><b>Renk</b></div><div class="s">KIRMIZI<br>MAVI<br>SARI</div></div>
+      <p class="w6-sub">Bölmeye yalnızca sabit adları yazılır: tip, + işareti ya da değer yazılmaz. Ev'in özelliği ise <code>+ renk: Renk</code> diye yazılır: tipi enum'un adıdır.</p>
+      <h4>Sınıf ve nesne</h4>
+      <p class="w6-sub"><b>Sınıf</b> kalıptır: hangi özelliklerin olacağını söyler. <b>Nesne</b> o kalıptan üretilen üründür ve kendi değerlerini taşır. Maketteki gri ev kalıptır; <code>Ev(...)</code> yazdığın anda ondan renkli bir ev çıkar.</p>
+
+<h3>🏘️ Masal Mahallesi'ne hoş geldin!</h3>
+      <p>Bu hafta kendi mahalleni kuracaksın. Görevler soldaki <b>📒 Defter</b>'de; asıl tarif <b>Muhtar'ın notu</b>nda.</p>
+      <ol class="w6-steps">
+        <li><b>📐 Plan</b> — UML'yi <i>yazarak</i> çiz. Araç çubuğundan <b>Sınıf</b> ya da <b>«enum»</b> ekle, satırlara UML biçiminde yaz:<br>
+          <code>+ kat: int</code> · <code>+ boya(yeni_renk: Renk): None</code> · enum kutusunda yalnızca <code>KIRMIZI</code><br>
+          <kbd>Enter</kbd> yeni satır, boş satırda <kbd>⌫</kbd> satırı siler. Kutuyu başlığından tutup taşıyabilirsin.</li>
+        <li><b>⌨️ Kod</b> — Python'u <i>sen</i> yazarsın. Yazmayı bıraktığında kod kendiliğinden çalışır ve sağdaki <b>Maket</b> canlanır: ürettiğin her nesne, verdiğin değerlerle çizilir.</li>
+        <li><b>🎬 Sahne</b> — mahallen kurulunca açılır: tüm evler, ağaçlar, mevsim ve nesnelerinin yazdığı hikâye.</li>
+      </ol>
+      <p class="w6-sub">Her seviyede önce UML, sonra kod. Sayfayı yenilersen kaldığın yerden devam edersin; ama <b>sekmeyi kapatırsan her şey silinir</b>. Tüm görevler bitince <b>📄 PDF</b> açılır: UML diyagramın, kodun ve sahnen.</p>
+
+<div class="w6-qtop"><span>🎯 Enum Testi</span><span>Soru ${Q.i + 1}/5 · ✓ ${Q.score}</span></div>
+        <div class="w6-qbar"><i style="width:${Q.i * 20}%"></i></div>
+        <p class="w6-qask">Bu enum tanımlıyken alttaki kod ne yapar?</p>
+        <pre class="w6-qcode"><span class="dim">${esc(QUIZ_HEAD)}</span>
+
+${esc(q.c)}</pre>
+        <div class="w6-qopts">${q.o.map((o, i) => {
+          const st = P == null ? '' : i === q.a ? 'right' : i === P ? 'wrong' : 'dim';
+          return
+
+renk bir metin: ${JSON.stringify(re.v)}. Renk.MAVI gibi bir enum sabiti ver!
+
+<div class="w6-mempty"><div>🏗️</div><p><b>Maket masası boş.</b></p><p>Plan'a ya da koda bir enum yazınca paleti, Ev sınıfını yazınca kalıbı, nesne üretince de evleri burada göreceksin.</p></div>
+
+BAĞLANTILAR:
+

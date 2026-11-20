@@ -1,0 +1,167 @@
+URL: https://busraozcann.github.io/NesneTabanliProgramlama/hafta5.js#kod-parcalari
+BAŞLIK: JS verisindeki kod parçaları (hafta5.js)
+TÜR: source
+
+class Telefon:
+    def __init__(self, marka, sarj):
+        self.marka = marka          # + marka: str
+        self.sarj = sarj            # + sarj: int
+
+    def arama_yap(self, kisi):      # + arama_yap(kisi: str): None
+        print(self.marka, "ile", kisi, "aranıyor")
+
+    def sarj_getir(self):           # + sarj_getir(): int
+        return self.sarj
+
+tel = Telefon("Lale", 80)           # nesne üret
+tel.arama_yap("Anne")               # metot çağır
+
+class Hesap:
+    def __init__(self, sahip, bakiye):
+        self.sahip = sahip          # +  public: düz ad
+        self._limit = 1000          # #  protected: tek alt çizgi
+        self.__bakiye = bakiye      # −  private: çift alt çizgi
+
+    def get_bakiye(self):           # private'a açılan kapı
+        return self.__bakiye
+
+    def para_yatir(self, miktar):   # private'ı sadece sınıf değiştirir
+        self.__bakiye += miktar
+
+class Hayvan:
+    def __init__(self, ad):
+        self.ad = ad
+
+    def ses_cikar(self):
+        print("...")
+
+class Kedi(Hayvan):                 # Kedi bir Hayvandır
+    def ses_cikar(self):            # override: kendi yöntemiyle
+        print(self.ad, ": Miyav")
+
+pamuk = Kedi("Pamuk")               # __init__ Hayvan'dan miras
+pamuk.ses_cikar()
+
+class Kare(Sekil):
+    def __init__(self, renk, kenar):
+        super().__init__(renk)      # önce ebeveyn kendi işini yapsın
+        self.kenar = kenar          # sonra Kare'ye özgü özellik
+
+    def alan(self):
+        return self.kenar * self.kenar
+
+from abc import ABC, abstractmethod
+
+class Sekil(ABC):                   # ABC'den türeyen = soyut olabilir
+    def __init__(self, renk):
+        self.renk = renk
+
+    @abstractmethod                 # soyut metot: gövdesi yok
+    def alan(self):
+        pass
+
+    def tanit(self):                # soyut sınıfta dolu metot da olur
+        print(self.renk, "bir şekil")
+
+# Sekil("mavi")  → TypeError! Soyut sınıftan nesne olmaz.
+
+class SarjEdilebilir(ABC):          # arayüz: SADECE soyut metotlar
+    @abstractmethod
+    def sarj_et(self, dakika):
+        pass
+
+class Telefon(Cihaz, SarjEdilebilir):   # bir Cihaz + sözleşme
+    def sarj_et(self, dakika):
+        print("Telefon şarj oluyor")
+
+class Powerbank(SarjEdilebilir):        # Cihaz değil ama şarj edilebilir
+    def sarj_et(self, dakika):
+        print("Powerbank doluyor")
+
+isinstance(Powerbank(), SarjEdilebilir)  # True
+
+class Motor:
+    def __init__(self):
+        self.calisiyor = False
+
+class Araba:
+    def __init__(self, model):
+        self.model = model
+        self.motor = Motor()        # parça, bütünün İÇİNDE doğar
+
+a = Araba("Kartal")
+b = Araba("Doğan")
+print(a.motor is b.motor)          # False: herkesin KENDİ motoru var
+
+class Ogrenci:
+    def __init__(self, ad):
+        self.ad = ad
+        self.danisman = None        # henüz yok → None ile başla
+
+    def danisman_ata(self, hoca):
+        self.danisman = hoca
+
+    def danismani_soyle(self):
+        if self.danisman is not None:
+            print(self.danisman.ad)
+        else:
+            print("Danışmanım yok")
+
+class Playlist:
+    def __init__(self, ad):
+        self.ad = ad
+        self.sarkilar = []          # çok → boş listeyle başla
+
+    def sarki_ekle(self, sarki):
+        self.sarkilar.append(sarki)
+
+    def sarki_cikar(self):
+        if len(self.sarkilar) == 0:
+            return None             # boşsa None
+        return self.sarkilar.pop(0) # ilkini listeden çıkar ve döndür
+
+class Takim:
+    def __init__(self):
+        self.oyuncular = []
+
+    def oyuncu_ekle(self, oyuncu):
+        if len(self.oyuncular) >= 5:
+            print("Kadro dolu!")
+            return False
+        self.oyuncular.append(oyuncu)
+        return True
+
+Başa erişim simgesi koy: + public · # protected · − private
+
+Karakter'i Python'a çevir: soyut sınıf, private can, protected guc ve 4 metot.
+
+Karakter'e <b>can_kazan(miktar: int)</b> ekle: private cana açılan kapı.
+
+UML'de ${uc.name}, ${p.name} ${r.type === 'gen' ? 'sınıfından türüyor' : 'arayüzünü gerçekleştiriyor'}; kodda class satırının parantezinde ${p.name} yok.
+
+<h3>🤔 Kavram Rehberi</h3>
+      <p class="w5-sub">Kafan karıştığında buraya dön. Zindandan örneklerle.</p>
+      <h4>Üç tür kutu</h4>
+      <div class="w5-tbl"><table>
+        <tr><th></th><th>Sınıf</th><th>Soyut sınıf</th><th>Arayüz</th></tr>
+        <tr><th>Hangi soru?</th><td>Bu nedir?</td><td>Bu ailenin ortak noktası ne?</td><td>Bu ne <b>yapabilir</b>?</td></tr>
+        <tr><th>İçinde</th><td>özellikler + dolu metotlar</td><td>özellikler + dolu metotlar + <i>soyut</i> metotlar</td><td>sadece metot imzaları</td></tr>
+        <tr><th>Nesne üretilir mi?</th><td>✅</td><td>❌ (alt sınıflardan)</td><td>❌</td></tr>
+        <tr><th>UML</th><td>düz başlık</td><td>«abstract», <i>italik</i></td><td>«interface»</td></tr>
+        <tr><th>Python</th><td><code>class Savasci(Karakter):</code></td><td><code>class Karakter(ABC):</code> + <code>@abstractmethod</code></td><td>sadece soyut metotlu <code>ABC</code></td></tr>
+        <tr><th>Zindanda</th><td>Savasci, Iksir, Lonca</td><td>Karakter</td><td>Iyilestirebilir</td></tr>
+      </table></div>
+      <h4>Beş çizgi</h4>
+      <div class="w5-rels">
+        ${RT_ORDER.map(t =>
+
+<div class="w5-syn">
+      <div><code>+ ad: str</code><span>özellik: erişim ad: tip</span></div>
+      <div><code>+ saldir(hedef: Karakter): None</code><span>metot: erişim ad(param: Tip): dönüş</span></div>
+      ${short ? '' : '<div><code>+ saldir(hedef: Karakter): None {abstract}</code><span>soyut metot (italik görünür)</span></div>'}
+      <div class="vis"><span class="v pub">+</span>public <span class="v prot">#</span>protected <span class="v priv">−</span>private <small>(− için klavyedeki - yeter)</small></div></div>
+
+<span>▶ Çalıştırılıyor · ${new Date().toLocaleTimeString('tr-TR')}</span>
+
+BAĞLANTILAR:
+

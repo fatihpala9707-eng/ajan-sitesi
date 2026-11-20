@@ -1,0 +1,24 @@
+URL: https://busraozcann.github.io/NesneTabanliProgramlama/hafta5-py.js#gorev-metinleri
+BAŞLIK: JS verisindeki görev metinleri (hafta5-py.js)
+TÜR: page
+
+'${n}' diye bir sınıf yok
+
+Sınıf adını doğru yazdın mı (büyük/küçük harf, Türkçe karakter)? Sınıf, kullanıldığı satırdan ÖNCE tanımlanmış olmalı.
+
+Bir metodun içindesin (${err.func}). Nesnenin özelliğini kastediyorsan başına self. koy: self.${n}
+
+Bu adla bir değişken oluşturulmamış ya da yazımı farklı. Büyük/küçük harfe dikkat.
+
+self.__${x[3]} hiç oluşturulmamış
+
+__init__ içinde self.__${x[3]} = ... yazdın mı? Adı doğru mu?
+
+🔒 __${x[3]} private!
+
+__${x[3]} başka bir sınıfta (ya da üst sınıfta) private tanımlanmış. Private özelliğe ALT SINIF bile dışarıdan ulaşamaz. O sınıfa bir metot ekleyip (ör. get_${x[3]}() ya da ${x[3]}_kazan()) onu çağır.
+
+None üzerinde .${x[1]} kullanıldı
+
+BAĞLANTILAR:
+

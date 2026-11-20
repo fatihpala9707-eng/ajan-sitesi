@@ -1,0 +1,41 @@
+URL: https://busraozcann.github.io/NesneTabanliProgramlama/umlpdf.js?v=8.0#kaynak-dosya
+BAŞLIK: umlpdf.js?v=8.0
+TÜR: resource
+
+'Nunito', 'Segoe UI', sans-serif
+'JetBrains Mono', Consolas, monospace
+'Baloo 2', 'Segoe UI', sans-serif
+${c.abstract ? 'italic ' : ''}800 17px ${F.body}
+italic 600 13px ${F.body}
+${l.abstract ? 'italic ' : ''}13px ${F.mono}
+italic 600 13px ${F.mono}
+italic 700 13px ${F.body}
+${meta.week} · UML Sınıf Diyagramı · ${meta.classes.length} sınıf, ${meta.rels.length} ilişki
+${meta.week} · Python kodu · sayfa ${p + 1}
+${meta.week} · ${sc.title || 'Sahne'}
+<div class="modal-card pdf-card" role="dialog" aria-modal="true">
+        <h3>📄 PDF çıktısı</h3>
+        <p>Bu bilgiler PDF'in her sayfasının başına yazılır.</p>
+        <label class="pdf-f"><span>Ad</span><input id="pdf-ad" value="${esc(st.ad || '')}" autocomplete="given-name"></label>
+        <label class="pdf-f"><span>Soyad</span><input id="pdf-soyad" value="${esc(st.soyad || '')}" autocomplete="family-name"></label>
+        <label class="pdf-f"><span>Okul No</span><input id="pdf-no" value="${esc(st.no || '')}" inputmode="numeric" autocomplete="off"></label>
+        <p class="pdf-err" id="pdf-err" hidden></p>
+        <div class="row"><button class="btn" data-x="0">Vazgeç</button><button class="btn lava" data-x="1">PDF indir</button></div></div>
+Okul numaran yalnızca rakamlardan oluşmalı.
+<div class="modal-card pdf-card" role="dialog" aria-modal="true">
+        <h3>📄 UML'yi PDF olarak al</h3>
+        <p>Bilgilerin PDF'in başına yazılır (bu bilgisayarda hatırlanır).</p>
+        <label class="pdf-f"><span>Ad Soyad</span><input id="pdf-name" value="${esc(st.name || '')}" autocomplete="name"></label>
+        <label class="pdf-f"><span>Öğrenci No</span><input id="pdf-no" value="${esc(st.no || '')}" inputmode="numeric"></label>
+        ${hasCode ? '<label class="pdf-c"><input type="checkbox" id="pdf-code" checked> Python kodumu da sonraki sayfalara ekle</label>' : ''}
+        <div class="row"><button class="btn" data-x="0">Vazgeç</button><button class="btn lava" data-x="1">PDF indir</button></div></div>
+']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '
+Diyagramda hiç sınıf yok.
+${who.no}-${slug(who.name)}-${model.filename || 'uml'}
+${model.filename || 'uml'}-${slug(who.name)}
+${model.title} — ${who.name || ''}
+${base}${pages.length > 1 ? '-' + (i + 1) : ''}.png
+PDF kütüphanesi yüklenemedi (internet?). Diyagram PNG resmi olarak indirildi.
+
+BAĞLANTILAR:
+

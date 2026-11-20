@@ -1,0 +1,15 @@
+URL: https://busraozcann.github.io/NesneTabanliProgramlama/main.js?v=8.0#kaynak-dosya
+BAŞLIK: main.js?v=8.0
+TÜR: resource
+
+e <section id="screen-wN"> ve <script> ekle, aşağıdaki SIMS
+İlişkiler · Vize Zindanı
+Enum · Masal Mahallesi
+Çok Biçimlilik · Kantin Express
+OOP + UML · Kronos Ajansı
+<button class="week ${n === CURRENT_WEEK ? 'now' : 'open'}" data-week="${n}"><b>${n}</b><span>${n === CURRENT_WEEK ? 'Bu hafta · ' : ''}${SIMS[n].title}</span></button>
+<div class="week past"><b>${n}</b><span>Simülasyon yok</span></div>
+<div class="week soon"><b>${n}</b><span>🔒 Yakında</span></div>
+
+BAĞLANTILAR:
+

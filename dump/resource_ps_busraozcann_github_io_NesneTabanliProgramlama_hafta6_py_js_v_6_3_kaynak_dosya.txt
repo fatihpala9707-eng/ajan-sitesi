@@ -1,0 +1,44 @@
+URL: https://busraozcann.github.io/NesneTabanliProgramlama/hafta6-py.js?v=6.3#kaynak-dosya
+BAŞLIK: hafta6-py.js?v=6.3
+TÜR: resource
+
+let py = null;
+self.onmessage = async (e) => {
+  const m = e.data;
+  try {
+    if (m.cmd === 'init') {
+      importScripts(m.base + 'pyodide.js');
+      py = await loadPyodide({ indexURL: m.base });
+      py.runPython(m.harness);
+      self.postMessage({ id: m.id, ok: true });
+      return;
+    }
+    py.globals.set('_REQ', JSON.stringify(m));
+    const out = py.runPython('_dispatch(_REQ)');
+    self.postMessage({ id: m.id, ok: true, data: out });
+  } catch (err) {
+    self.postMessage({ id: m.id, ok: false, error: String((err && err.message) || err) });
+  }
+};
+Tarayıcı Python motorunu başlatamadı (Web Worker yok).
+Python motoru yüklenemedi. İnternet bağlantını kontrol et.
+Python motoru çok yavaş yüklendi. Sayfayı yenileyip tekrar dene.
+Bir değer tuple olmuş: satır sonunda virgül mü var?
+Python'da x = 1, yazınca x sayı değil, tek elemanlı bir tuple olur: (1,). Bu değeri atadığın satırın sonundaki virgülü sil. Hata çoğu zaman virgüllü satırda değil, değerin kullanıldığı satırda görünür; bir üst satırlara da bak.
+'${x[1]}' tanımlı değil
+Dosyanın en üstünde şu satır olmalı: from enum import Enum, auto
+"${x[2]}" içinde Türkçe harf var; sabit adlarında Türkçe harf kullanmıyoruz.
+${x[1]} içinde ${x[2]} diye bir sabit yok
+Enum yalnızca tanımladığın sabitleri tanır; yazım hatası burada hemen yakalanır.${tr}${lits.length ? ' Tanımlı sabitler: ' + lits.join(', ') + '.' : ''}
+Bu bir metin, enum sabiti değil
+.name ve .value yalnızca enum sabitlerinde vardır. Değeri "mavi" gibi bir metin değil, Renk.MAVI gibi bir sabit olarak ver.
+Enum sabiti değiştirilemez
+Enum sabitleri programın sonuna kadar aynı kalır. Renk.MAVI'ye yeni değer atanamaz. Farklı bir renk gerekiyorsa enum'a yeni bir sabit ekle.
+${x[2]} içinde bu değerde bir sabit yok
+${x[2]}(${x[1]}) yazınca Python DEĞERİ ${x[1]} olan sabiti arar. Sabite adıyla ulaşmak için ${x[2]}.SABIT_ADI yaz.
+Aynı sabit adı iki kez yazılmış
+Bir enum içinde her sabit adı yalnızca bir kez kullanılabilir.
+Hata mesajını oku; satır numarası nereye bakacağını söyler.
+
+BAĞLANTILAR:
+

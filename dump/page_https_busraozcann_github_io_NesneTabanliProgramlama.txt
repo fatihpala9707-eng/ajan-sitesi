@@ -1,0 +1,65 @@
+URL: https://busraozcann.github.io/NesneTabanliProgramlama
+BAŞLIK: NYP Atölyesi
+TÜR: page
+
+{ }
+Nesne Yönelimli Programlama
+
+Uygulama dersi · haftalık simülasyonlar
+
+BU HAFTA · 8. HAFTA · ÖDEV
+Bütün OOP, bütün UML: Kronos Ajansı
+
+Yıl 2300, zaman yolculuğu bir turizm sektörü. Çağları sınıf olarak tasarla, piramitleri, ejderhaları ve Mars kolonilerini nesne olarak kur; 3D zaman turunda kendi dünyanın içinde yürü.
+
+7seviye
+19görev
+28yapı
+3Dzaman turu
+8. Hafta Ödevi ▶
+🏜️
+MÖ 2560
+🦕
+MÖ 66 milyon
+🚀
+MS 2300
+«abstract»
+Cag
++ ad: str
+− yil: int
++ gok(): Gokyuzu
+class AntikMisir(Cag):
+Dönem planı
+1
+Simülasyon yok
+2
+Simülasyon yok
+3
+Simülasyon yok
+4
+UML · Dino Vadisi
+5
+İlişkiler · Vize Zindanı
+6
+Enum · Masal Mahallesi
+7
+Çok Biçimlilik · Kantin Express
+8
+Bu hafta · OOP + UML · Kronos Ajansı
+9
+🔒 Yakında
+10
+🔒 Yakında
+11
+🔒 Yakında
+12
+🔒 Yakında
+13
+🔒 Yakında
+14
+🔒 Yakında
+
+Sayfa yenilense de kaldığın yerden devam edersin. 5., 6. ve 7. haftada uygulamayı (sekmeyi) kapatırsan çalışman silinir; dersi tek oturumda bitir. 8. hafta ödevi ise bu tarayıcıda kalıcıdır ve kayıt dosyası olarak indirilebilir.
+
+BAĞLANTILAR:
+

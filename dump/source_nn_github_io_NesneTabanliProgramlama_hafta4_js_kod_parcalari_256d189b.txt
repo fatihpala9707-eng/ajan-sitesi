@@ -1,0 +1,18 @@
+URL: https://busraozcann.github.io/NesneTabanliProgramlama/hafta4.js#kod-parcalari
+BAŞLIK: JS verisindeki kod parçaları (hafta4.js)
+TÜR: source
+
+<code>cipNo</code> özelliğini <b>private (−)</b> yap. Çip numarasını kimse değiştirmemeli!
+
+<code>enerji</code> ya da <code>aclik</code> özelliğini <b>protected (#)</b> yap.
+
+İpucu: Satırın başındaki + simgesine tıklayarak erişimi değiştir: + public → − private → # protected
+
+${target.name}.__${key}()   ✖ private metot! Sadece ${esc(cname(target.kind))} sınıfının içinden çağrılabilir.
+
+${jeep.name}.__sur()   ✖ private metot! Bakıcı dışarıdan çağıramaz.
+
+🔒 private metot! ${m.key}() sadece ${esc(cname(e.kind))} sınıfının içinden çağrılabilir.
+
+BAĞLANTILAR:
+

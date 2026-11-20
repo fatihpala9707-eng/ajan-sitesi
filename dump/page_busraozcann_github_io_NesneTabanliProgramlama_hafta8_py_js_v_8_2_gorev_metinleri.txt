@@ -1,0 +1,12 @@
+URL: https://busraozcann.github.io/NesneTabanliProgramlama/hafta8-py.js?v=8.2#gorev-metinleri
+BAŞLIK: JS verisindeki görev metinleri (hafta8-py.js?v=8.2)
+TÜR: page
+
+${x[1]} içinde ${x[2]} diye bir sabit yok
+
+Enum yalnızca tanımladığın sabitleri tanır; yazım hatası burada hemen yakalanır.${tr}${lits.length ? ' Tanımlı sabitler: ' + lits.join(', ') + '.' : ''}
+
+Bu bir metin, enum sabiti değil
+
+BAĞLANTILAR:
+

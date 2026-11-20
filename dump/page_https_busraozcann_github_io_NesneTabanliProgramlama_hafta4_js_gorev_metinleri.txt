@@ -1,0 +1,132 @@
+URL: https://busraozcann.github.io/NesneTabanliProgramlama/hafta4.js#gorev-metinleri
+BAŞLIK: JS verisindeki görev metinleri (hafta4.js)
+TÜR: page
+
+<code>enerji</code> ya da <code>aclik</code> özelliğini <b>protected (#)</b> yap.
+
+<b>Bakıcı</b> sınıfını oluştur: en az 6 özellik, 5 metot.
+
+Bakıcının <code>maas</code> ve <code>sicilNo</code> özelliklerini <b>private</b> yap.
+
+Bakıcıya <code>yemVer()</code>, Dinozora <code>ye()</code> ekle. Bakıcı, dinozorun ye() metodunu çağıracak.
+
+<b>Yuva</b> sınıfını oluştur (en az 5 özellik, 4 metot) ve <b>Dinozor → Yuva</b> ilişkisini kur.
+
+<b>Cip</b> sınıfını oluştur (en az 5 özellik, 4 metot) ve <b>Bakıcı → Cip</b> ilişkisini kur.
+
+<b>Nesneler</b> sekmesinden <b>3 Dinozor nesnesi</b> üret; renkleri birbirinden farklı olsun.
+
+Simülasyonda bir nesneye tıkla, <b>private</b> bir özelliği dışarıdan değiştirmeyi dene.
+
+<b>Ziyaretçi</b> sınıfını oluştur (en az 5 özellik, 4 metot) ve <b>Ziyaretçi → Dinozor</b> ilişkisini kur.
+
+<b>Bakıcı → Yuva</b> ilişkisini kur ve Bakıcıya <code>yuvaTemizle()</code> ekle.
+
+<div style="width:${w}px;height:${Math.round(w * 0.64)}px">${yuvaHTML({ name: 'Yuva', trees: 3, pond: true, ground: '#D3EDB3', mini: true })}</div>
+
+<header class="w4-top">
+      <button class="btn" data-act="home">← Haftalar</button>
+      <div class="w4-title"><small>4. Hafta · UML Sınıf Diyagramı</small><b>Dino Vadisi</b></div>
+      <div class="levels" id="h4-levels"></div>
+      <div class="score" id="h4-score" title="Her görev 10 yıldız">⭐ 0</div>
+      <div class="w4-actions">
+        <button class="btn" data-act="pdf" title="UML diyagramını PDF olarak indir">📄 PDF</button>
+        <button class="btn" data-act="teacher" id="h4-tbtn" ${window.NYP_OGRETMEN ? '' : 'hidden'}>Öğretmen</button>
+        <button class="btn" data-act="reset">↺ Sıfırla</button>
+        <button class="btn lava" data-act="run">▶ Simülasyonu Başlat</button>
+      </div>
+    </header>
+    <div class="w4-main">
+      <aside class="palette">
+        <div class="ptabs" id="h4-ptabs"></div>
+        <div class="pbody" id="h4-pbody"></div>
+        <div class="p-info" id="h4-pinfo">Bir parçanın üstüne gel; ne işe yaradığını burada gör.</div>
+        <div class="legend">
+          <div class="lg-h">Erişim belirleyiciler</div>
+          <div><span class="vis-sym v-pub">+</span><span><b>public</b>: herkes erişir</span></div>
+          <div><span class="vis-sym v-prot">#</span><span><b>protected</b>: sınıf ve alt sınıflar</span></div>
+          <div><span class="vis-sym v-priv">−</span><span><b>private</b>: sadece sınıfın içi</span></div>
+          <div style="color:var(--muted);font-size:12.5px">Kutudaki simgeye tıklayarak değiştir.</div>
+        </div>
+      </aside>
+      <section class="canvas-wrap">
+        <div class="connect-banner" id="h4-banner" hidden></div>
+        <div class="canvas" id="h4-cv">
+          <div class="canvas-sizer" id="h4-sizer">
+            <div class="canvas-inner" id="h4-inner">
+              <svg class="rel-svg" id="h4-rels" width="${CV_W}" height="${CV_H}"></svg>
+              <div id="h4-boxes"></div>
+              <div class="canvas-empty" id="h4-empty"><b>UML tuvali</b>Soldaki <b>Dinozor</b> sınıf kartını tut ve buraya sürükle. Sonra özellikleri ve metotları kutunun içine bırak.</div>
+            </div>
+          </div>
+        </div>
+        <div class="canvas-tools">
+          <button data-act="zoomout" title="Uzaklaş">−</button><span id="h4-zoom">100%</span><button data-act="zoomin" title="Yakınlaş">+</button>
+          <button data-act="layout" title="Kutuları düzenli yerleştir">Düzenle</button>
+        </div>
+      </section>
+      <aside class="side">
+        <div class="side-h"><h2>Canlı Önizleme</h2><small>metoda tıkla, dene</small></div>
+        <div class="preview" id="h4-preview"></div>
+        <div class="stabs" id="h4-stabs"></div>
+        <div class="spanel" id="h4-sp"></div>
+      </aside>
+    </div>
+
+<span class="lv-pill ${st}" title="Seviye ${L.n}: ${L.title}">${st === 'lock' ? '🔒' : st === 'done' ? '✓' : ''} ${L.n}. ${st === 'on' ? L.title : ''}</span>
+
+<button class="ptab ${S.tab === k ? 'on' : ''} ${locked ? 'locked' : ''}" data-act="ptab" data-kind="${k}" style="--k:${K.color};--ks:${K.soft}">
+        <span class="mini">${miniIcon(k)}</span>${K.label}${locked ? '<span class="lk">🔒</span>' : ''}</button>
+
+<div class="p-locked"><div class="mini">${bigIcon(k, 118)}</div><b>${K.label}</b>${LEVELS[K.level - 1].n}. seviyede açılır. Önce görevleri tamamla!</div>
+
+<button class="p-class ${c ? 'placed' : ''}" data-drag="class" data-kind="${k}">
+        <span class="mini">${bigIcon(k, 62)}</span>
+        <span><b>${K.label}</b><span>${c ? '✓ Tuvalde' : 'Sınıf kartı · tuvale sürükle'}</span></span>
+      </button>
+      <p class="p-intro">${K.intro}</p>
+      <h4>Özellikler <small>kutuya sürükle</small></h4>
+      <div class="chips">${K.attrs.map(a =>
+
+<span class="${hasA(c, k) ? '' : 'off'}" title="${hasA(c, k) ? 'Çizime yansıyor' : 'Bu özelliği eklersen çizim değişir'}">${k}</span>
+
+<div class="pv-empty">Bir sınıf oluşturduğunda burada canlanacak.<br>Eklediğin her özellik çizimi değiştirir, her metot burada denenebilir.</div>
+
+<div class="pv-card" style="--k:${K.color};--ks:${K.soft}">
+        <div class="pv-head"><b>${esc(cname(c.kind))}</b><span>${c.attrs.length} özellik · ${c.methods.length} metot${priv ?
+
+<label class="ob-f" for="${id}"><span class="vis-sym ${V.cls}">${V.sym}</span><span>${a.key}</span>${input}</label>
+
+<p class="ob-intro">Önce bir sınıf oluştur. Sınıf bir <b>kalıp</b>tır; nesneler o kalıptan üretilir.</p>
+
+<p class="ob-intro">🍪 Sınıf bir kurabiye kalıbıdır, nesneler o kalıptan çıkan kurabiyeler. Aynı sınıftan <b>farklı değerlerle</b> birçok nesne üretebilirsin.</p>
+
+Zaten bir ${K.label} sınıfı var. Aynı sınıftan çok sayıda nesne üretebilirsin (Nesneler sekmesi).
+
+${K.label} sınıfı oluşturuldu. Şimdi kutuya bir ad yaz (ör. ${K.suggest}).
+
+Önce ${KINDS[kind].label} sınıf kartını tuvale sürükle.
+
+: '<p>Sağdaki <b>Nesneler</b> sekmesine geç.</p>'}
+
+<div class="lvup-art">${bigIcon('dino')}</div><span class="tag">22 / 22 görev</span><h3>Tebrikler, Usta Tasarımcı!</h3>
+      <p>Sınıfları, erişim belirleyicileri, ilişkileri ve nesneleri kullanarak koca bir parkı tasarladın. Tasarımının PDF çıktısını almayı unutma!</p>
+
+Önce tuvale bir sınıf kartı sürükle.
+
+${names[o.id]} : ${cname(o.kind)}
+
+Dinozor sınıfı oluşturulmalı ve geçerli bir adı olmalı.
+
+Bakıcı sınıfı oluşturulmalı ve geçerli bir adı olmalı (2. seviyede açılır).
+
+${KINDS[c.kind].label} sınıfının adı geçersiz: ${nameCheck(c).msg}.
+
+<input id="ied" type="${a.type === 'str' ? 'text' : 'number'}" value="${esc(v)}" spellcheck="false">
+
+<div class="ins-edit">${input}<button data-iapply="${a.key}">Uygula</button></div>
+
+>>> ${e.name}.__${a.key} = ...
+
+BAĞLANTILAR:
+

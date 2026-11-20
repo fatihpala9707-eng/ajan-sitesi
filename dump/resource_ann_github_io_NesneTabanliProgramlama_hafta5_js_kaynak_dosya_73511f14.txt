@@ -1,0 +1,1214 @@
+URL: https://busraozcann.github.io/NesneTabanliProgramlama/hafta5.js#kaynak-dosya
+BAŞLIK: hafta5.js
+TÜR: resource
+
+']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '
+sınıf ve alt sınıfları
+sadece sınıfın kendisi
+Nesne üretilebilen, tüm metotları dolu sınıf.
+Yarım tarif: ondan nesne üretilmez, alt sınıflar tamamlar.
+Yetenek sözleşmesi: sadece metot imzaları.
+sahiptir; parça bağımsız yaşar
+parça bütünle doğar, bütünle ölür
+arayüz sözleşmesini imzalar
+Kalıtım + Soyut sınıf
+<p><b>Zindan Bekçisi'nden mektup:</b> Vize haftası geldi, zindan sınav canavarlarıyla doldu. Bir oyun tasarlayacaksın. Her şey bir <b>Karakter</b>le başlar.</p>
+<ul>
+<li>Her karakterin bir <b>adı</b> vardır (<code>ad</code>, metin). Herkes görebilir.</li>
+<li>Bir <b>canı</b> vardır (<code>can</code>, tam sayı). Çok gizli: <i>sadece Karakter sınıfının kendi metotları</i> değiştirebilir.</li>
+<li>Bir <b>gücü</b> vardır (<code>guc</code>, tam sayı). Karakter ve ondan türeyen sınıflar kullanabilir; dışarısı karışmasın.</li>
+<li><code>get_can()</code> canı tam sayı olarak döndürür. <code>hasar_al(miktar)</code> canı miktar kadar azaltır ama can 0'ın altına inmez. <code>hayatta_mi()</code> doğru/yanlış (bool) döndürür. Hepsi herkese açık.</li>
+<li>Her karakter <code>saldir(hedef)</code> ile başka bir Karakter'e saldırır. Ama <i>nasıl</i> saldıracağını karakterin türü bilir; Karakter bunu bilemez.</li>
+<li>Ortada “sadece karakter” diye biri yoktur: herkes ya bir <b>Savasci</b> ya da bir <b>Canavar</b>dır. İkisi de birer Karakter'dir ve saldırınca hedefe <b>güçleri kadar</b> hasar verir.</li>
+<li>Kodda karakterler (ad, can, guc) sırasıyla üretilir: <code>Savasci("Ali", 120, 15)</code></li>
+</ul>
+<p class="w5-q">🤔 Düşün: Karakter'den doğrudan nesne üretilmeli mi? Hangi metodun gövdesi Karakter'de yazılamaz?</p>
+<b>Kalıtım</b> (düz çizgi + boş üçgen ──▷): “Savaşçı <u>bir</u> Karakterdir.” Alt sınıf, üst sınıfın özelliklerini ve metotlarını miras alır; ok <b>çocuktan ebeveyne</b> çizilir.<br><b>Soyut sınıf</b> «abstract»: yarım kalmış bir tariftir. “Her karakter saldırır” der ama nasıl saldırılacağını alt sınıflara bırakır (soyut metot: <i>italik</i> + <code>{abstract}</code>). Soyut sınıftan nesne üretilmez.
+<p><b>Mektup:</b> Zindanda iyileşmeden hayatta kalınmaz. Ama iyileştirebilen tek şey <b>Şifacı</b> değil: bir bardak <b>Çay</b> da (bir <b>İksir</b>) iyileştirir! ☕</p>
+<ul>
+<li>Şifacı bir Karakter'dir. İksir ise bir eşyadır, Karakter <i>değildir</i> (iksir saldıramaz, canı yok 😄).</li>
+<li>İkisinin ortak noktası bir <b>yetenek</b>: iyileştirebilmek. Bu yetenek için <code>Iyilestirebilir</code> adında bir <b>arayüz</b> tasarla. İçinde sadece <code>iyilestir(hedef)</code> imzası olsun (hedef bir Karakter).</li>
+<li><b>Sifaci</b>: hem bir Karakter'dir hem de Iyilestirebilir sözleşmesini imzalar. Gücünün <b>2 katı</b> kadar iyileştirir; saldırırken gücünün <b>yarısı</b> kadar (tam sayı bölmesi <code>//</code>) hasar verir.</li>
+<li><b>Iksir</b>: herkesin görebileceği <code>ad</code> (metin) ve <code>miktar</code> (tam sayı). İyileştirince hedefin canı miktar kadar artar. Kodda <code>Iksir("Çay", 25)</code>.</li>
+<li>Bir sorun var: can <b>private</b>! Şifacı da iksir de başka bir karakterin canına doğrudan dokunamaz. Karakter'e herkese açık bir kapı aç: <code>can_kazan(miktar)</code>.</li>
+</ul>
+<p class="w5-q">🤔 Düşün: Iksir'i Karakter'den türetmek neden yanlış olurdu?</p>
+<b>Arayüz</b> «interface» bir <i>yetenek sözleşmesidir</i> (“…ebilir”). İçinde sadece metot imzaları olur; özellik ve kod olmaz. Birbiriyle akraba olmayan sınıflar aynı arayüzü gerçekleştirebilir (<b>kesikli çizgi + boş üçgen</b> ┄▷).<br>Soyut sınıf “<b>ne</b>dir?” sorusunu, arayüz “<b>ne yapabilir</b>?” sorusunu cevaplar. Python'da <code>interface</code> anahtar kelimesi yoktur: sadece soyut metotlardan oluşan bir ABC sınıfı arayüz gibi kullanılır.
+1—1 · 0..1 · 0..* ilişkiler
+<p><b>Mektup:</b> Kahramanların eşyaya ihtiyacı var.</p>
+<ul>
+<li><b>Envanter</b>: Her karakter kendi envanteriyle <b>doğar</b>; karakter yok olursa envanteri de yok olur. Bir envanter yalnızca bir karaktere aittir. (Karakter tarafından bakınca envanterin rol adı: <code>envanter</code>)</li>
+<li>Bir envanterde <b>hiç</b> iksir olmayabilir ya da <b>çok sayıda</b> iksir olabilir. İksir envanterden bağımsızdır: yerde de durabilir, bir envanterden alınıp başkasına konabilir; ama aynı anda <b>en fazla bir</b> envanterde durur. (rol: <code>iksirler</code>)</li>
+<li>Envanterin herkese açık metotları: <code>iksir_ekle(iksir)</code> ve <code>iksir_al()</code> (bir iksiri çıkarıp <b>döndürür</b>; envanter boşsa None döner). <code>Envanter()</code> parametresiz üretilir.</li>
+<li><b>Silah</b>: herkese açık <code>ad</code> (metin) ve <code>hasar</code> (tam sayı). Kodda <code>Silah("Annenin Terliği", 15)</code> 🩴</li>
+<li>Bir karakter <b>en fazla bir</b> silah kuşanır, hiç kuşanmayabilir. Bir silahı aynı anda <b>en fazla bir</b> karakter kullanır. Karakter silahını bilir ama silah sahibini bilmez. (rol: <code>silah</code>) Karakter'e herkese açık <code>silah_kusan(silah)</code> ekle.</li>
+<li>Savaşçı silah kuşanmışsa saldırırken silahın hasarını da ekler.</li>
+</ul>
+<p class="w5-q">🤔 Düşün: “birlikte doğar, birlikte ölür” ile “ayrılsa da yaşar” UML'de nasıl ayrılır?</p>
+<b>Çokluk</b> çizginin uçlarına yazılır ve “karşı taraftan <i>kaç tane</i>?” sorusunu cevaplar: <code>1</code> tam bir · <code>0..1</code> en fazla bir · <code>*</code> = <code>0..*</code> hiç ya da çok · <code>1..*</code> en az bir.<br><b>Bileşim ◆</b>: parça bütünle doğar, bütünle ölür. <b>Toplama ◇</b>: parça bütünden bağımsız yaşar. <b>İlişki →</b>: sahiplik yok, sadece bilir/kullanır. Kodda <code>1</code> → tek nesne, <code>0..1</code> → nesne ya da <code>None</code>, <code>*</code> → liste.
+Sınırlı çokluk + Arena
+<p><b>Mektup:</b> Zindana tek başına girilmez! Bir <b>Lonca</b> kur.</p>
+<ul>
+<li>Loncanın herkese açık bir <code>ad</code>ı (metin) vardır. Kodda <code>Lonca("Son Gece Çalışanlar")</code>.</li>
+<li>Bir lonca <b>en az 1, en fazla 4</b> üyeden oluşur. Karakter loncadan ayrılsa da yaşamaya devam eder; bir karakter <b>en fazla bir</b> loncaya üyedir (loncasız da olabilir). (rol: <code>uyeler</code>)</li>
+<li>Herkese açık <code>uye_ekle(karakter)</code>: lonca doluysa eklemez ve <b>False</b> döner; eklerse <b>True</b> döner (bool).</li>
+<li>Sonra kodunun <b>deneme alanında</b> loncanı kur: en az 3 üye; içlerinde iyileştirebilen biri olsun, birinin elinde silah, birinin envanterinde iksir olsun.</li>
+<li>⚖️ <b>Arena kuralları</b> (hile yok 😄): can ≤ 150 · guc ≤ 25 · silah hasarı ≤ 20 · iksir miktarı ≤ 40 · envanterde en fazla 3 iksir.</li>
+</ul>
+<p class="w5-q">🤔 Düşün: UML “en fazla 4” diyor. Bu kuralı kim korur: diyagram mı, kod mu?</p>
+<b>Sınırlı çokluk</b>: <code>1..4</code> “en az 1, en fazla 4” demektir. UML sınırı <i>söyler</i>; sınırı <i>korumak</i> kodun işidir (ekleme metodunda kontrol).<br>⚔️ <b>Arena</b>'da oyun motoru her tur yalnızca <code>k.saldir(hedef)</code> çağırır; hangi saldir()'ın çalışacağına nesnenin sınıfı karar verir. Iyilestirebilir olanlara <code>iyilestir()</code> çağırır: motor Şifacı'yı da İksir'i de <i>aynı arayüzden</i> tanır.
+Kendi sınıfını icat et
+<p><b>Son mektup:</b> En alt katta <b>Bütünleme Ejderhası</b> yaşıyor: 1000 can, her 3 turda bir tüm loncayı yakan alev. 🔥 Standart karakterler yetmeyebilir.</p>
+<ul>
+<li>Kendi kahraman sınıfını <b>icat et</b>! Karakter'den türesin (doğrudan ya da dolaylı), kendine özgü <b>en az bir özelliği</b> ve <b>en az bir metodu</b> olsun, <code>saldir()</code>'ı kendi tarzında yazsın.</li>
+<li>Fikirler: <b>Uykucu</b> (bazen uyuyakalır, sonra öfkeyle uyanır 😴), <b>Kantinci</b> (tost fırlatır 🥪), <b>Erteleyici</b> (saldırıyı sonraki tura erteler, sonra iki kat vurur), <b>İnek</b> (her saldırıda biraz daha güçlenir 📚)…</li>
+<li>Ek özelliği olan bir sınıf kendi <code>__init__</code>'ini yazar ve <code>super().__init__(ad, can, guc)</code> ile önce ebeveynini çağırır.</li>
+<li>Yeni sınıfını loncana kat, UML ile kodun tamamen uyumlu olsun ve tasarımının PDF'ini al.</li>
+</ul>
+<b>Genişletilebilirlik</b>: Yeni bir kahraman türü eklerken oyun motorunun koduna hiç dokunmadın! Çünkü motor sadece Karakter'in sözleşmesini (<code>saldir</code>, <code>hasar_al</code>, <code>get_can</code>…) biliyor. İyi kurulmuş bir kalıtım ağacı, yeni türleri eski kodu bozmadan eklemeni sağlar. Gelecek hafta bunun adını koyacağız. 😉
+“bir …dır” cümlesi kalıtımdır.
+Hem Ördek hem Uçak uçabilir (ama ördek bir uçak değildir).
+Akraba olmayan iki sınıfın ortak yeteneği: arayüz.
+Binanın odaları binayla birlikte yıkılır.
+Parça bütünle birlikte yok oluyorsa bileşim.
+Futbol takımı oyunculardan oluşur; oyuncu ayrılınca başka takıma transfer olur.
+Parça (oyuncu) bütünsüz de yaşıyor: toplama.
+Öğrenci, kantindeki tost makinesini kullanır.
+Sahiplik yok, sadece kullanma: ilişki.
+WhatsApp grubu üyelerden oluşur; gruptan çıkan kişi hayatına devam eder (biraz küskün de olsa).
+Üye gruptan bağımsız yaşıyor: toplama.
+Hoca da Asistan da birer Personeldir.
+İkisi de “bir Personel”: kalıtım.
+Hem Robot Süpürge hem Annen odayı temizleyebilir. 🧹
+Ortak yetenek, farklı aileler: arayüz (Temizleyebilir).
+Kitabın sayfaları kitapla birlikte yanar.
+Sayfa kitapla doğar, kitapla gider: bileşim.
+Kurye, teslim edeceği siparişi bilir.
+Bilmek/kullanmak: ilişki.
+Spotify listesi şarkıları toplar; liste silinse de şarkılar durur.
+Şarkılar listeden bağımsız: toplama.
+Tost bir Yiyecektir; Ayran bir İçecektir.
+“bir …dır” → kalıtım.
+Telefonun ekranı telefonla birlikte üretilir; telefon çöpe gidince ekranı da gider.
+Birlikte doğar, birlikte ölür: bileşim.
+Hem Kredi Kartı hem Nakit ile ödeme yapılabilir.
+Ortak sözleşme (OdemeYapilabilir): arayüz.
+Şoför, otobüsü kullanır.
+Çaylak bir Oyuncudur; Kaptan da bir Oyuncudur.
+İkisi de bir Oyuncu: kalıtım.
+Her vatandaşın tam olarak bir kimlik numarası vardır. (Kimlik numarası ucuna ne yazılır?)
+Bir öğrencinin en fazla bir danışman hocası olur; yeni gelenlerin henüz yoktur. (Danışman ucu?)
+Hiç ya da bir → 0..1
+Bir siparişte en az bir ürün olmalıdır. (Ürün ucu?)
+En az bir, üst sınır yok → 1..*
+Bir YouTube kanalının hiç videosu olmayabilir ya da binlerce olabilir. (Video ucu?)
+Hiç ya da çok → 0..* (kısaca *)
+Bir basketbol takımı sahada tam 5 oyuncuyla oynar. (Sahadaki oyuncu ucu?)
+Tam sayı biliniyorsa doğrudan yazılır → 5
+Bir kullanıcının profil fotoğrafı olmayabilir, olursa da tek olur. (Fotoğraf ucu?)
+Bir ders açılması için en az bir öğrenci kaydolmalı; üst sınır yok. (Öğrenci ucu?)
+Bir öğrencinin hiç devamsızlığı olmayabilir ya da çok olabilir 😅 (Devamsızlık ucu?)
+Hiç ya da çok → 0..*
+Bir arabanın tam olarak 4 tekerleği vardır. (Tekerlek ucu?)
+Sınıf, __init__ ve metot
+class Telefon:
+    def __init__(self, marka, sarj):
+        self.marka = marka          # + marka: str
+        self.sarj = sarj            # + sarj: int
+
+    def arama_yap(self, kisi):      # + arama_yap(kisi: str): None
+        print(self.marka, "ile", kisi, "aranıyor")
+
+    def sarj_getir(self):           # + sarj_getir(): int
+        return self.sarj
+
+tel = Telefon("Lale", 80)           # nesne üret
+tel.arama_yap("Anne")               # metot çağır
+Metodun ilk parametresi her zaman <code>self</code>. UML'de self yazılmaz, Python'da yazılır.
+class Hesap:
+    def __init__(self, sahip, bakiye):
+        self.sahip = sahip          # +  public: düz ad
+        self._limit = 1000          # #  protected: tek alt çizgi
+        self.__bakiye = bakiye      # −  private: çift alt çizgi
+
+    def get_bakiye(self):           # private'a açılan kapı
+        return self.__bakiye
+
+    def para_yatir(self, miktar):   # private'ı sadece sınıf değiştirir
+        self.__bakiye += miktar
+Başka bir sınıftan (alt sınıf bile!) <code>h.__bakiye</code> yazarsan AttributeError alırsın. Bu hata değil, kapsüllemenin çalıştığının kanıtı. 🔒
+class Hayvan:
+    def __init__(self, ad):
+        self.ad = ad
+
+    def ses_cikar(self):
+        print("...")
+
+class Kedi(Hayvan):                 # Kedi bir Hayvandır
+    def ses_cikar(self):            # override: kendi yöntemiyle
+        print(self.ad, ": Miyav")
+
+pamuk = Kedi("Pamuk")               # __init__ Hayvan'dan miras
+pamuk.ses_cikar()
+Alt sınıf <code>__init__</code> yazmazsa ebeveyninkini kullanır. Parantez içine ebeveynin adını yaz.
+Ek özellik + super()
+class Kare(Sekil):
+    def __init__(self, renk, kenar):
+        super().__init__(renk)      # önce ebeveyn kendi işini yapsın
+        self.kenar = kenar          # sonra Kare'ye özgü özellik
+
+    def alan(self):
+        return self.kenar * self.kenar
+Alt sınıfa yeni özellik ekliyorsan kendi <code>__init__</code>'ini yaz ve ilk satırda <code>super().__init__(...)</code> çağır.
+Soyut sınıf «abstract»
++ alan(): float {abstract}
+from abc import ABC, abstractmethod
+
+class Sekil(ABC):                   # ABC'den türeyen = soyut olabilir
+    def __init__(self, renk):
+        self.renk = renk
+
+    @abstractmethod                 # soyut metot: gövdesi yok
+    def alan(self):
+        pass
+
+    def tanit(self):                # soyut sınıfta dolu metot da olur
+        print(self.renk, "bir şekil")
+
+# Sekil("mavi")  → TypeError! Soyut sınıftan nesne olmaz.
+Alt sınıf soyut metodun hepsini yazmazsa o da soyut kalır ve ondan da nesne üretilemez.
+Arayüz «interface» ┄▷
+Telefon ┄▷ SarjEdilebilir
+class SarjEdilebilir(ABC):          # arayüz: SADECE soyut metotlar
+    @abstractmethod
+    def sarj_et(self, dakika):
+        pass
+
+class Telefon(Cihaz, SarjEdilebilir):   # bir Cihaz + sözleşme
+    def sarj_et(self, dakika):
+        print("Telefon şarj oluyor")
+
+class Powerbank(SarjEdilebilir):        # Cihaz değil ama şarj edilebilir
+    def sarj_et(self, dakika):
+        print("Powerbank doluyor")
+
+isinstance(Powerbank(), SarjEdilebilir)  # True
+Bir sınıf hem bir ebeveynden türeyip hem bir arayüzü gerçekleştirebilir: parantez içine ikisini de yaz.
+class Motor:
+    def __init__(self):
+        self.calisiyor = False
+
+class Araba:
+    def __init__(self, model):
+        self.model = model
+        self.motor = Motor()        # parça, bütünün İÇİNDE doğar
+
+a = Araba("Kartal")
+b = Araba("Doğan")
+print(a.motor is b.motor)          # False: herkesin KENDİ motoru var
+Bileşimde parçayı dışarıdan almazsın; bütün kendi parçasını kendisi üretir.
+0..1 → nesne ya da None
+class Ogrenci:
+    def __init__(self, ad):
+        self.ad = ad
+        self.danisman = None        # henüz yok → None ile başla
+
+    def danisman_ata(self, hoca):
+        self.danisman = hoca
+
+    def danismani_soyle(self):
+        if self.danisman is not None:
+            print(self.danisman.ad)
+        else:
+            print("Danışmanım yok")
+None üzerinde <code>.ad</code> çağırırsan hata alırsın; önce <code>is not None</code> kontrolü.
+class Playlist:
+    def __init__(self, ad):
+        self.ad = ad
+        self.sarkilar = []          # çok → boş listeyle başla
+
+    def sarki_ekle(self, sarki):
+        self.sarkilar.append(sarki)
+
+    def sarki_cikar(self):
+        if len(self.sarkilar) == 0:
+            return None             # boşsa None
+        return self.sarkilar.pop(0) # ilkini listeden çıkar ve döndür
+<code>pop(0)</code> ilk elemanı, <code>pop()</code> son elemanı çıkarıp döndürür.
+Sınırlı çokluk (1..5)
+Takim ◇─ 1..5 Oyuncu
+class Takim:
+    def __init__(self):
+        self.oyuncular = []
+
+    def oyuncu_ekle(self, oyuncu):
+        if len(self.oyuncular) >= 5:
+            print("Kadro dolu!")
+            return False
+        self.oyuncular.append(oyuncu)
+        return True
+Diyagram sınırı söyler, kod korur.
+Nesneleri birbirine bağla
+liste = Playlist("Ders Çalışma")
+liste.sarki_ekle(Sarki("Lo-fi 1"))
+liste.sarki_ekle(Sarki("Lo-fi 2"))
+
+for s in liste.sarkilar:
+    print(s.ad)
+
+araba = Araba("Kartal")
+araba.motor.calisiyor = True        # nesnenin içindeki nesneye eriş
+Nokta zinciri: <code>nesne.ozellik.ozellik</code>
+Parantez var: bu bir metot. Metotlar alttaki bölmeye yazılır.
+Biçim: erişim ad: tip  (ör. − can: int)
+Başa erişim simgesi koy: + public · # protected · − private
+Tip eksik: ${r.name}: int gibi yaz
+Metotta parantez olmalı: + ad(param: Tip): DönüşTipi
+Parantez kapanmamış.
+Biçim: + ad(param: Tip): DönüşTipi
+Etiket olarak {abstract} yazılır.
+Parametreler: ad: Tip, ad2: Tip
+UML'de self yazılmaz; self sadece Python'da ilk parametredir.
+Dönüş tipini yaz (bir şey döndürmüyorsa : None)
+hiç ya da birden çok
+en fazla 1 (hiç olmayabilir)
+<b>${esc(A.name || '?')}</b>
+<b>${esc(B.name || '?')}</b>
+(kodda: <code>${esc(A.name)}.${esc(r.role.trim())}</code>)
+${a}, ${b} türündendir: ${b} sınıfındaki özellik ve metotlar ${a} sınıfına miras kalır.
+${a}, ${b} arayüzünün sözleşmesini imzalar: ${b} içindeki metotları yazmak zorundadır.
+Her ${a} nesnesi <u>${multText(r.mb)}</u> ${b} nesnesini bilir/kullanır${role}. Her ${b} nesnesi <u>${multText(r.ma)}</u> ${a} tarafından bilinir.
+Her ${a} nesnesi <u>${multText(r.mb)}</u> ${b} nesnesini barındırır${role}; ${b} nesneleri ${a} olmadan da yaşar. Her ${b}, <u>${multText(r.ma)}</u> ${a} içinde bulunur.
+Her ${a} nesnesi <u>${multText(r.mb)}</u> ${b} parçasına sahiptir${role}; parça bütünle doğar ve bütünle yok olur. Her ${b}, <u>${multText(r.ma)}</u> ${a} nesnesine aittir.
+Sınıf adında boşluk ya da simge olmamalı.
+Sınıf adı büyük harfle başlamalı (PascalCase).
+Bu ad başka bir sınıfta da var.
+${bad} satırda yazım sorunu var (kırmızı satırlar).
+“${dup}” iki kez yazılmış.
+Arayüzde özellik olmaz; sadece metot imzaları olur.
+Soyut sınıfın genelde en az bir soyut metodu olur ({abstract}).
+Somut sınıfta soyut metot olamaz: sınıfı soyut yap ya da {abstract} etiketini kaldır.
+Miras kalan soyut metot(lar) burada yazılmalı (override): ${must.map(x => x + '()').join(', ')}. Yoksa ${c.name || 'bu sınıf'} da soyut kalır!
+Birden fazla sınıftan kalıtım: Python izin verir ama genelde tek ebeveyn yeter.
+Kalıtım döngüsü: bir sınıf kendi atası olamaz.
+Bir sınıf arayüze kalıtımla değil, gerçekleştirmeyle (kesikli çizgi) bağlanır.
+Gerçekleştirme oku yalnızca bir arayüze gider; hedef bir arayüz değil.
+Bir arayüz, sınıftan türeyemez.
+${X.name || '?'} ucundaki “${r[k]}” geçerli bir çokluk değil (1, 0..1, *, 1..*, 2..4 gibi).
+İki uca da çokluk yaz.
+Bileşimde bütün tarafı 1 (ya da 0..1) olur: bir parça aynı anda iki bütüne ait olamaz.
+Rol adı yaz: kodda bu ilişki ${A.name || 'sınıf'} içinde bu adla bir özellik olur.
+Rol adı tek kelime olmalı (boşluksuz).
+Kalıtım ve gerçekleştirmede çokluk yazılmaz.
+“${n.name}” adını brifteki gibi yaz: ${name} (Türkçe karakter ve boşluk olmadan, büyük harfle).
+${name} sınıfı henüz yok.
+${name}: sınıfın türünü düşün. Ondan doğrudan nesne üretilmeli mi? (Kutuyu seç → sağ panelden türü değiştir.)
+${name} bir yetenek sözleşmesi. Türü ne olmalı?
+${name} sınıfından nesne üretilecek; ${KIND[c.kind].label.toLowerCase()} olmamalı.
+${cn} sınıfı henüz yok.
+${cn}: “${n.name}” özelliğini brifteki adla yaz: ${an}
+${cn} sınıfında ${an} özelliği yok.
+${cn}.${an} satırında yazım sorunu: ${a.err}
+${cn}.${an}: erişim belirleyici uygun değil. Brifte ${an} için kimlerin erişebileceği yazıyor.
+${cn}.${an}: tip uygun değil (tam sayı → int, metin → str, ondalık → float, doğru/yanlış → bool).
+${cn}: “${n.name}” metodunu brifteki adla yaz: ${mn}
+${cn} sınıfında ${mn}() metodu yok.
+${cn}.${mn} satırında yazım sorunu: ${m.err}
+${cn}.${mn}(): erişim belirleyici uygun değil.
+${cn}.${mn}() ${o.n} parametre almalı (ad: Tip biçiminde).
+${cn}.${mn}() parametre almamalı.
+${cn}.${mn}(): parametrenin tipi uygun değil. Parametre neyi temsil ediyor?
+${cn}.${mn}(): dönüş tipi uygun değil. Bu metot ne döndürüyor?
+${cn}.${mn}(): bu metodun gövdesi ${cn} içinde yazılabilir mi? Yazılamıyorsa soyuttur ({abstract}).
+${cn}.${mn}() burada dolu (somut) olmalı; {abstract} etiketini kaldır.
+${a} ile ${b} arasındaki çizginin türü uygun değil. İpucu: “birlikte doğar, birlikte ölür” hangi ilişki?
+${a} ile ${b} arasındaki çizginin türü uygun değil. İpucu: ${a} onları barındırıyor ama parça ${a} olmadan da yaşayabiliyor.
+${a} ile ${b} arasındaki çizginin türü uygun değil. İpucu: burada sahiplik yok; sadece bilir/kullanır.
+${a} ile ${b} arasındaki çizginin türü uygun değil. İpucu: “${a}, bir ${b} türüdür.”
+${a} ile ${b} arasındaki çizginin türü uygun değil. İpucu: ${b} bir arayüz; arayüze hangi çizgiyle bağlanılır?
+Yön ters: kalıtım oku çocuktan ebeveyne çizilir (üçgen ebeveyn tarafında). Sağ panelde “⇄ Yönü çevir”.
+Yön ters: üçgen arayüz tarafında olmalı. Sağ panelde “⇄ Yönü çevir”.
+Yön ters: elmas BÜTÜN tarafında olmalı. Sağ panelde “⇄ Yönü çevir”.
+Yön ters: ok, bilinen (kullanılan) sınıfı göstermeli. Sağ panelde “⇄ Yönü çevir”.
+Önce ${!A ? an : bn} sınıfını kur.
+${an} ile ${bn} arasında henüz bir ilişki çizgisi yok.
+${an} ucundaki çokluk uygun değil. Sor: bir ${bn} nesnesi kaç ${an} ile bağlantılı?
+${bn} ucundaki çokluk uygun değil. Sor: bir ${an} nesnesinin kaç ${bn} nesnesi olur?
+Rol adı: çizginin ${bn} ucuna brifteki rol adını yaz.
+${cn} bir arayüz: özellik bölmesi boş kalmalı.
+Önce Karakter sınıfı olmalı.
+Brifte olmayan yeni bir sınıf kur (ör. Uykucu, Kantinci).
+${cands[0].name || 'Yeni sınıf'} henüz Karakter'den (doğrudan ya da dolaylı) türemiyor.
+${c.name} sınıfından nesne üretilecek; somut bir sınıf olmalı.
+${c.name}: kendine özgü en az bir özellik yaz.
+${c.name}: saldir() metodunu kendi tarzında yaz (somut).
+${c.name}: kendine özgü en az bir metot daha yaz.
+Kodla sekmesinde kodunu ▶ Çalıştır; sonuç burada görünür.
+<b>Karakter</b> sınıfını kur ve türünü doğru seç.
+Karakter'in <b>3 özelliğini</b> erişim belirleyici ve tipleriyle yaz.
+Karakter'in <b>4 metodunu</b> parametre ve dönüş tipleriyle yaz.
+<b>Savasci</b> ve <b>Canavar</b>'ı kur, Karakter'e doğru çizgiyle bağla; ikisi de saldir()'ı kendisi yazsın.
+Karakter'i Python'a çevir: soyut sınıf, private can, protected guc ve 4 metot.
+Savasci ve Canavar'ı kodla: saldırınca hedefin canı güçleri kadar azalsın.
+🧪 <b>Deney:</b> deneme alanında Karakter'den doğrudan nesne üretmeyi dene ve çalıştır. Python ne diyor? (Sonra o satırı sil.)
+Deneme alanına Karakter(...) ile nesne üreten bir satır yaz ve ▶ Çalıştır.
+<b>Iyilestirebilir</b> arayüzünü kur ve tek metodunun imzasını yaz.
+<b>Sifaci</b>'yı kur: bir Karakter olsun <i>ve</i> Iyilestirebilir sözleşmesini imzalasın; saldir() ve iyilestir() yazsın.
+<b>Iksir</b>'i kur (ad, miktar, iyilestir); arayüzü gerçekleştirsin ama Karakter <u>olmasın</u>.
+Iksir bir Karakter mi? Saldırabilir mi? 😄 Iksir ile Karakter arasındaki kalıtımı kaldır.
+Karakter'e <b>can_kazan(miktar: int)</b> ekle: private cana açılan kapı.
+Iyilestirebilir arayüzünü, Iksir'i ve can_kazan()'ı kodla.
+Sifaci'yı kodla (iki ebeveyni var!).
+🧪 Konsolun <b>&gt;&gt;&gt;</b> satırına yaz: <code>isinstance(Iksir("Çay", 20), Karakter)</code> Sonuç neden böyle?
+Kodla sekmesinde konsolun altındaki >>> satırına yaz, Enter.
+<b>Envanter</b>'i iki metoduyla kur; Karakter ile arasındaki ilişkiyi çiz (tür, yön, iki uçta çokluk, rol adı).
+<b>Envanter</b> ile <b>Iksir</b> arasındaki ilişkiyi çiz.
+<b>Silah</b>'ı kur, Karakter ile ilişkisini çiz; Karakter'e silah_kusan() ekle.
+🕵️ <b>İlişki Dedektifi</b>: 10 sorudan en az 8 doğru.
+En iyi skorun: ${S.quizBest}/10
+Envanter'i kodla; her karakter kendi envanteriyle doğsun.
+Silah'ı ve silah_kusan()'ı kodla; Savaşçı silahın hasarını da eklesin.
+<b>Lonca</b>'yı kur (ad, uye_ekle) ve Karakter ile ilişkisini çiz.
+Lonca'yı kodla: 4 üye sınırını kod korusun.
+Deneme alanında loncanı kur (en az 3 üye, şifacı, silah, iksir; kurallara uygun).
+⚔️ Arenada <b>1. katı</b> geç: Yoklama Hayaleti ve Sürpriz Quiz Goblini.
+Savaş sekmesinde 1. katı seç, ⚔️ Savaşı başlat.
+⚔️ <b>2. kat</b>: Deadline Golemi'ni yen.
+Golem her 4 turda bir “deadline uzatıp” iyileşiyor.
+Kendi kahraman sınıfını UML'de <b>icat et</b>.
+Yeni sınıfını kodla ve loncana kat.
+UML ↔ Kod uyumu <b>%100</b> olsun (en az 10 sınıf).
+Diyagramda en az 10 sınıf olmalı.
+Uyum: ${c.ok}/${c.total}. Kodla → UML ↔ Kod panelindeki kırmızıları düzelt.
+⚔️ <b>Bütünleme Ejderhası</b>'nı yen! 🐉
+Taktik: 4 üye, şifacı, iksirler ve kendi sınıfın.
+📄 Hepsi bitti mi? Diyagramının ve ilerleme raporunun <b>PDF</b>'ini al.
+Tüm görevleri bitirince üst çubuktaki 🔒 PDF düğmesinin kilidi açılır.
+Üst çubuktaki 📄 PDF düğmesi.
+Kodda ${uc.name} sınıfı yok.
+${relSym(r.type)} ${p.name}
+UML'de ${uc.name}, ${p.name} ${r.type === 'gen' ? 'sınıfından türüyor' : 'arayüzünü gerçekleştiriyor'}; kodda class satırının parantezinde ${p.name} yok.
+${uc.name} soyut olmalı: ABC'den türemeli.
+${uc.name} içinde @abstractmethod ile işaretli metot yok.
+Arayüzde özellik olmaz ama kodda self.${at[0]} var.
+UML'de ${uc.name} somut ama kodda @abstractmethod var: ${am.join(', ')}
+${symOf(a.vis)} ${a.name}: ${a.type}
+${f.cls} sınıfından miras
+Erişim tutmuyor: UML'de ${VIS[a.vis].name} (${symOf(a.vis)}) ama kodda self.${alt} yazılmış.
+Kodda self.${want} bulunamadı (genelde __init__ içinde atanır).
+${symOf(m.vis)} ${m.name}(${m.params.map(p => p.name).join(', ')})
+Erişim tutmuyor: UML'de ${VIS[m.vis].name} ama kodda def ${alt}.
+Kodda def ${want}(self…) yok.
+def ${want} metodunun ilk parametresi self olmalı.
+Parametre sayısı tutmuyor: UML'de ${m.params.length}, kodda ${cm.params.length} (self hariç).
+UML'de soyut ({abstract}) ama kodda @abstractmethod yok.
+UML'de dolu metot ama kodda @abstractmethod ile işaretli.
+UML'de ${uc.name} bu metodu kendisi yazıyor (override) ama kodda sadece ${owner} içinde var.
+Gövdesi boş (sadece pass). Brife göre doldur.
+${relSym(r.type)} ${role}: ${B.name}${many ? '[' + (r.mb || '*') + ']' : ''}
+İlişkinin rol adı kodda ${uc.name} nesnesinin bir özelliği olmalı: self.${role}
+${B.name} ucu “${r.mb}” (çok) → self.${role} bir liste olarak başlamalı.
+${B.name} ucu “${r.mb || '?'}” (tek) ama kodda liste kullanılmış.
+Bileşim: ${B.name} parçası ${uc.name} nesnesinin içinde doğmalı (dışarıdan gelmemeli).
+${B.name} ucu 0..1: başlangıçta olmayabilir → None ile başlamalı.
+<line x1="${t === 'agg' || t === 'comp' ? 24 : 3}" y1="9" x2="${t === 'gen' || t === 'real' ? 43 : 58}" y2="9" stroke="currentColor" stroke-width="2"${t === 'real' ? ' stroke-dasharray="5 4"' : ''}/>
+<path d="M3 9 L13.5 3.5 L24 9 L13.5 14.5 Z" fill="${t === 'comp' ? 'currentColor' : '#fff'}" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+<path d="M59 9 L43 2 L43 16 Z" fill="#fff" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+<path d="M47 3 L59 9 L47 15" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+<svg class="w5-ricon ${cls || ''}" viewBox="0 0 62 18" width="62" height="18" aria-hidden="true">${line}${s}</svg>
+<header class="w5-top">
+      <button class="btn" data-act="home">← Haftalar</button>
+      <div class="w5-brand"><span class="w5-logo" aria-hidden="true">${miniDragon()}</span><div><small>5. Hafta · İlişkiler, Kalıtım, Arayüz</small><b>Vize Zindanı</b></div></div>
+      <nav class="w5-modes" id="w5-modes" aria-label="Aşamalar"></nav>
+      <div class="w5-xp" id="w5-xp"></div>
+      <div class="w5-tact">
+        <button class="btn" data-act="pdf" id="w5-pdf">📄 PDF</button>
+        <div class="w5-menu">
+          <button class="btn" data-act="menu" aria-haspopup="true" title="Diğer">☰</button>
+          <div class="w5-menu-pop" id="w5-menu" hidden>
+            <button data-act="guide">🤔 Kavram Rehberi</button>
+            <button data-act="quiz">🕵️ İlişki Dedektifi</button>
+            <button data-act="help">❓ Nasıl oynanır?</button>
+            <hr>
+            <button data-act="teacher" id="w5-tbtn" hidden>👩‍🏫 Öğretmen</button>
+            <button data-act="reset" class="danger">↺ Her şeyi sıfırla</button>
+          </div>
+        </div>
+      </div>
+    </header>
+    <div class="w5-body ${S.journal ? '' : 'j-off'}" id="w5-body">
+      <aside class="w5-journal" id="w5-journal" aria-label="Görev defteri"></aside>
+      <button class="w5-jtab" data-act="journal" id="w5-jt" title="Görev defterini aç/kapat"></button>
+      <main class="w5-area">
+        <section class="w5-view w5-design" id="w5-v-design" hidden>${designShell()}</section>
+        <section class="w5-view w5-code" id="w5-v-code" hidden>${codeShell()}</section>
+        <section class="w5-view w5-arena" id="w5-v-arena" hidden>${arenaShell()}</section>
+      </main>
+    </div>
+${i ? '<span class="w5-marrow" aria-hidden="true">›</span>' : ''}<button class="w5-mode ${S.mode === k ? 'on' : ''} ${locked ? 'locked' : ''}" data-act="mode" data-m="${k}" ${S.mode === k ? 'aria-current="page"' : ''}>
+        <i>${locked ? '🔒' : n}</i><span><b>${t}</b><small>${locked ? '4. seviyede' : s}</small></span></button>
+<div class="w5-xpr"><b>${r[1]}</b><small>${xp} / ${max} XP</small></div>
+      <div class="w5-xpbar" title="${next ?
+: 'Zirvedesin!'}"><i style="width:${(xp / max) * 100}%"></i></div>
+PDF tüm görevler bitince açılır (${left} görev kaldı)
+UML diyagramını ve ilerleme raporunu PDF olarak indir
+<button class="w5-lvp ${st} ${x.n === lvN ? 'on' : ''}" data-act="jlv" data-lv="${x.n}" title="${x.n}. ${x.title} · ${x.topic}" ${st === 'lock' ? 'aria-disabled="true"' : ''}>
+        <span>${st === 'lock' ? '🔒' : st === 'done' ? '✓' : x.icon}</span><small>${x.n}</small></button>
+<div class="w5-lvps">${pills}</div>
+      <div class="w5-jhead"><span class="w5-jn">${L.icon}</span><div><small>${lvN}. Seviye · ${L.topic}</small><h2>${L.title}</h2></div><span class="w5-jc">${d}/${ms.length}</span></div>
+      <div class="w5-jscroll">
+        <details class="w5-letter" ${S.letterClosed && S.letterClosed[lvN] ? '' : 'open'} data-lv="${lvN}"><summary>📜 Brif: Zindan Bekçisi'nin mektubu</summary><div class="w5-letter-b">${L.brief}</div></details>
+        <div class="w5-concept"><b>💡 Kavram</b><div>${L.concept}</div></div>
+        <ul class="w5-ms">${ms.map(m => {
+          const ok = !!S.done[m.id], h = !ok && T.hints[m.id];
+          return
+${ok ? 'ok' : ''} ${T.flash === m.id ? 'flash' : ''}
+<span class="w5-hint">${esc(h)}</span>
+;
+        }).join('')}</ul>
+      </div>
+      <div class="w5-jfoot"><button class="btn" data-act="guide">🤔 Kafam karıştı</button><button class="btn" data-act="quiz">🕵️ İlişki Dedektifi</button></div>
+⚔️ Arena 4. seviyede açılır. Önce lonca kurulmalı!
+<p>⚔️ <b>Savaş</b> aşaması açıldı! Loncanı kurunca arenaya girebilirsin.</p>
+<div class="w5-lvup-art">${L.icon}</div><span class="tag">Seviye ${L.n} açıldı</span><h3>${L.title}</h3><p class="w5-lvup-topic">${L.topic}</p><div class="w5-lvup-c">${L.concept}</div>${extra}<p>Görev defterinde yeni mektup seni bekliyor. 📜</p>
+<div class="w5-lvup-art">${miniDragon(120)}</div><span class="tag">${MISSIONS.length} / ${MISSIONS.length} görev</span><h3>Bütünlemeye kalmadın! 🎓</h3>
+      <p>Soyut sınıf, arayüz, kalıtım, bileşim, toplama ve çokluklarla koca bir oyun tasarladın; sonra onu <b>kendin kodladın</b>. Üstelik oyun motoru senin sınıflarını hiç tanımadan çalıştırdı.</p>
+      <p>Tasarımının PDF'ini aldığından emin ol. Gelecek hafta bu loncayla devam edeceğiz. 😉</p>
+<div class="modal-card" id="nyp-modal-card" role="dialog" aria-modal="true"></div>
+<div class="row">${buttons.map((b, i) =>
+<h3>🤔 Kavram Rehberi</h3>
+      <p class="w5-sub">Kafan karıştığında buraya dön. Zindandan örneklerle.</p>
+      <h4>Üç tür kutu</h4>
+      <div class="w5-tbl"><table>
+        <tr><th></th><th>Sınıf</th><th>Soyut sınıf</th><th>Arayüz</th></tr>
+        <tr><th>Hangi soru?</th><td>Bu nedir?</td><td>Bu ailenin ortak noktası ne?</td><td>Bu ne <b>yapabilir</b>?</td></tr>
+        <tr><th>İçinde</th><td>özellikler + dolu metotlar</td><td>özellikler + dolu metotlar + <i>soyut</i> metotlar</td><td>sadece metot imzaları</td></tr>
+        <tr><th>Nesne üretilir mi?</th><td>✅</td><td>❌ (alt sınıflardan)</td><td>❌</td></tr>
+        <tr><th>UML</th><td>düz başlık</td><td>«abstract», <i>italik</i></td><td>«interface»</td></tr>
+        <tr><th>Python</th><td><code>class Savasci(Karakter):</code></td><td><code>class Karakter(ABC):</code> + <code>@abstractmethod</code></td><td>sadece soyut metotlu <code>ABC</code></td></tr>
+        <tr><th>Zindanda</th><td>Savasci, Iksir, Lonca</td><td>Karakter</td><td>Iyilestirebilir</td></tr>
+      </table></div>
+      <h4>Beş çizgi</h4>
+      <div class="w5-rels">
+        ${RT_ORDER.map(t =>
+Karakter → Silah: karakter silahını bilir
+Lonca ◇ Karakter: üye loncadan ayrılsa da yaşar
+Karakter ◆ Envanter: envanter karakterle doğar, onunla ölür
+Savasci ──▷ Karakter: savaşçı bir karakterdir
+Iksir ┄▷ Iyilestirebilir: iksir iyileştirebilir
+).join('')}
+      </div>
+      <h4>Sık karışanlar</h4>
+      <ul class="w5-faq">
+        <li><b>Soyut sınıf mı, arayüz mü?</b> Ortak <i>özellik ve kod</i> paylaşılacaksa soyut sınıf. Sadece bir <i>yetenek</i> sözü veriliyorsa (ve akraba olmayan sınıflar da o yeteneğe sahip olabiliyorsa) arayüz.</li>
+        <li><b>Kalıtım mı, ilişki mi?</b> “A bir B'dir” diyebiliyor musun? Savaşçı bir Karakterdir ✅ → kalıtım. Savaşçı bir Silahtır ❌ → silahı <i>vardır</i> → ilişki.</li>
+        <li><b>Toplama mı, bileşim mi?</b> Bütün silinince parça da silinmeli mi? Evet → bileşim ◆. Hayır, parça yaşamaya devam eder → toplama ◇.</li>
+        <li><b>Çokluk hangi uca yazılır?</b> Kendi ucuna! Envanter ucundaki <code>1</code> “her karakterin <i>1 envanteri</i> var” demek. Okurken karşı taraftan başla: “bir Karakter'in kaç Envanter'i var?” → cevap Envanter ucuna.</li>
+        <li><b>Kodda ne olur?</b> <code>1</code> → tek nesne · <code>0..1</code> → nesne ya da <code>None</code> · <code>*</code>, <code>1..*</code>, <code>1..4</code> → liste. Bileşimde parça <code>__init__</code> içinde üretilir.</li>
+        <li><b>+ # − kodda?</b> <code>+ ad</code> → <code>self.ad</code> · <code># guc</code> → <code>self._guc</code> · <code>− can</code> → <code>self.__can</code></li>
+      </ul>
+<h3>⚔️ Vize Zindanı'na hoş geldin!</h3>
+      <p>Bu hafta üç aşamada bir oyun yapacaksın. Görevler soldaki <b>📜 Görev Defteri</b>'nde; asıl tarif <b>mektup</b>ta (brif).</p>
+      <ol class="w5-steps">
+        <li><b>📐 Tasarla</b> — UML'yi <i>yazarak</i> çiz. Sol araç çubuğundan kutu türünü seç, tuvale tıkla. Kutudaki satırlara UML biçiminde yaz:<br>
+          <code>+ ad: str</code> · <code>− can: int</code> · <code># guc: int</code><br>
+          <code>+ saldir(hedef: Karakter): None {abstract}</code><br>
+          <kbd>Enter</kbd> yeni satır, boş satırda <kbd>⌫</kbd> satırı siler. İlişki için <b>🔗 Bağla</b> aracıyla bir kutudan diğerine sürükle, sonra sağ panelden türünü, yönünü ve çokluklarını seç.</li>
+        <li><b>⌨️ Kodla</b> — Python'u <i>sen</i> yazarsın. <kbd>Ctrl</kbd>+<kbd>Enter</kbd> çalıştırır. Sağdaki <b>UML ↔ Kod</b> paneli diyagramındaki her satırın kodda karşılığı var mı gösterir. Kod Kartları başka konulardan örnekler verir.</li>
+        <li><b>⚔️ Savaş</b> — 4. seviyede açılır. Kodundaki lonca, sınav canavarlarıyla savaşır. Senin <code>print</code>'lerin konuşma balonu olur!</li>
+      </ol>
+      <p class="w5-sub">⚠️ Sayfayı yenilersen kaldığın yerden devam edersin, ama <b>uygulamayı kapatırsan her şey silinir</b>. Dersi tek oturumda bitir. Tüm görevler bitince <b>📄 PDF</b> açılır; PDF'te her görevi hangi tarih ve saatte tamamladığın yazar. Bu PDF'i öğretmenine teslim edeceksin.</p>
+UML dedektifi olmuşsun! 🕵️
+Az kaldı, bir daha dene!
+Kavram Rehberi'ne bir göz at, sonra tekrar dene.
+<div class="w5-qend"><div class="w5-qscore">${Q.score}<small>/10</small></div><h3>${msg}</h3><p>${rec ? 'Yeni rekor!' : 'En iyi skorun: ' + best + '/10'}</p></div>
+<div class="w5-qtop"><span>🕵️ İlişki Dedektifi</span><span>Soru ${Q.i + 1}/10 · ✓ ${Q.score}</span></div>
+        <div class="w5-qbar"><i style="width:${Q.i * 10}%"></i></div>
+        <p class="w5-qask">${q.k === 't' ? 'Bu cümle hangi ilişki?' : 'Hangi çokluk yazılır?'}</p>
+        <blockquote class="w5-qq">${esc(q.q)}</blockquote>
+        <div class="w5-qopts ${q.k}">${opts.map(o => {
+          const st = P == null ? '' : o === q.a ? 'right' : o === P ? 'wrong' : 'dim';
+          return
+<b class="mono">${o}</b>
+;
+        }).join('')}</div>
+        ${P != null ?
+w5-qwhy ${P === q.a ? 'ok' : 'no'}
+<h3>👩‍🏫 Öğretmen</h3><p>Bu panel ders anlatımı içindir. Öğretmen kodunu gir.</p>
+        <input type="password" id="w5-pin" class="w5-in" autocomplete="off" placeholder="öğretmen kodu">
+.row .btn:last-child
+<h3>👩‍🏫 Öğretmen paneli</h3><p>Derste göstermek için kısayollar. Öğrenciler kendi bilgisayarında sıfırdan başlar; her tarayıcı kendi çalışmasını saklar.</p>
+      <ul><li><b>Tüm seviyeleri aç</b>: çalışma korunur.</li><li><b>Örnek UML</b>: 10 sınıflık çözüm diyagramını yükler (mevcut diyagram silinir).</li><li><b>Örnek kod</b>: çözüm Python kodunu yükler (mevcut kod silinir).</li><li><b>Arena katlarını aç</b>: üç katın hepsini seçilebilir yapar.</li></ul>
+Tüm seviyeler açıldı.
+Arena katları açıldı.
+Örnek kod yüklendi. ▶ Çalıştır!
+<h3>Her şey sıfırlansın mı?</h3><p>Diyagram, kod, XP ve arena zaferleri silinir; görev saatleri de sıfırlanır.</p>
+Zindan sıfırlandı. Karakter ile başla!
+${L.n}. Seviye · ${L.title} — ${L.topic}
+Oturum başlangıcı: ${fmtTime(S.startedAt)}   ·   PDF alınma: ${fmtTime(now)}   ·   Süre: ${Math.floor(mins / 60)} sa ${mins % 60} dk
+Tamamlanan görev: ${Object.keys(S.done).length + (S.done.p1 ? 0 : 1)} / ${MISSIONS.length}   ·   XP: ${Math.min(MISSIONS.length, Object.keys(S.done).length + (S.done.p1 ? 0 : 1)) * 10}   ·   Arena: ${[1, 2, 3].filter(k => S.wins[k] === true).length} / 3 kat
+Bu oturumda öğretmen paneli kullanıldı.
+Saatler, öğrencinin bilgisayar saatine göre kaydedilmiştir.
+<div class="w5-lvup-art">🔒</div><h3>PDF henüz kilitli</h3><p>PDF çıktısı <b>tüm görevler bitince</b> açılır. Sana <b>${left}</b> görev kaldı.</p><p class="w5-sub">PDF'te diyagramın, kodun ve her görevi hangi tarihte, saat kaçta tamamladığın yer alacak.</p>
+Önce diyagrama sınıf ekle.
+PDF modülü yüklenemedi.
+Vize Zindanı · UML Sınıf Diyagramı
+<svg viewBox="0 0 24 24" width="22" height="22"><path d="M5 3 L19 12 L12 13.5 L8.5 20 Z" fill="currentColor"/></svg>
+<svg viewBox="0 0 24 24" width="22" height="22"><rect x="3" y="4" width="18" height="16" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M3 9 H21 M3 14 H21" stroke="currentColor" stroke-width="2"/></svg>
+<svg viewBox="0 0 24 24" width="22" height="22"><rect x="3" y="4" width="18" height="16" rx="2" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="3 2"/><text x="12" y="16.5" text-anchor="middle" font-size="11" font-style="italic" font-weight="800" fill="currentColor">A</text></svg>
+<svg viewBox="0 0 24 24" width="22" height="22"><circle cx="12" cy="8" r="5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 13 V21" stroke="currentColor" stroke-width="2"/></svg>
+<svg viewBox="0 0 24 24" width="22" height="22"><path d="M4 18 L15 7" stroke="currentColor" stroke-width="2"/><path d="M20 3 L13 5 L18 10 Z" fill="currentColor"/><circle cx="4.5" cy="18.5" r="2.5" fill="currentColor"/></svg>
+Kutuyu boş bir yerinden tutup taşı. Boş tuvale çift tıkla: yeni sınıf. Tuvali sürükleyerek kaydır.
+Tuvalde bir yere tıkla: yeni <b>sınıf</b>.
+Tuvalde bir yere tıkla: yeni <b>soyut sınıf</b> «abstract».
+Tuvalde bir yere tıkla: yeni <b>arayüz</b> «interface».
+Bir kutudan başlayıp diğer kutuya <b>sürükle</b>: ilişki çizgisi. Türünü sonra sağ panelden seç.
+<div class="w5-tools" id="w5-tools" role="toolbar" aria-label="Araçlar">
+        ${[['select', 'Seç', 'V'], ['class', 'Sınıf', 'C'], ['abstract', 'Soyut', 'A'], ['interface', 'Arayüz', 'I'], ['link', 'Bağla', 'L']].map(([k, l, key]) =>
+).join('')}
+        <hr>
+        <button class="w5-tool sm" data-act="zoomin" title="Yakınlaş">＋</button>
+        <span class="w5-zl" id="w5-zoom">100%</span>
+        <button class="w5-tool sm" data-act="zoomout" title="Uzaklaş">－</button>
+        <button class="w5-tool sm" data-act="fit" title="Hepsini sığdır">⤢</button>
+      </div>
+      <div class="w5-cvwrap">
+        <div class="w5-cvhint" id="w5-cvhint"></div>
+        <div class="w5-cv" id="w5-cv">
+          <div class="w5-sizer" id="w5-sizer"><div class="w5-inner" id="w5-inner">
+            <svg class="w5-edges" id="w5-edges" width="${CV_W}" height="${CV_H}"></svg>
+            <div id="w5-boxes"></div>
+            <div class="w5-empty" id="w5-empty"><b>UML tuvali</b>Soldaki araçlardan <b>Soyut</b>'u seç ve buraya tıkla. Brifteki ilk sınıf seni bekliyor: <b>Karakter</b>.<span>Satırlara UML biçiminde yaz: <code>− can: int</code></span></div>
+          </div></div>
+        </div>
+      </div>
+      <aside class="w5-insp" id="w5-insp" aria-label="Seçili öğe"></aside>
+<div class="w5-ln ${st} vv-${p.vis ? VIS[p.vis].cls : 'none'} ${p.abstract ? 'abs' : ''}" title="${esc(p.err || p.warn || '')}">
+      <input class="w5-li" data-cid="${c.id}" data-sec="${sec}" data-i="${i}" value="${esc(raw)}" placeholder="${sec === 'attrs' ? '+ ad: tip' : '+ metot(param: Tip): None'}" spellcheck="false" autocomplete="off" aria-label="${sec === 'attrs' ? 'Özellik' : 'Metot'} satırı"></div>
+<div class="w5-box k-${c.kind} ${sel ? 'sel' : ''}" data-cid="${c.id}" style="left:${c.raw.x}px;top:${c.raw.y}px;width:${boxWidth(c)}px">
+      <div class="w5-bh">
+        ${c.kind !== 'class' ?
+: ''}
+        <input class="w5-bname" data-cid="${c.id}" value="${esc(c.raw.name)}" placeholder="SınıfAdı" spellcheck="false" autocomplete="off" aria-label="Sınıf adı">
+      </div>
+      <div class="w5-sec" data-sec="attrs">${c.raw.attrs.map((_, i) => lineHTML(c, 'attrs', i)).join('')}
+        <button class="w5-addln" data-act="addln" data-sec="attrs" tabindex="-1">${c.kind === 'interface' ? '(arayüzde özellik olmaz)' : '+ özellik'}</button></div>
+      <div class="w5-sec" data-sec="meths">${c.raw.meths.map((_, i) => lineHTML(c, 'meths', i)).join('')}
+        <button class="w5-addln" data-act="addln" data-sec="meths" tabindex="-1">+ metot</button></div>
+      <div class="w5-badges">${nErr ?
+b code ${conf.ok === conf.total ? 'ok' : ''}
+: ''}</div>
+      <button class="w5-port" data-port="${c.id}" title="Sürükle: ilişki çiz" tabindex="-1"></button>
+    </div>
+w5-ln ${p.empty ? 'empty' : p.err ? 'bad' : p.warn ? 'warn' : 'good'} vv-${p.vis ? VIS[p.vis].cls : 'none'} ${p.abstract ? 'abs' : ''}
+<g class="w5-edge t-${r.type} ${sel ? 'sel' : ''} ${bad ? 'bad' : ''}" data-rid="${r.id}">
+        <line class="hit" x1="${g.p1.x}" y1="${g.p1.y}" x2="${g.p2.x}" y2="${g.p2.y}"/>
+        <line class="ln ${d.dashed ? 'dash' : ''}" x1="${d.s.x}" y1="${d.s.y}" x2="${d.e.x}" y2="${d.e.y}"/>
+        ${d.shapes.map(sh =>
+).join('')}
+        ${RTYPES[r.type].ends ?
+<line id="w5-temp" class="w5-temp" x1="0" y1="0" x2="0" y2="0" visibility="hidden"/>
+${KIND[kind].label} eklendi. Önce adını yaz, sonra satırlara geç (Enter).
+<h3>${esc(c.name || 'Bu sınıf')} silinsin mi?</h3><p>Satırları ve bağlı ilişki çizgileri de silinir.</p>
+Bu iki sınıf arasında zaten bir çizgi var; sağ panelden düzenle.
+Çizgi çizildi! Sağ panelden ilişkinin türünü, yönünü ve çokluklarını seç.
+<div class="w5-lint ok">✓ Sorun görünmüyor.</div>
+<div class="w5-lint ${x.lv}">${x.lv === 'err' ? '✖' : x.lv === 'warn' ? '⚠' : 'ℹ'} ${esc(x.msg)}</div>
+<div class="w5-ih k-${c.kind}"><small>${KIND[c.kind].label}</small><b>${esc(c.name || 'adsız')}</b></div>
+        <div class="w5-isec"><h4>Kutunun türü</h4>
+          <div class="w5-seg">${['class', 'abstract', 'interface'].map(k =>
+${c.kind === k ? 'on' : ''}
+).join('')}</div>
+          <p class="w5-itip">${KIND[c.kind].tip}</p></div>
+        <div class="w5-isec"><h4>Denetim</h4>${lintList(lintClass(c))}</div>
+        ${conf ?
+w5-lint ${conf.ok === conf.total ? 'ok' : 'warn'}
+: ''}
+        <div class="w5-isec"><h4>Satır yazım kuralı</h4>${syntaxHelp(true)}</div>
+        <div class="w5-iact"><button class="btn" data-act="delcls">🗑 Sınıfı sil</button></div>
+<div class="w5-end"><label>${lbl}: <b>${esc(X.name || '?')}</b> ucu</label>
+          <input class="w5-in mono" data-rf="${k}" value="${esc(r[k] || '')}" placeholder="ör. 1, 0..1, *, 1..*" spellcheck="false" autocomplete="off">
+          <div class="w5-chips">${MULTS.map(v =>
+${normMult(r[k]) === normMult(v) && (r[k] || '').trim() ? 'on' : ''}
+<div class="w5-ih rel"><small>İlişki çizgisi</small><b>${esc(A.name || '?')} <span>${relSym(r.type)}</span> ${esc(B.name || '?')}</b></div>
+        <div class="w5-isec"><h4>Bu çizgi ne anlatıyor?</h4>
+          <div class="w5-rtypes">${RT_ORDER.map(t =>
+w5-rt ${r.type === t ? 'on' : ''}
+).join('')}</div></div>
+        <div class="w5-isec"><h4>Yön</h4><div class="w5-dir"><b>${esc(A.name || '?')}</b> ${relIcon(r.type, 'mid')} <b>${esc(B.name || '?')}</b></div>
+          <button class="btn sm" data-act="swap">⇄ Yönü çevir</button>
+          <p class="w5-itip">${r.type === 'gen' ? 'Üçgen ebeveyn (üst sınıf) tarafında.' : r.type === 'real' ? 'Üçgen arayüz tarafında.' : r.type === 'assoc' ? 'Ok, bilinen/kullanılan sınıfı gösterir.' : 'Elmas BÜTÜN tarafında.'}</p></div>
+        ${ends ?
+${esc(r.role || '')}
+: '<div class="w5-isec"><p class="w5-itip">Kalıtım ve gerçekleştirme çizgilerinde çokluk ve rol adı olmaz.</p></div>'}
+        <div class="w5-isec w5-read"><h4>📖 Diyagramın böyle okunuyor</h4><p id="w5-rsent">${relSentence(r)}</p><small>Brifteki cümleyle aynı mı?</small></div>
+        <div class="w5-isec"><h4>Denetim</h4><div id="w5-rlint">${lintList(lintRel(r))}</div></div>
+        <div class="w5-iact"><button class="btn" data-act="delrel">🗑 Çizgiyi sil</button></div>
+<div class="w5-ih"><small>Rehber</small><b>UML nasıl yazılır?</b></div>
+      <div class="w5-isec"><h4>Satırlar</h4>${syntaxHelp(false)}</div>
+      <div class="w5-isec"><h4>Çizgiler</h4><div class="w5-rlegend">${RT_ORDER.map(t =>
+).join('')}</div></div>
+      <div class="w5-isec"><h4>Çokluklar</h4><div class="w5-mlegend"><code>1</code> tam bir <code>0..1</code> en fazla bir <code>*</code> hiç ya da çok <code>1..*</code> en az bir <code>2..4</code> 2 ile 4 arası</div></div>
+      <div class="w5-isec"><h4>Kısayollar</h4><div class="w5-keys"><kbd>Enter</kbd> yeni satır · <kbd>⌫</kbd> boş satırı sil · <kbd>↑</kbd><kbd>↓</kbd> satırlar arası · <kbd>Del</kbd> seçiliyi sil · <kbd>Ctrl</kbd>+tekerlek yakınlaştır · <kbd>V</kbd><kbd>C</kbd><kbd>A</kbd><kbd>I</kbd><kbd>L</kbd> araçlar</div></div>
+<div class="w5-syn">
+      <div><code>+ ad: str</code><span>özellik: erişim ad: tip</span></div>
+      <div><code>+ saldir(hedef: Karakter): None</code><span>metot: erişim ad(param: Tip): dönüş</span></div>
+      ${short ? '' : '<div><code>+ saldir(hedef: Karakter): None {abstract}</code><span>soyut metot (italik görünür)</span></div>'}
+      <div class="vis"><span class="v pub">+</span>public <span class="v prot">#</span>protected <span class="v priv">−</span>private <small>(− için klavyedeki - yeter)</small></div></div>
+Çizgiyi başka bir kutunun üstünde bırak.
+.w5-li[data-sec="${sec}"][data-i="${i + 1}"]
+.w5-li[data-sec="${sec}"][data-i="${c[sec].length - 1}"]
+def __init__(self|):
+Karakter soyut mu? (nesne üretilemiyor mu?)
+Erişim: + ad · − can · # guc
+get_can · hasar_al · hayatta_mi
+Iyilestirebilir arayüzü
+Sifaci: iyileştirme ve saldırı
+Silah ve silah_kusan()
+Lonca ve 4 üye sınırı
+Lonca kurulumu + arena kuralları
+Kendi kahraman sınıfın
+<div class="w5-cmain">
+        <div class="w5-ebar">
+          <button class="w5-run" data-act="run" id="w5-run">▶ Çalıştır <kbd>Ctrl</kbd><kbd>Enter</kbd></button>
+          <span class="w5-pys" id="w5-pys"></span>
+          <div class="w5-snips" id="w5-snips" aria-label="Hızlı ekle">${SNIPS.map((s, i) =>
+Ekle: ${esc(s[1].replace('|', ''))}
+).join('')}</div>
+        </div>
+        <div class="w5-ed" id="w5-ed">
+          <div class="w5-gut" id="w5-gut" aria-hidden="true"></div>
+          <div class="w5-edc">
+            <pre class="w5-hl" id="w5-hl" aria-hidden="true"></pre>
+            <textarea id="w5-ta" spellcheck="false" wrap="off" autocapitalize="off" autocomplete="off" autocorrect="off" aria-label="Python kodu"></textarea>
+          </div>
+          <div class="w5-lintchip" id="w5-lintchip" hidden></div>
+        </div>
+        <div class="w5-con">
+          <div class="w5-conh"><b>Konsol</b><span id="w5-cstat"></span><button data-act="clearcon">Temizle</button></div>
+          <div class="w5-cout" id="w5-cout"><div class="w5-cl info">Kodunu yaz ve ▶ Çalıştır. print() çıktıları ve hatalar (Türkçe açıklamasıyla) burada görünür.</div></div>
+          <label class="w5-repl"><span>&gt;&gt;&gt;</span><input id="w5-repl" placeholder="Kodun çalıştıktan sonra bir ifade yaz, Enter: ali.get_can()" spellcheck="false" autocomplete="off"></label>
+        </div>
+      </div>
+      <aside class="w5-cside">
+        <div class="w5-ctabs" id="w5-ctabs" role="tablist"></div>
+        <div class="w5-cbody" id="w5-cbody"></div>
+      </aside>
+<span class="${c}">${esc(p)}</span>
+<div class="${i + 1 === bad ? 'err' : ''}${i + 1 === ED.cur ? ' cur' : ''}">${h || ' '}</div>
+<div class="${i + 1 === bad ? 'err' : ''}${i + 1 === ED.cur ? ' cur' : ''}">${i + 1}</div>
+Kaydedildi (zaten otomatik kaydediliyor 😉)
+⚠ ${r.err.line}. satır: ${esc(x.title)}
+⏳ Python yükleniyor… (ilk seferde biraz sürer)
+🔴 Python yüklenemedi (internet?) · ▶ ile tekrar dene
+<div class="t">✖ ${esc(x.title)}${err.line ?
+: ''}${err.func && err.func !== '<module>' ?
+: ''}</div>
+      <div class="tip">${esc(x.tip)}</div><div class="raw">${esc(err.type)}: ${esc(err.msg)}${err.text ?
+🧪 Gördün mü? Soyut sınıftan nesne üretilemiyor. Şimdi o satırı silebilirsin.
+<span>▶ Çalıştırılıyor · ${new Date().toLocaleTimeString('tr-TR')}</span>
+✓ Kod hatasız çalıştı.
+🧪 Brif testleri: <b>${after}/${total}</b> geçti${after > before ? ' · 📈 ilerleme var!' : ''} <button class="w5-goto" data-act="tab" data-tab="tests">ayrıntı</button>
+⏱ Kod 8 saniyede bitmedi. Sonsuz döngü olabilir mi (while True)? Python yeniden başlatılıyor; düzeltip tekrar çalıştır.
+<span class="p">&gt;&gt;&gt;</span> ${esc(expr)}
+(kodun güncel hâli önce çalıştırıldı)
+<small class="dim">← bir ${esc(obj[1])} nesnesi (varsayılan görünümü böyle)</small>
+🧪 False! Çünkü İksir bir Karakter değil; sadece Iyilestirebilir. Arayüz akrabalık kurmaz, yetenek kazandırır.
+<button role="tab" class="${S.sideTab === k ? 'on' : ''}" data-act="tab" data-tab="${k}" aria-selected="${S.sideTab === k}">${l}</button>
+<div class="w5-cempty">Önce <b>📐 Tasarla</b> aşamasında UML diyagramını kur. Kod, diyagramının karşılığı olacak.</div>
+<div class="w5-cempty">Python motoru hazırlanıyor… Hazır olunca kodun yazdıkça diyagramınla karşılaştırılacak.</div>
+<div class="w5-cmeter"><div><b>Uyum %${pct}</b><small>${C.ok}/${C.total} UML satırının kodda karşılığı var</small></div><div class="w5-bar"><i style="width:${pct}%"></i></div></div>
+      <div class="w5-cchips">${ids.map(id => { const x = C.byClass[id]; return
+${id === T.focusCls ? 'on' : ''} ${x.ok === x.total ? 'ok' : x.ok ? 'mid' : 'no'}
+; }).join('')}</div>
+      ${F ?
+w5-cbox k-${fc.kind}
+<button class="w5-goto" data-goto="${F.line}">koda git →</button>
+<li class="${it.ok ? 'ok' : 'no'}" ${it.line ?
+: ''}><span class="i">${it.ok ? '✓' : '✗'}</span><div><code>${esc(it.label)}</code>${it.msg ?
+<button class="btn sm w5-todo" data-act="todo" data-id="${fc.id}">📋 Bu sınıfın UML satırlarını koda yorum olarak ekle</button><p class="w5-itip">Yorumlar kod değildir; neyi yazman gerektiğini hatırlatır. Kodu sen yazacaksın. 😉</p>
+: ''}
+      ${C.extra.length ?
+de olmayan sınıf: <b>${C.extra.map(esc).join(
+)}</b>. Önce tasarla, sonra kodla!</div>` :
+;
+  }
+  function testsHTML() {
+    const ks = Object.keys(TEST_LV).filter(k => TEST_LV[k] <= S.maxLevel);
+    if (!Object.keys(S.tests).length) return '<div class="w5-cempty">Henüz test sonucu yok. Kodunu <b>▶ Çalıştır</b>: brifteki kurallar otomatik denenecek.</div>';
+    return
+<li class="${r[0] ? 'ok' : 'no'}"><span class="i">${r[0] ? '✓' : '✗'}</span><div><b>${TEST_LBL[k]}</b><small class="lv">${TEST_LV[k]}. seviye</small>${r[0] ? '' :
+;
+  }
+  function cardsHTML() {
+    return
+<div class="w5-card ${S.cardOpen === c.k ? 'open' : ''}">
+        <button class="w5-cardh" data-act="card" data-k="${c.k}"><b>${c.t}</b><code>${esc(c.uml)}</code></button>
+        ${S.cardOpen === c.k ?
+;
+  }
+  function todoFor(id) {
+    const c = M().byId[id]; if (!c) return;
+    const m = M(), L = [
+];
+    m.rels.filter(r => r.a === c.id && !RTYPES[r.type].ends).forEach(r => L.push(
+));
+    c.raw.attrs.filter(t => t.trim()).forEach(t => L.push('# │ ' + t.trim()));
+    m.rels.filter(r => r.a === c.id && RTYPES[r.type].ends).forEach(r => L.push(
+));
+    c.raw.meths.filter(t => t.trim()).forEach(t => L.push('# │ ' + t.trim()));
+    L.push('# └── (sınıfı bu yorumların altına yaz)', '', '', '');
+    const v = ED.ta.value, mark = v.indexOf('# ---- Deneme alanı');
+    const at = mark >= 0 ? mark : v.length;
+    ED.ta.focus(); ED.ta.setSelectionRange(at, at);
+    insertText(L.join('
+'));
+    const line = v.slice(0, at).split('
+').length;
+    gotoLine(line + L.length - 3, true);
+    toast(
+, 'good');
+  }
+  /* =====================================================================
+     3) SAVAŞ — arena
+     ===================================================================== */
+  const FLOORS = {
+    1: { name: 'Vize Koridoru', mons: [['Yoklama Hayaleti', 'ghost', 70, 'hayalet'], ['Sürpriz Quiz Goblini', 'goblin', 85, 'goblin']], note: 'Isınma turu: iki küçük canavar.' },
+    2: { name: 'Proje Bodrumu', mons: [['Deadline Golemi', 'golem', 330, 'golem']], note: 'Her 4 turda bir “deadline uzatılır”: golem 40 can kazanır.' },
+    3: { name: 'Bütünleme İni', mons: [['Bütünleme Ejderhası', 'dragon', 1000, 'ejderha']], note: 'Her 3 turda bir alev püskürtür: tüm lonca 14 hasar alır.' }
+  };
+  const HERO_POS = [[150, 440], [285, 505], [420, 440], [555, 505]];
+  const MON_POS = { 1: [[790, 440], [940, 505]], 2: [[870, 500]], 3: [[880, 515]] };
+  const MON_SCALE = { ghost: 1.1, goblin: 1.1, golem: 1.5, dragon: 1.9 };
+  const ST_W = 1100, ST_H = 540;
+  const DUR = { round: 450, atk: 950, heal: 900, potion: 900, crit: 850, burn: 360, aoe: 700, buff: 900 };
+
+  function arenaShell() {
+    return
+;
+  }
+
+  /* ---- çizimler ---- */
+  const hueOf = s => { let h = 7; for (const ch of String(s)) h = (h * 31 + ch.charCodeAt(0)) % 360; return h; };
+  const weaponEmoji = n => (/terlik/i.test(n) ? '🩴' : /klavye/i.test(n) ? '⌨️' : /kalem/i.test(n) ? '✏️' : /kitap/i.test(n) ? '📕' : '🗡️');
+  const potionEmoji = n => (/çay|cay/i.test(n) ? '🍵' : /kahve/i.test(n) ? '☕' : /ayran|süt|sut/i.test(n) ? '🥛' : '🧪');
+  const heroKind = e => (e.chain.includes('Sifaci') ? 'healer' : e.chain.includes('Savasci') ? 'warrior' : 'custom');
+  const FACE = '<circle cx="45" cy="34" r="19" fill="#F3C9A1"/><circle cx="38.5" cy="36" r="2.6" fill="#23213A"/><circle cx="51.5" cy="36" r="2.6" fill="#23213A"/><circle cx="34" cy="42" r="3" fill="#FF8FA3" opacity=".5"/><circle cx="56" cy="42" r="3" fill="#FF8FA3" opacity=".5"/><path d="M39.5 44 q5.5 4.5 11 0" stroke="#23213A" stroke-width="2" fill="none" stroke-linecap="round"/>';
+  function heroSVG(e, w) {
+    w = w || 90;
+    const k = heroKind(e), hue = hueOf(e.cls + e.ad), h = Math.round(w * 120 / 90);
+    const wpn = e.silah ?
+${k === 'healer' ? 12 : 80}
+: '';
+    let body;
+    if (k === 'warrior') {
+      const c =
+<text x="80" y="72" font-size="24" text-anchor="middle">🗡️</text>
+;
+    } else if (k === 'healer') {
+      body =
+;
+    } else {
+      const c =
+<text x="80" y="72" font-size="22" text-anchor="middle">✨</text>
+;
+  }
+  function monSVG(kind, s) {
+    s = s || 1;
+    if (kind === 'ghost') return
+;
+    if (kind === 'goblin') return
+;
+    if (kind === 'golem') return
+JetBrains Mono, monospace
+;
+  }
+  function miniDragon(size) {
+    size = size || 34;
+    return
+;
+  }
+
+  /* ---- sahne ---- */
+  function stageBG(kat) {
+    const torches = [[140, 70], [550, 52], [960, 70]].map(([x, y]) =>
+).join('');
+    return
+;
+  }
+  function entHTML(e, i, x, y) {
+    const isH = e.side === 'h';
+    const fig = isH ? heroSVG(e, 100) : monSVG(e.sprite, MON_SCALE[e.sprite] || 1);
+    return
+w5-ent ${isH ? 'eh' : 'em'} ${e.sprite ? 'sp-' + e.sprite : ''}
+width:${clamp((e.can / (e.max || e.can || 1)) * 100, 0, 100)}%
+<div class="w5-eicons">${e.heal ? '<span class="hl" title="Iyilestirebilir">✚</span>' : ''}${e.silah ?
+${esc(e.silah[0])} (+${e.silah[1]})
+: ''}${e.iksir.length ?
+${esc(e.iksir.join(', '))}
+;
+  }
+  function placeEnts(ents, kat) {
+    let h = 0, m = 0;
+    return ents.map((e, i) => {
+      const p = e.side === 'h' ? HERO_POS[h++ % 4] : (MON_POS[kat][m++] || [860, 480]);
+      e._x = p[0]; e._y = p[1];
+      return entHTML(e, i, p[0], p[1]);
+    }).join('');
+  }
+  function fitArena() {
+    const wrap = $('#w5-awrap'), st = $('#w5-astage'); if (!wrap || !st || S.mode !== 'arena') return;
+    const s = Math.max(0.3, Math.min((wrap.clientWidth - 16) / ST_W, (wrap.clientHeight - 16) / ST_H));
+    st.style.transform =
+;
+    st.style.left = (wrap.clientWidth - ST_W * s) / 2 + 'px';
+    st.style.top = (wrap.clientHeight - ST_H * s) / 2 + 'px';
+  }
+  function idleStage() {
+    const kat = S.kat, st = $('#w5-astage');
+    const heroes = T.roster && T.roster.uyeler ? T.roster.uyeler.map(u => Object.assign({}, u, { max: u.can })) : [];
+    const mons = FLOORS[kat].mons.map(([ad, sp, can, v]) => ({ side: 'm', ad, cls: 'Canavar', var: v, sprite: sp, can, max: can, chain: [] }));
+    st.innerHTML = stageBG(kat) + placeEnts(heroes.concat(mons), kat) +
+      (heroes.length ? '' :
+⏳ Loncan kodundan okunuyor…
+Loncan burada görünecek.<br><small>Kodunun deneme alanında bir Lonca nesnesi üret ve üyelerini ekle.</small>
+;
+    fitArena();
+  }
+  function renderArena() {
+    const floors = [1, 2, 3].map(k => {
+      const open = k === 1 || S.wins[k - 1];
+      return
+w5-floor-b ${S.kat === k ? 'on' : ''} ${open ? '' : 'locked'} ${S.wins[k] ? 'won' : ''}
+;
+    }).join('');
+    $('#w5-floors').innerHTML = floors;
+    $('#w5-aspeed').textContent = 'Hız ' + (S.aspeed || 1) + 'x';
+    if (T.rosterCode !== S.code) loadRoster();
+    else renderRoster();
+    if (!T.battle) idleStage(); else fitArena();
+    if (!$('#w5-alog').children.length) alog('<span class="c"># Savaş günlüğü: oyun motorunun senin nesnelerinde çağırdığı metotlar burada görünür.</span>', 'dim');
+  }
+  async function loadRoster() {
+    T.rosterCode = S.code; T.roster = { loading: true };
+    renderRoster(); if (!T.battle) idleStage();
+    try { T.roster = await H5Py.roster(S.code); }
+    catch (e) { T.roster = { fail: e && e.timeout ? 'Kod zaman aşımına uğradı (sonsuz döngü?).' : ((e && e.fatal) || String(e)) }; }
+    if (S.mode === 'arena') { renderRoster(); if (!T.battle) idleStage(); }
+  }
+  function renderRoster() {
+    const box = $('#w5-aside'), R = T.roster;
+    let body;
+    if (!R || R.loading) body = '<div class="w5-cempty">⏳ Loncan kodundan okunuyor…</div>';
+    else if (R.err) body =
+;
+    else if (R.fail) body =
+;
+    else {
+      body =
+<div class="w5-ru">
+          <div class="f">${heroSVG(u, 44)}</div>
+          <div class="d"><b>${esc(u.ad)}</b><code>${esc(u.var)} : ${esc(u.cls)}</code>
+            <div class="ch">${u.chain.map((c, i) =>
+${i ? (c === 'Iyilestirebilir' ? 'if' : 'up') : 'me'}
+).join('')}</div>
+            <div class="st"><span title="can">❤ ${u.can}</span><span title="guc">💪 ${u.guc == null ? '?' : u.guc}</span>${u.silah ?
+: ''}${u.iksir.length ?
+: ''}</div></div></div>
+<div class="w5-cempty">Loncada üye yok.</div>
+<div class="w5-rules"><b>⚖️ Hakem itiraz ediyor:</b>${R.rules.map(x =>
+;
+    }
+    box.innerHTML =
+for k in lonca.uyeler:
+    if isinstance(k, Iyilestirebilir) and yarali:
+        k.iyilestir(yarali)
+    else:
+        k.saldir(dusman)
+ın çalışacağına nesnenin <b>sınıfı</b> karar verir. Şifacı ile İksir
+;
+  }
+  function alog(html, cls) {
+    const L = $('#w5-alog'); if (!L) return;
+    const d = document.createElement('div'); d.className = 'lg ' + (cls || ''); d.innerHTML = html;
+    L.appendChild(d);
+    while (L.children.length > 300) L.firstChild.remove();
+    L.scrollTop = L.scrollHeight;
+  }
+
+  /* ---- savaş ---- */
+  async function fight() {
+    if (T.battle) return;
+    if (S.kat > 1 && !S.wins[S.kat - 1]) { toast('Önce bir önceki katı geçmelisin.', 'info'); return; }
+    const btn = $('#w5-fight'); btn.disabled = true; btn.textContent = '⏳ Motor hazırlanıyor…';
+    $('#w5-alog').innerHTML = '';
+    let r;
+    try { r = await H5Py.arena(S.code, S.kat, Math.floor(Math.random() * 1e9)); }
+    catch (e) { r = { fail: e && e.timeout ? 'Savaş 15 saniyede bitmedi: bir metodun sonsuz döngüde olabilir.' : ((e && e.fatal) || String(e)) }; }
+    btn.disabled = false; btn.textContent = '⚔️ Savaşı başlat';
+    if (r.err) { alog(
+); toast('Kodun hata veriyor; önce Kodla sekmesinde düzelt.', 'bad'); return; }
+    if (r.fail) { alog(
+); toast(r.fail, 'bad', 5200); return; }
+    if (!r.ok && r.rules) {
+      modal(
+, [{ label: 'Kodla'ya git', cls: 'w5-go', fn: () => setMode('code') }]);
+      return;
+    }
+    r.ents.forEach((e, i) => { e.max = r.max[i]; });
+    T.battle = { r, i: 0, hp: r.ents.map(e => e.can), kat: S.kat, timer: null, skip: false, errs: {} };
+    $('#w5-astage').innerHTML = stageBG(S.kat) + placeEnts(r.ents, S.kat) + '<div class="w5-banner" id="w5-banner"></div>';
+    fitArena();
+    $('#w5-askip').disabled = false;
+    renderArena();
+    alog('<span class="c"># Motor çalışıyor: her tur kahramanlar, sonra canavarlar hareket eder.</span>', 'dim');
+    step();
+  }
+  function stopBattle() {
+    const B = T.battle; if (!B) return;
+    clearTimeout(B.timer); T.battle = null;
+    const sk = $('#w5-askip'); if (sk) sk.disabled = true;
+  }
+  function step() {
+    const B = T.battle; if (!B) return;
+    if (B.i >= B.r.ev.length) { endBattle(); return; }
+    const e = B.r.ev[B.i++];
+    const d = playEv(e, B);
+    B.timer = setTimeout(step, B.skip ? 0 : d / (S.aspeed || 1));
+  }
+  const entEl = i => root.querySelector(
+);
+  function bubble(i, text, ms) {
+    const el = entEl(i); if (!el) return;
+    const b = el.querySelector('.w5-ebub'); b.textContent = text; b.classList.add('show');
+    clearTimeout(b._t); b._t = setTimeout(() => b.classList.remove('show'), ms || 1500);
+  }
+  function floatAt(i, text, cls) {
+    const el = entEl(i); if (!el) return;
+    const f = document.createElement('div'); f.className = 'w5-float ' + (cls || ''); f.textContent = text;
+    el.appendChild(f); setTimeout(() => f.remove(), 1200);
+  }
+  function setHP(i, v, B) {
+    B.hp[i] = v;
+    const el = entEl(i); if (!el) return;
+    const e = B.r.ents[i];
+    el.querySelector('.w5-ehp i').style.width = clamp((v / e.max) * 100, 0, 100) + '%';
+    el.querySelector('.w5-ehp span').textContent = v;
+    if (v <= 0 && !el.classList.contains('dead')) {
+      el.classList.add('dead');
+      const st = document.createElement('div'); st.className = 'w5-stamp ' + (e.side === 'h' ? 'ff' : 'aa');
+      st.textContent = e.side === 'h' ? 'FF 😵' : 'AA ✓'; el.appendChild(st);
+      alog(e.side === 'h' ?
+);
+    }
+  }
+  function playEv(e, B) {
+    const fast = B.skip;
+    if (e.t === 'round') {
+      alog(
+);
+      if (!fast) { const b = $('#w5-banner'); if (b) { b.textContent = 'Tur ' + e.n; b.classList.remove('show'); void b.offsetWidth; b.classList.add('show'); } }
+      return DUR.round;
+    }
+    if (e.t === 'aoe') {
+      alog(
+);
+      if (!fast) { bubble(e.a, e.say || '🔥', 1600); const st = $('#w5-astage'); st.classList.remove('fire'); void st.offsetWidth; st.classList.add('fire'); }
+      return DUR.aoe;
+    }
+    const A = B.r.ents[e.a], G = e.g != null ? B.r.ents[e.g] : null;
+    const ch = Object.entries(e.d || {}).map(([i, [a, b]]) =>
+).join(', ');
+    alog(
+<span class="c">   # ${esc(ch)}</span>
+, e.t);
+    (e.out || []).forEach(l => alog(
+));
+    if (e.err) {
+      const x = H5Py.explain(e.err, { abstractByDesign });
+      alog(
+<small>· ${e.err.line}. satır</small>
+);
+      if (!fast) bubble(e.a, '💥 Hata!', 1800);
+      const el = entEl(e.a); if (el) el.classList.add('off');
+      if (!B.errs[e.a]) { B.errs[e.a] = 1; toast(
+, 'bad', 4200); }
+    }
+    if (!fast) {
+      const say = (e.out && e.out[0]) || e.say;
+      if (say) bubble(e.a, say.length > 60 ? say.slice(0, 58) + '…' : say, 1700);
+      const ae = entEl(e.a), ge = G ? entEl(e.g) : null;
+      if (e.t === 'atk' && ae && ge && e.a !== e.g) {
+        const dx = (G._x - A._x) * 0.5, dy = (G._y - A._y) * 0.35;
+        ae.animate([{ transform: 'translate(-50%,-100%)' }, { transform:
+, offset: 0.4 }, { transform: 'translate(-50%,-100%)' }], { duration: 480 / (S.aspeed || 1), easing: 'ease-out' });
+      }
+      if (e.t === 'crit' && ge) { floatAt(e.g, '🩴 KRİTİK!', 'crit'); const st = $('#w5-astage'); st.classList.remove('shake'); void st.offsetWidth; st.classList.add('shake'); }
+      if (e.t === 'heal' && ge) floatAt(e.g, '✨', 'fx');
+      if (e.t === 'potion') floatAt(e.a, potionEmoji(A.iksir[0] || ''), 'fx');
+      if (e.t === 'burn' && ge) floatAt(e.g, '🔥', 'fx');
+      if (e.t === 'buff') floatAt(e.a, '⏰', 'fx');
+    }
+    Object.entries(e.d || {}).forEach(([i, [a, b]]) => {
+      i = +i;
+      setTimeout(() => {
+        if (!T.battle) return;
+        if (!fast) {
+          floatAt(i, (b > a ? '+' : '') + (b - a), b > a ? 'heal' : 'dmg');
+          if (b < a) { const el = entEl(i); if (el) { el.classList.remove('hit'); void el.offsetWidth; el.classList.add('hit'); } }
+        }
+        setHP(i, b, B);
+      }, fast ? 0 : 260 / (S.aspeed || 1));
+    });
+    return e.err ? 1200 : DUR[e.t] || 800;
+  }
+  function endBattle() {
+    const B = T.battle; if (!B) return;
+    const r = B.r, kat = B.kat;
+    setTimeout(() => {
+      if (T.battle !== B) return;
+      stopBattle();
+      if (r.win === true) {
+        const first = !S.wins[kat] || S.wins[kat] === 'ogretmen';
+        S.wins[kat] = true; saveNow();
+        confetti(); if (kat === 3) setTimeout(confetti, 600);
+        const msg = { 1: ['Vize koridoru temiz! 🎉', 'Yoklama alındı, quiz bitti. Sıradaki kat açıldı.'], 2: ['Deadline'a yetiştin! 🎉', 'Golem un ufak oldu. Son kat seni bekliyor…'], 3: ['BÜTÜNLEMEYE KALMADIN! 🎓🐉', 'Bütünleme Ejderhası yenildi. Lonca efsane oldu!'] }[kat];
+        modal(
+<p class="w5-sub">(Bu katı daha önce de geçmiştin.)</p>
+,
+          [{ label: 'Tekrar savaş', fn: fight }, { label: kat < 3 ? 'Sonraki kat →' : 'Harika!', cls: 'w5-go', fn: () => { if (kat < 3) { S.kat = kat + 1; save(); renderArena(); } } }]);
+        evaluate();
+      } else {
+        const tips = [];
+        const us = r.ents.filter(e => e.side === 'h');
+        if (!us.some(u => u.heal)) tips.push('Loncanda iyileştirebilen kimse yok.');
+        if (us.length < 4) tips.push(
+);
+        if (!us.some(u => u.iksir.length)) tips.push('Kimsenin envanterinde iksir yok.');
+        if (us.some(u => (u.guc || 0) < 20 || u.can < 130)) tips.push('Bazı üyelerin can/güç değerleri kural sınırının altında.');
+        if (kat === 3 && !us.some(u => heroKind(u) === 'custom')) tips.push('Kendi icat ettiğin sınıf ejderhaya karşı fark yaratabilir.');
+        if (Object.keys(B.errs).length) tips.push('Bazı üyeler kod hatası yüzünden savaştan çekildi!');
+        modal(
+Lonca bütünlemeye kaldı!
+Süre doldu! Kâğıtlar toplandı.
+Canavarlar bu sefer kazandı. Ama hiçbir sınav tek denemelik değil. 😅
+30 tur bitti ve kimse kazanamadı. Hasar verecek biri var mı?
+<p>Şans da bir faktör: bir daha dene!</p>
+,
+        [{ label: 'Kodla'ya git', fn: () => setMode('code') }, { label: 'Tekrar savaş', cls: 'w5-go', fn: fight }]);
+      }
+      renderArena();
+    }, B.skip ? 100 : 700);
+  }
+
+  /* =====================================================================
+     OLAYLAR ve BAĞLAMA
+     ===================================================================== */
+  function snippet(i) {
+    const s = SNIPS[i][1], c = s.indexOf('|'), txt = s.replace('|', '');
+    insertText(txt);
+    if (c >= 0) { const p = ED.ta.selectionStart - (txt.length - c); ED.ta.setSelectionRange(p, p); }
+  }
+  function onClick(e) {
+    const t = e.target;
+    const menu = $('#w5-menu');
+    if (!menu.hidden && !t.closest('.w5-menu')) menu.hidden = true;
+    if (t.closest('#w5-v-design')) { onDesignClick(e); return; }
+    const g = t.closest('[data-goto]'); if (g && !t.closest('[data-act]')) { if (S.mode !== 'code') setMode('code'); gotoLine(+g.dataset.goto); return; }
+    const sn = t.closest('[data-snip]'); if (sn) { snippet(+sn.dataset.snip); return; }
+    if (t.closest('#w5-lintchip')) { gotoLine(+$('#w5-lintchip').dataset.line); return; }
+    const b = t.closest('[data-act]'); if (!b) return;
+    const act = b.dataset.act;
+    if (b.closest('#w5-menu')) menu.hidden = true;
+    switch (act) {
+      case 'home': stopBattle(); if (window.NYP) window.NYP.home(); break;
+      case 'mode': setMode(b.dataset.m); break;
+      case 'menu': menu.hidden = !menu.hidden; break;
+      case 'pdf': exportPdf(); break;
+      case 'journal': S.journal = !S.journal; save(); renderTop(); setTimeout(() => { fitArena(); }, 260); break;
+      case 'jlv': { const n = +b.dataset.lv; if (n > S.maxLevel) { toast(
+, 'info'); break; } S.jlv = n === S.maxLevel ? null : n; save(); renderJournal(); break; }
+      case 'guide': guide(); break;
+      case 'quiz': quiz(); break;
+      case 'help': help(); break;
+      case 'teacher': if (OGR()) teacher(); break;
+      case 'reset': resetAll(); break;
+      case 'run': runCode(); break;
+      case 'clearcon': clearConsole(); break;
+      case 'tab': S.sideTab = b.dataset.tab; save(); if (S.mode !== 'code') setMode('code'); renderCodeSide(); break;
+      case 'card': S.cardOpen = S.cardOpen === b.dataset.k ? null : b.dataset.k; save(); renderCodeSide(); break;
+      case 'fcls': { T.focusCls = b.dataset.id; renderCodeSide(); const F = conformance().byClass[T.focusCls]; if (F && F.line) gotoLine(F.line); break; }
+      case 'todo': todoFor(b.dataset.id); break;
+      case 'floor': { const k = +b.dataset.k; if (k > 1 && !S.wins[k - 1]) { toast(
+, 'info'); break; } S.kat = k; save(); renderArena(); break; }
+      case 'fight': fight(); break;
+      case 'aspeed': S.aspeed = ({ 1: 2, 2: 4, 4: 0.5, 0.5: 1 })[S.aspeed || 1]; save(); b.textContent = 'Hız ' + S.aspeed + 'x'; break;
+      case 'askip': if (T.battle) { T.battle.skip = true; clearTimeout(T.battle.timer); step(); } break;
+      case 'reroster': T.rosterCode = null; loadRoster(); break;
+    }
+  }
+  function onKeyGlobal(e) {
+    if (!root || root.hidden) return;
+    const modalOpen = !$('#nyp-modal').hidden;
+    if (e.key === 'Escape') {
+      if (modalOpen) { closeModal(); return; }
+      const menu = $('#w5-menu'); if (!menu.hidden) { menu.hidden = true; return; }
+    }
+    if (modalOpen) return;
+    if (S.mode === 'design' && !e.target.closest('.w5-code,.w5-journal')) onDesignKey(e);
+  }
+
+  function mount(el) {
+    root = el;
+    ensureGlobals();
+    root.innerHTML = shellHTML();
+    ED.ta = $('#w5-ta'); ED.hl = $('#w5-hl'); ED.gut = $('#w5-gut');
+    ED.ta.value = S.code;
+    // tıklama, sürükleme, yazma
+    root.addEventListener('click', onClick);
+    root.addEventListener('pointerdown', e => { if (S.mode === 'design' && e.target.closest('#w5-v-design')) onDesignDown(e); });
+    window.addEventListener('pointermove', e => { if (T.drag) onDesignMove(e); });
+    window.addEventListener('pointerup', e => { if (T.drag) onDesignUp(e); });
+    root.addEventListener('dblclick', e => { if (S.mode === 'design') onDesignDbl(e); });
+    root.addEventListener('input', e => { if (e.target.closest('#w5-v-design')) onDesignInput(e); });
+    root.addEventListener('focusin', e => {
+      const b = e.target.closest('.w5-box');
+      if (b && (!T.sel || T.sel.id !== b.dataset.cid)) select({ t: 'c', id: b.dataset.cid });
+    });
+    root.addEventListener('toggle', e => {
+      const d = e.target; if (!d.classList || !d.classList.contains('w5-letter')) return;
+      S.letterClosed = S.letterClosed || {}; S.letterClosed[d.dataset.lv] = !d.open; save();
+    }, true);
+    document.addEventListener('keydown', onKeyGlobal);
+    $('#w5-cv').addEventListener('wheel', e => {
+      if (!e.ctrlKey) return;
+      e.preventDefault();
+      const r = $('#w5-cv').getBoundingClientRect();
+      setZoom(S.zoom * (e.deltaY < 0 ? 1.1 : 1 / 1.1), e.clientX - r.left, e.clientY - r.top);
+    }, { passive: false });
+    // editör
+    ED.ta.addEventListener('keydown', onEdKey);
+    ED.ta.addEventListener('input', onEdInput);
+    ED.ta.addEventListener('scroll', syncScroll);
+    ['keyup', 'click', 'select'].forEach(k => ED.ta.addEventListener(k, updateCur));
+    $('#w5-repl').addEventListener('keydown', e => {
+      const i = e.target;
+      if (e.key === 'Enter') { e.preventDefault(); const v = i.value; i.value = ''; replRun(v); }
+      else if (e.key === 'ArrowUp' && ED.hist.length) { e.preventDefault(); ED.hi = Math.max(0, ED.hi - 1); i.value = ED.hist[ED.hi] || ''; }
+      else if (e.key === 'ArrowDown' && ED.hist.length) { e.preventDefault(); ED.hi = Math.min(ED.hist.length, ED.hi + 1); i.value = ED.hist[ED.hi] || ''; }
+    });
+    window.addEventListener('resize', () => { if (root.hidden) return; if (S.mode === 'arena') fitArena(); });
+    H5Py.onStatus(setPyStatus);
+    const showT = () => { const b = $('#w5-tbtn'); if (b) b.hidden = !OGR(); };
+    showT(); document.addEventListener('nyp-ogretmen', showT);
+    touch(); evaluate(true); renderAll();
+    if (!S.intro) setTimeout(help, 350);
+    setTimeout(() => { H5Py.boot().then(() => lintSoon()).catch(() => { /* çip gösterir */ }); }, 1200);
+  }
+  function refresh() { renderAll(); if (S.mode === 'design') setTimeout(drawEdges, 30); }
+
+  function heroArt() {
+    return
+
+BAĞLANTILAR:
+

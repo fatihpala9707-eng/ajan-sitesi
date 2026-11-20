@@ -1,0 +1,15 @@
+URL: https://busraozcann.github.io/NesneTabanliProgramlama/hafta8-3d.js?v=8.6#kaynak-dosya
+BAŞLIK: hafta8-3d.js?v=8.6
+TÜR: resource
+
+3D kütüphanesi yüklenemedi
+800 ${fs}px Nunito, Segoe UI, sans-serif
+${e.ad}
+${e.yil || ''}
+⏳ ${eras[i + 1].yil || ''}
+henüz bir çağa eklenmedi
+Boş zaman platformu
+Bir çağ nesnesi üret
+
+BAĞLANTILAR:
+

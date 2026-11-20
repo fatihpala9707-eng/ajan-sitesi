@@ -1,0 +1,158 @@
+URL: https://busraozcann.github.io/NesneTabanliProgramlama/hafta8.js?v=8.1#gorev-metinleri
+BAŞLIK: JS verisindeki görev metinleri (hafta8.js?v=8.1)
+TÜR: page
+
+Enum + Soyut sınıf + Kapsülleme
+
+<p><b>Kronos Ajansı Müdürü'nden:</b> Hoş geldin baş mimar! Yıl 2300; zaman yolculuğu artık bir turizm sektörü. Müşterilerimiz dinozorları, piramitleri, Mars kolonilerini görmek istiyor. Ama önce <b>çağların ne olduğunu</b> tanımlamalıyız.</p>
+<ul>
+<li><b>4 enum</b>: <code>Malzeme</code> (en az 6, değerleri <code>"#RRGGBB"</code> renk kodu), <code>Gokyuzu</code>, <code>Zemin</code>, <code>Hava</code> (her biri en az 3 sabit; değerler <code>auto()</code> olabilir). Hangi sabitlerin 3D'de özel göründüğü <b>📚 Katalog</b>'da.</li>
+<li><b>Cag</b> soyut bir sınıftır: <code>ad</code> (str) ve <b>gizli</b> <code>yil</code> (int; MÖ yıllar eksi: -2560). Yıla dışarıdan yalnızca <code>get_yil()</code> ile bakılır.</li>
+<li><code>yil_metni()</code>: -2560 → <code>"MÖ 2560"</code>, 1453 → <code>"MS 1453"</code></li>
+<li>Her çağ kendi <code>gok()</code>, <code>zemin()</code> ve <code>hava()</code>'sını bilir; Cag bunları <b>bilemez</b> (soyut metotlar). Hepsi ilgili enum'dan bir sabit döndürür.</li>
+<li>Sonra ilk çağını kodla: <code>class AntikMisir(Cag):</code> ve bir nesne üret: <code>misir = AntikMisir("Antik Mısır", -2560)</code>. Sağdaki önizlemede çağın gökyüzü ve zemini belirecek!</li>
+</ul>
+<p class="w8-q">🤔 Neden yıl private? Biri <code>misir.yil = 99999</code> yazarsa ne olurdu?</p>
+
+<b>Soyut sınıf</b> yarım bir tariftir: "her çağın bir gökyüzü vardır" der ama hangisi olduğunu alt sınıfa bırakır. Python: <code>class Cag(ABC):</code> + <code>@abstractmethod</code>. UML: «abstract», metot sonunda <code>{abstract}</code>.<br><b>Kapsülleme</b>: <code>− yil: int</code> → kodda <code>self.__yil</code>. Değere yalnızca sınıfın metotları dokunur.<br><b>Enum</b>: seçenekler sabit; 3D motoru <code>Gokyuzu.AURORA</code>'yı tanır ama <code>"aurora"</code> metnini tanımaz.
+
+<p><b>Müdür'den:</b> Ajans açılışa hazır! 🎉</p>
+<ul><li><b>🌀 Tur</b> sekmesinde <b>tüm çağları gez</b>: W A S D ile yürü, fareyle bak (önce sahneye tıkla), Shift ile koş. Ya da 🔄 Döndür moduna geçip fareyle çevir.</li>
+<li>Son olarak <b>📄 PDF</b>: UML diyagramın, kodun ve her çağının 3D görüntüsü.</li></ul>
+
+Bu ödevde OOP'nin dört temel taşını (kapsülleme, kalıtım, çok biçimlilik, soyutlama) ve UML sınıf diyagramının bütün öğelerini kullandın: görünürlük, soyut sınıf, arayüz, enum, beş ilişki türü ve çokluklar. Artık bir sistemi metinden UML'ye, UML'den koda taşıyabiliyorsun.
+
+Plan'a 4 «enumeration» çiz: <b>Malzeme</b> (en az 6), <b>Gokyuzu</b>, <b>Zemin</b>, <b>Hava</b> (en az 3'er).
+
+Plan'a YENİ bir canlı çiz: Canli'dan türesin (──▷), Hareketli ve Isiklandirilabilir'i gerçekleştirsin (┄▷ ×2).
+
+Önce 📐 Plan'da bu seviyenin UML görevini bitir.
+
+Kodu çalıştır (yazmayı bırakınca kendiliğinden çalışır).
+
+<svg class="w8-ricon" viewBox="0 0 62 18" width="62" height="18" aria-hidden="true">${line}${s}</svg>
+
+<header class="w8-top">
+      <button class="btn" data-act="home">← Haftalar</button>
+      <div class="w8-brand"><span class="w8-logo">${ICON.logo}</span><div><small>8. Hafta · Ödev · OOP + UML</small><b>Kronos Ajansı</b></div></div>
+      <nav class="w8-modes" id="w8-modes" aria-label="Aşamalar"></nav>
+      <div class="w8-prog" id="w8-prog"></div>
+      <div class="w8-tact">
+        <span class="w8-saved" id="w8-saved" title="Çalışman bu tarayıcıda kalıcı olarak saklanır"></span>
+        <button class="btn" data-act="pdf" id="w8-pdf">📄 PDF</button>
+        <div class="w8-menu">
+          <button class="btn" data-act="menu" aria-haspopup="true" title="Diğer">☰</button>
+          <div class="w8-menu-pop" id="w8-menu" hidden>
+            <button data-act="export">💾 Kaydı indir (dosya)</button>
+            <button data-act="import">📂 Kayıt yükle</button>
+            <hr>
+            <button data-act="guide">📘 UML kopya kâğıdı</button>
+            <button data-act="help">❓ Nasıl çalışır?</button>
+            <hr>
+            <button data-act="teacher" id="w8-tbtn" hidden>👩‍🏫 Öğretmen</button>
+            <button data-act="reset" class="danger">↺ Her şeyi sıfırla</button>
+          </div>
+        </div>
+      </div>
+    </header>
+    <div class="w8-body" id="w8-body">
+      <aside class="w8-defter" id="w8-defter" aria-label="Görevler"></aside>
+      <button class="w8-dtab" data-act="defter" id="w8-dt" title="Görevleri aç/kapat"></button>
+      <main class="w8-work">
+        <section class="w8-view w8-plan" id="w8-v-plan" hidden>${planShell()}</section>
+        <section class="w8-view w8-code" id="w8-v-code" hidden>${codeShell()}</section>
+        <section class="w8-view w8-tour" id="w8-v-tour" hidden>${tourShell()}</section>
+      </main>
+      <aside class="w8-side" id="w8-side" aria-label="Önizleme">
+        <div class="w8-mtabs" id="w8-mtabs" role="tablist"></div>
+        <div class="w8-mbody" id="w8-mbody">
+          <div class="w8-pv" id="w8-pv"><div class="w8-pvbar" id="w8-pvbar"></div><div class="w8-3d" id="w8-3d"><div class="w8-3dmsg" id="w8-3dmsg">🌍 3D önizleme hazırlanıyor…</div></div><div class="w8-pvinfo" id="w8-pvinfo"></div></div>
+          <div class="w8-mpane" id="w8-mpane" hidden></div>
+        </div>
+      </aside>
+    </div>
+
+<button class="w8-mode ${S.mode === k ? 'on' : ''} ${locked ? 'locked' : ''}" data-act="mode" data-m="${k}" ${S.mode === k ? 'aria-current="page"' : ''}>
+        <i>${locked ? '🔒' : n}</i><span><b>${t}</b><small>${locked ? '4. seviyede' : s}</small></span></button>
+
+<div class="w8-dial" style="--p:${(d / MISSIONS.length) * 360}deg" title="${d} / ${MISSIONS.length} görev"><span>${d}</span></div><small>/ ${MISSIONS.length} görev</small>
+
+PDF tüm görevler bitince açılır (${left} görev kaldı)
+
+UML, kod ve çağlarının 3D görüntüsünü PDF olarak indir
+
+;
+        }).join('')}</ul>
+      </div>
+      <div class="w8-dfoot"><button class="btn" data-act="guide">📘 UML kopya kâğıdı</button><button class="btn" data-act="mktab" data-tab="katalog">📚 Katalog</button></div>
+
+🌀 Tur, ajans kurulunca açılır (4. seviyenin kod görevi).
+
+<p>🌀 <b>Tur</b> sekmesi açıldı! Çağlarının arasında yürüyebilirsin.</p>
+
+<p>📨 <b>Üç acil müşteri talebi</b> geldi. Eski sınıflarının şu anki hâli kaydedildi; talepleri onlara <u>dokunmadan</u> çöz.</p>
+
+<div class="w8-lvup-art">${L.icon}</div><span class="tag">Seviye ${L.n} açıldı</span><h3>${L.title}</h3><p class="w8-lvup-topic">${L.topic}</p><div class="w8-lvup-c">${L.concept}</div>${extra}<p>Görevlerde Ajans Müdürü'nün yeni mesajı seni bekliyor. 📨</p>
+
+<div class="w8-lvup-art">🏆</div><span class="tag">${MISSIONS.length} / ${MISSIONS.length} görev</span><h3>Kronos Ajansı açıldı!</h3>
+      <p>Soyut sınıflar, arayüzler, enumlar, gizli özellikler, kalıtım, bileşim, toplama ve çok biçimlilikle koca bir zaman turizmi sistemi tasarladın. Üstüne üç değişiklik talebini <b>tek bir eski satıra dokunmadan</b> karşıladın.</p>
+      <p>UML'yi artık sadece çizmiyorsun, onunla tasarlıyorsun. PDF'ini almayı unutma! 📄</p>
+
+<div class="modal-card" id="nyp-modal-card" role="dialog" aria-modal="true"></div>
+
+<div class="row">${buttons.map((b, i) =>
+
+<h3>📘 UML kopya kâğıdı</h3>
+      <p class="w8-sub">Bu hafta UML sınıf diyagramının bütün öğelerini kullanıyorsun. Hepsi bir sayfada:</p>
+      <h4>Kutu türleri</h4>
+      <div class="w8-tbl"><table>
+        <tr><th></th><th>UML</th><th>Python</th><th>Bu ödevde</th></tr>
+        <tr><th>Sınıf</th><td>düz başlık</td><td><code>class Tur:</code></td><td>Tur, Gezgin, ZamanAjansi</td></tr>
+        <tr><th>Soyut sınıf</th><td>«abstract», <i>italik</i> ad</td><td><code>class Cag(ABC):</code></td><td>Cag, Yapi, Canli, ZamanAraci</td></tr>
+        <tr><th>Arayüz</th><td>«interface»</td><td>yalnızca soyut metotlu <code>ABC</code></td><td>Hareketli, Isiklandirilabilir</td></tr>
+        <tr><th>Enum</th><td>«enumeration», yalnızca sabit adları</td><td><code>class Zemin(Enum):</code></td><td>Malzeme, Gokyuzu, Zemin, Hava, HareketTipi</td></tr>
+      </table></div>
+      <h4>Satırlar</h4>
+      <ul class="w8-faq">
+        <li><code>+ ad: str</code> → public <code>self.ad</code> · <code>− yil: int</code> → private <code>self.__yil</code> · <code># x: int</code> → protected <code>self._x</code></li>
+        <li><code>+ yapi_ekle(yapi: Yapi): bool</code> → <code>def yapi_ekle(self, yapi):</code> (self UML'ye yazılmaz)</li>
+        <li><code>+ gok(): Gokyuzu {abstract}</code> → <code>@abstractmethod</code></li>
+      </ul>
+      <h4>Beş çizgi</h4>
+      <div class="w8-rels">${RT_ORDER.map(t =>
+
+Tur → Cag: tur hangi çağa gittiğini bilir
+
+).join('')}</div>
+      <h4>Çokluk ve rol</h4>
+      <ul class="w8-faq"><li>Çokluk <b>parçanın ucuna</b> yazılır: Cag ◇── <code>0..*</code> Yapi → "bir çağda sıfır ya da çok yapı".</li><li><code>1</code> → tek nesne · <code>0..1</code> → nesne ya da <code>None</code> · <code>0..*</code>, <code>1..*</code> → liste.</li><li>Rol adı, koddaki özelliğin adıdır: <code>yapilar</code> → <code>self.yapilar</code>.</li></ul>
+
+<h3>⏳ Kronos Ajansı'na hoş geldin!</h3>
+      <p>Bu bir <b>ödev</b>: kendi zaman turizmi ajansını tasarlayıp kodlayacak, sonra çağların arasında 3D yürüyeceksin. Görevler soldaki <b>📜 Görevler</b> panelinde; asıl tarif <b>Ajans Müdürü'nün mesajında</b>.</p>
+      <ol class="w8-steps">
+        <li><b>📐 Plan</b>: UML'yi <i>yazarak</i> çiz. Araç çubuğundan Sınıf, Soyut, Arayüz ya da «enum» ekle. Satırlara UML biçiminde yaz: <code>− yil: int</code> · <code>+ gok(): Gokyuzu {abstract}</code>. <kbd>Enter</kbd> yeni satır. Kutunun türünü başlıktaki seçiciden değiştirebilirsin.</li>
+        <li><b>⌨️ Kod</b>: Python'u sen yazarsın. Yazmayı bıraktığında kod çalışır ve sağdaki <b>🌍 3D önizleme</b> çağını kurar. <b>📚 Katalog</b>'da 28 yapı, 14 canlı ve 19 çağ fikri var.</li>
+        <li><b>🌀 Tur</b>: çağların zaman çizgisinde adalara dönüşür. <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> ile yürü, fareyle bak.</li>
+      </ol>
+      <p class="w8-sub">💾 Çalışman <b>bu tarayıcıda kalıcı</b>: kapatıp yarın devam edebilirsin. Başka bir bilgisayara geçeceksen ☰ → <b>Kaydı indir</b>, orada ☰ → <b>Kayıt yükle</b>. Tüm görevler bitince <b>📄 PDF</b> açılır.</p>
+
+<h3>👩‍🏫 Öğretmen</h3><p>Bu panel ders anlatımı içindir. Öğretmen kodunu gir.</p><input type="password" id="w8-pin" class="w8-in" autocomplete="off" placeholder="öğretmen kodu">
+
+Tüm seviyeler açıldı.
+
+<h3>Her şey sıfırlansın mı?</h3><p>Diyagram, kod ve tamamlanan görevler <b>kalıcı olarak</b> silinir. Emin değilsen önce ☰ → Kaydı indir.</p>
+
+Ajans sıfırlandı. Enumlarla başla!
+
+<div class="w8-lvup-art">🔒</div><h3>PDF henüz kilitli</h3><p>PDF <b>tüm görevler bitince</b> açılır. Sana <b>${left}</b> görev kaldı.</p><p class="w8-sub">PDF'te UML diyagramın, Python kodun ve her çağının 3D görüntüsü yer alacak.</p>
+
+Önce Plan'a sınıf ekle.
+
+🌀 ${e.ad} · ${e.yil}
+
+⚠ 3D açılamadı (bu bilgisayarda WebGL yok ya da internet bağlantısı kesik). Ödev yine yapılabilir; nesnelerin listesi aşağıda.
+
+<button class="${sel === i ? 'on' : ''}" data-act="selera" data-i="${i}" title="${esc(e.cls)}">${esc(e.ad)}<small>${esc(e.yil)}</small></button>
+
+BAĞLANTILAR:
+

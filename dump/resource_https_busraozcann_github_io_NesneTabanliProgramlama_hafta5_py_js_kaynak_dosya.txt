@@ -1,0 +1,99 @@
+URL: https://busraozcann.github.io/NesneTabanliProgramlama/hafta5-py.js#kaynak-dosya
+BAŞLIK: hafta5-py.js
+TÜR: resource
+
+let py = null;
+self.onmessage = async (e) => {
+  const m = e.data;
+  try {
+    if (m.cmd === 'init') {
+      importScripts(m.base + 'pyodide.js');
+      py = await loadPyodide({ indexURL: m.base });
+      py.runPython(m.harness);
+      self.postMessage({ id: m.id, ok: true });
+      return;
+    }
+    py.globals.set('_REQ', JSON.stringify(m));
+    const out = py.runPython('_dispatch(_REQ)');
+    self.postMessage({ id: m.id, ok: true, data: out });
+  } catch (err) {
+    self.postMessage({ id: m.id, ok: false, error: String((err && err.message) || err) });
+  }
+};
+Tarayıcı Python motorunu başlatamadı (Web Worker yok).
+Python motoru yüklenemedi. İnternet bağlantını kontrol et.
+Python motoru çok yavaş yüklendi. Sayfayı yenileyip tekrar dene.
+class, def, if, elif, else, for ve while satırları iki nokta üst üste ile biter.
+Girinti bekleniyordu
+class/def/if satırından sonraki satır 4 boşluk içeride olmalı. Gövdeyi henüz yazmadıysan oraya pass yaz.
+Bu satır gereksiz yere içeride. Bir üstteki satırla aynı hizaya getir.
+Girinti hizası tutmuyor
+Boşluk sayıların tutarsız. Hep 4'ün katı kadar boşluk kullan (Tab tuşu 4 boşluk ekler).
+Tab ve boşluk karışmış
+Girintide Tab ve boşluk karışık kullanılmış. Satırı silip Tab tuşuyla yeniden girintile.
+Bir metin "..." ya da '...' ile açılıp kapanmamış.
+Üçlü tırnak kapanmamış
+""" ile açtığın açıklamayı yine """ ile kapat.
+Açtığın (, [ ya da { işaretini kapatmayı unuttun. Hata bazen bir sonraki satırda görünür.
+Parantezler eşleşmiyor
+Fazladan bir kapanan parantez var ya da yanlış türde kapatılmış.
+Word ya da WhatsApp'tan kopyalanan “akıllı tırnak” veya garip bir simge olabilir. Tırnakları klavyeden yeniden yaz.
+Metoda değer atanamaz
+Sol tarafta bir metot çağrısı var. Karşılaştırma için == kullan, değer atamak için bir özellik adı yaz.
+Virgül eksik olabilir
+Parametreler ya da liste elemanları arasında virgül unutulmuş olabilir.
+Metot dışında return
+return sadece bir def'in içinde olur. Girintiyi kontrol et.
+Python 3'te print bir fonksiyondur: print("merhaba")
+Yazım (sözdizimi) hatası
+Python bu satırı anlayamadı. Eksik parantez, tırnak, iki nokta ya da yanlış yazılmış bir kelime olabilir. Bir önceki satıra da bak.
+is not defined/.exec(m) || [])[1] ||
+'${n}' tanımlı değil
+Dosyanın en üstünde şu satır olmalı: from abc import ABC, abstractmethod
+self sadece bir metodun içinde vardır ve metodun ilk parametresi olmalıdır: def metot(self, ...)
+Python'da True, False ve None büyük harfle başlar.
+'${n}' diye bir sınıf yok
+Sınıf adını doğru yazdın mı (büyük/küçük harf, Türkçe karakter)? Sınıf, kullanıldığı satırdan ÖNCE tanımlanmış olmalı.
+Bir metodun içindesin (${err.func}). Nesnenin özelliğini kastediyorsan başına self. koy: self.${n}
+Bu adla bir değişken oluşturulmamış ya da yazımı farklı. Büyük/küçük harfe dikkat.
+self.__${x[3]} hiç oluşturulmamış
+__init__ içinde self.__${x[3]} = ... yazdın mı? Adı doğru mu?
+🔒 __${x[3]} private!
+__${x[3]} başka bir sınıfta (ya da üst sınıfta) private tanımlanmış. Private özelliğe ALT SINIF bile dışarıdan ulaşamaz. O sınıfa bir metot ekleyip (ör. get_${x[3]}() ya da ${x[3]}_kazan()) onu çağır.
+None üzerinde .${x[1]} kullanıldı
+Bir değişken None (boş). 0..1 ilişkilerde önce "if x is not None:" diye kontrol et; ya da bir metot return yazmayı unutmuş olabilir.
+${x[1]} sınıfında ${x[2]} yok
+Sınıfın kendisi üzerinden erişiyorsun. Önce nesne üret (x = ${x[1]}(...)) ve x.${x[2]} kullan; ya da adı kontrol et.
+${x[1]} nesnesinde '${x[2]}' yok
+__init__ içinde self.${x[2]} = ... yazıldı mı? Metotsa sınıfta def ${x[2]}(self, ...) var mı? Private ise adı __${x[2]} olarak saklanır. UML'deki adla kodu karşılaştır.
+Özellik/metot bulunamadı
+Nesnede olmayan bir şeye erişildi.
+${cls} soyut: ondan nesne üretilmez
+${cls} bir şablon (soyut sınıf/arayüz). Nesneyi onun alt sınıflarından üret. Bu hatayı görmen aslında soyutluğun çalıştığını gösteriyor! 🎉
+${cls} hâlâ soyut kalmış
+${cls} sınıfı ${meths}() metodunu yazmamış (override etmemiş). Üst sınıftaki soyut metodu ${cls} içinde aynı adla yazmalısın.
+${x[1]}(...) çağrılırken ${x[3].replace(/'/g, '')} verilmemiş. Parantez içine tüm parametreleri sırasıyla yaz.
+${x[1]}() fazla argüman aldı
+Metot tanımında self'i unutmuş olabilirsin: def metot(self, parametre). Python nesneyi otomatik olarak ilk parametreye koyar.
+${x[1]}() yanlış sayıda argüman
+${x[2]} argüman beklerken ${x[3]} verildi (self dahil). Tanım ile çağrıyı karşılaştır.
+${x[1]}'in __init__ metodu yok
+__init__ yazılmamış ya da adı yanlış (iki alt çizgi: __init__, ikisi de önde ve sonda).
+Metin (str) ile sayı (int) doğrudan toplanmaz/çıkarılmaz. Değerlerin tiplerini kontrol et; print içinde virgül kullanabilirsin.
+Çağrılamayan şey çağrıldı
+Parantezle çağırdığın şey bir metot değil, bir değer. Bir özellik ile metot aynı adı taşıyor olabilir (ör. self.can ve def can()).
+None üzerinde liste işlemi
+Liste olması gereken bir değişken None. __init__ içinde boş liste ile başlattın mı?
+Bir değer beklenmeyen tipte ya da bir metot yanlış çağrıldı.
+Bir metot kendini çağırıp duruyor (ör. get_can içinde yine get_can çağırmak).
+Bir sayıyı 0'a böldün.
+Listede olmayan bir sıraya eriştin. Liste boş olabilir: önce len(liste) kontrol et.
+Sözlükte anahtar yok
+Sözlükte olmayan bir anahtar istendi.
+Bir işlem uygun olmayan bir değer aldı (ör. listede olmayan bir elemanı remove etmek).
+input() kullanılamaz
+Bu editörde klavyeden veri alınamaz; değerleri doğrudan koda yaz.
+Hata mesajını oku; satır numarası nereye bakacağını söyler.
+
+BAĞLANTILAR:
+

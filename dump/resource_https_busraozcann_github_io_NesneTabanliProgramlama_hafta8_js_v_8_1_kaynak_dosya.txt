@@ -1,0 +1,508 @@
+URL: https://busraozcann.github.io/NesneTabanliProgramlama/hafta8.js?v=8.1#kaynak-dosya
+BAŞLIK: hafta8.js?v=8.1
+TÜR: resource
+
+değişiklik talepleri
+']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '
+parça dışarıdan gelir, bağımsız yaşar
+parçayı bütün üretir, onunla ölür
+arayüz sözleşmesini imzalar
+Enum + Soyut sınıf + Kapsülleme
+<p><b>Kronos Ajansı Müdürü'nden:</b> Hoş geldin baş mimar! Yıl 2300; zaman yolculuğu artık bir turizm sektörü. Müşterilerimiz dinozorları, piramitleri, Mars kolonilerini görmek istiyor. Ama önce <b>çağların ne olduğunu</b> tanımlamalıyız.</p>
+<ul>
+<li><b>4 enum</b>: <code>Malzeme</code> (en az 6, değerleri <code>"#RRGGBB"</code> renk kodu), <code>Gokyuzu</code>, <code>Zemin</code>, <code>Hava</code> (her biri en az 3 sabit; değerler <code>auto()</code> olabilir). Hangi sabitlerin 3D'de özel göründüğü <b>📚 Katalog</b>'da.</li>
+<li><b>Cag</b> soyut bir sınıftır: <code>ad</code> (str) ve <b>gizli</b> <code>yil</code> (int; MÖ yıllar eksi: -2560). Yıla dışarıdan yalnızca <code>get_yil()</code> ile bakılır.</li>
+<li><code>yil_metni()</code>: -2560 → <code>"MÖ 2560"</code>, 1453 → <code>"MS 1453"</code></li>
+<li>Her çağ kendi <code>gok()</code>, <code>zemin()</code> ve <code>hava()</code>'sını bilir; Cag bunları <b>bilemez</b> (soyut metotlar). Hepsi ilgili enum'dan bir sabit döndürür.</li>
+<li>Sonra ilk çağını kodla: <code>class AntikMisir(Cag):</code> ve bir nesne üret: <code>misir = AntikMisir("Antik Mısır", -2560)</code>. Sağdaki önizlemede çağın gökyüzü ve zemini belirecek!</li>
+</ul>
+<p class="w8-q">🤔 Neden yıl private? Biri <code>misir.yil = 99999</code> yazarsa ne olurdu?</p>
+<b>Soyut sınıf</b> yarım bir tariftir: "her çağın bir gökyüzü vardır" der ama hangisi olduğunu alt sınıfa bırakır. Python: <code>class Cag(ABC):</code> + <code>@abstractmethod</code>. UML: «abstract», metot sonunda <code>{abstract}</code>.<br><b>Kapsülleme</b>: <code>− yil: int</code> → kodda <code>self.__yil</code>. Değere yalnızca sınıfın metotları dokunur.<br><b>Enum</b>: seçenekler sabit; 3D motoru <code>Gokyuzu.AURORA</code>'yı tanır ama <code>"aurora"</code> metnini tanımaz.
+<p><b>Müdür'den:</b> Turistler boş çöl görmeye gelmiyor! Çağlara <b>yapılar</b> lazım.</p>
+<ul>
+<li><b>Yapi</b> soyut: <code>malzeme</code> (Malzeme) ve <code>yukseklik</code> (int, 1–40). Her yapı kendini anlatır: soyut <code>aciklama()</code> bir metin döndürür (3D'de yapının üstünde görünür).</li>
+<li>Yapi'dan en az <b>3 alt sınıf</b> türet. <b>📚 Katalog</b>'daki adları kullanırsan (Piramit, Pagoda, Roket, Volkan…) 3D'de o modeller çizilir; 28 çeşit var!</li>
+<li><code>Cag</code>'a <code>yapilar</code> listesi ve <code>yapi_ekle(yapi)</code> ekle: yapı dışarıda üretilir, çağa eklenir (toplama ◇). Kural: bir çağda <b>en fazla 12 yapı</b>; doluysa eklemez ve <code>False</code> döndürür.</li>
+<li><b>Bileşik yapı</b>: <code>__init__</code> içinde <b>kendi parçalarını üreten</b> bir yapı yaz (bileşim ◆). Örn. <code>Kale(malzeme, yukseklik, kule_sayisi)</code> → <code>self.kuleler</code> listesine <code>Kule</code>'ler üretir. Tapinak + Sutun, Cami + Minare de olur.</li>
+<li>Bir çağa en az 5 yapı koy (biri bileşik olsun).</li>
+</ul>
+<b>Kalıtım</b> (──▷): "Piramit bir Yapi'dır". Alt sınıf <code>super().__init__(...)</code> ile üst sınıfın kurulumunu çağırır.<br><b>Toplama ◇ ile bileşim ◆ arasındaki fark</b>: Çağ yapıyı dışarıdan alır (◇). Kale ise kulelerini kendi <code>__init__</code>'inde üretir (◆): kale yıkılırsa kuleleri de gider.<br>UML'de liste tutan özellik çizgiyle gösterilir: Cag ◇── Yapi, uçta <code>0..*</code> ve rol <code>yapilar</code>.
+Arayüz + Çoklu gerçekleştirme
+<p><b>Müdür'den:</b> Yapılar güzel ama çağlar ıssız. <b>Canlılar</b> geliyor!</p>
+<ul>
+<li><b>Canli</b> soyut: <code>ad</code>, <code>boy</code> (int), <code>malzeme</code> (Malzeme, rengi). Her canlı ses çıkarır: soyut <code>ses()</code> → metin (3D'de konuşma balonu olur!).</li>
+<li><b>HareketTipi</b> enum (en az 3): <code>YURU</code>, <code>UC</code>, <code>YUZ</code>, <code>ZIPLA</code>, <code>SUZUL</code>, <code>DON</code>, <code>DUR</code>…</li>
+<li><b>«interface» Hareketli</b>: <code>hareket_et()</code> → HareketTipi. 3D motoru canlıyı bu sabite göre hareket ettirir.</li>
+<li><b>«interface» Isiklandirilabilir</b>: <code>isik()</code> → Malzeme (ışığın rengi).</li>
+<li>En az <b>2 canlı türü</b>: Canli'dan türesin <b>ve</b> Hareketli'yi gerçekleştirsin: <code>class Dinozor(Canli, Hareketli):</code>. Cag'a <code>canlilar</code> listesi ve <code>canli_ekle(canli)</code> ekle.</li>
+<li>Bir de <b>ışıklı yapı</b>: hem Yapi hem Isiklandirilabilir (Fener, Kristal, Volkan…).</li>
+</ul>
+<p class="w8-q">🤔 Ejderha neden Yapi'dan değil de Canli'dan türer ama Isiklandirilabilir olabilir?</p>
+<b>Arayüz</b> bir yetenek sözleşmesidir: "ne" olduğunu değil, "ne yapabildiğini" söyler. Python'da yalnızca soyut metotlu bir ABC. UML: «interface», çizgi kesikli ┄▷ (gerçekleştirme).<br>Bir sınıfın <b>tek bir ailesi</b> (kalıtım) ama <b>birçok yeteneği</b> (arayüz) olabilir: <code>class Fener(Yapi, Isiklandirilabilir)</code>.<br>3D motoru senin sınıflarını tanımaz; yalnızca <code>hareket_et()</code> ve <code>isik()</code> çağırır. Bu çok biçimliliktir.
+<p><b>Müdür'den:</b> Tek çağla turizm olmaz. Ajans kuruluyor!</p>
+<ul>
+<li><b>ZamanAjansi</b>: <code>ad</code>, <code>caglar</code> listesi (◇), <code>cag_ekle(cag)</code>.</li>
+<li><code>zaman_cizelgesi()</code>: çağları <b>yıla göre eskiden yeniye</b> sıralı bir liste olarak döndürür. Yıl private olduğu için <code>get_yil()</code> kullanmalısın. İpucu: <code>sorted(self.caglar, key=lambda c: c.get_yil())</code></li>
+<li>En az <b>3 farklı çağ sınıfı</b> yaz ve ajansa ekle. Gökyüzü, zemin ve havaları birbirinden farklı olsun. Fikir mi lazım? <b>📚 Katalog</b>'da 19 çağ önerisi var: Mezozoyik, Lale Devri, Mars Kolonisi, Atlantis, Şeker Diyarı…</li>
+</ul>
+<p>Bitince <b>🌀 Tur</b> sekmesi açılır: çağların zaman çizgisi boyunca adalara dönüşür, aralarında portallar açılır!</p>
+<b>Çok biçimlilik</b>: Tur motoru her çağa yalnızca <code>c.gok()</code>, <code>c.zemin()</code> ve <code>c.hava()</code> der. AntikMisir kum fırtınası, BuzulCagi kar döndürür. Motor hangi çağ olduğunu bilmeden doğru sahneyi kurar.<br><b>Yeni çağ eklemek için motoru değiştirmek gerekmez</b>; yeni bir alt sınıf yeter. 6. seviyede bunun ne kadar değerli olduğunu göreceksin.
+İlişkiler + Kapsülleme
+<p><b>Müdür'den:</b> Artık müşteri kabul ediyoruz!</p>
+<ul>
+<li><b>ZamanAraci</b> soyut: <code>ad</code>; soyut <code>yolculuk_suresi(yil_farki)</code> → int (gün). En az <b>2 alt sınıf</b>, süreyi farklı hesaplasın: örn. Kapsul her 100 yıl için 1 gün, Portal her zaman 5 gün.</li>
+<li><b>Gezgin</b>: <code>ad</code> ve <b>gizli</b> <code>paradoks</code> puanı (başta 0). <code>paradoks_ekle(miktar)</code> puanı değiştirir ama puan <b>0 ile 100 arasında</b> kalır. <code>get_paradoks()</code> puanı döndürür.</li>
+<li><b>Tur</b>: <code>Tur(cag, arac)</code>; bir çağı ve bir aracı <b>bilir</b> (ilişki →, roller <code>cag</code> ve <code>arac</code>). Gezginleri toplar: <code>gezginler</code> (◇), <code>gezgin_ekle(gezgin)</code>.</li>
+<li>Bir tur kur ve en az bir gezgin ekle. Araç ve gezginler Tur sahnesinde görünecek.</li>
+</ul>
+UML'nin dört ilişki çizgisini birlikte kullanıyorsun: Tur → Cag (ilişki, <code>1</code>), Tur ◇ Gezgin (toplama, <code>0..*</code>), ZamanAraci ◁── Kapsul (kalıtım). Kapsüllemede kural (0–100) <b>metodun içindedir</b>; dışarıdan atlatılamaz.
+Değişiklik Talepleri
+Değişikliğe dayanıklı tasarım
+<p><b>Müdür'den, acil:</b> Müşteriler yeni şeyler istiyor! Ama ajansın yazılımı çalışıyor; <b>eski sınıflara dokunmak yasak</b>. Her talebi yalnızca <b>YENİ sınıflar</b> ekleyerek çöz (enum'a yeni sabit eklemek serbest).</p>
+<ol>
+<li><b>Işınlayıcı:</b> anında giden yeni bir araç; <code>yolculuk_suresi()</code> her zaman 0.</li>
+<li><b>Parlayan canlı:</b> hem yürüyen/uçan hem ışık saçan yeni bir canlı (Ateş Böceği, Anka…): Canli + Hareketli + Isiklandirilabilir.</li>
+<li><b>Yeni bir gökyüzü:</b> Gokyuzu'na yeni bir sabit ekle ve onu kullanan yeni bir çağ yaz, ajansa ekle.</li>
+</ol>
+<p>Her talep için önce Plan'a yeni kutuyu çiz, sonra kodla. Eski bir sınıfı değiştirirsen uygulama fark eder ve uyarır.</p>
+<b>Açık/Kapalı ilkesi</b>: iyi bir tasarım <i>eklemeye açık, değiştirmeye kapalıdır</i>. Soyut sınıflar ve arayüzler sayesinde yeni bir araç, canlı ya da çağ eklemek için hiçbir eski satıra dokunmadın. Kalıtım ve çok biçimliliğin asıl kazancı budur.
+<p><b>Müdür'den:</b> Ajans açılışa hazır! 🎉</p>
+<ul><li><b>🌀 Tur</b> sekmesinde <b>tüm çağları gez</b>: W A S D ile yürü, fareyle bak (önce sahneye tıkla), Shift ile koş. Ya da 🔄 Döndür moduna geçip fareyle çevir.</li>
+<li>Son olarak <b>📄 PDF</b>: UML diyagramın, kodun ve her çağının 3D görüntüsü.</li></ul>
+Bu ödevde OOP'nin dört temel taşını (kapsülleme, kalıtım, çok biçimlilik, soyutlama) ve UML sınıf diyagramının bütün öğelerini kullandın: görünürlük, soyut sınıf, arayüz, enum, beş ilişki türü ve çokluklar. Artık bir sistemi metinden UML'ye, UML'den koda taşıyabiliyorsun.
+Plan'a 4 «enumeration» çiz: <b>Malzeme</b> (en az 6), <b>Gokyuzu</b>, <b>Zemin</b>, <b>Hava</b> (en az 3'er).
+Soyut <b>Cag</b>'ı çiz: <code>+ ad</code>, gizli <code>− yil</code>, <code>get_yil()</code>, <code>yil_metni()</code> ve 3 soyut metot.
+4 enum'u Python'da yaz (Malzeme değerleri <code>"#RRGGBB"</code>).
+<b>Cag</b>'ı ve ilk çağını kodla, bir nesne üret. Önizlemede çağın açılışını izle! <small>(İlk çağı Plan'a da çiz: ──▷ Cag)</small>
+Soyut <b>Yapi</b> + en az 3 alt sınıf, Cag ◇ Yapi (<code>0..*</code>, <code>yapilar</code>), <code>yapi_ekle</code> ve bir <b>bileşik yapı</b> ◆ çiz.
+<b>Yapi</b> ve alt sınıflarını kodla, <code>yapi_ekle</code>'yi 12 yapı kuralıyla yaz.
+Bileşik yapını kodla ve bir çağa en az <b>5 yapı</b> diz. 🏗️
+Soyut <b>Canli</b>, «interface» <b>Hareketli</b> ve <b>Isiklandirilabilir</b>, enum <b>HareketTipi</b>; 2 canlı türü (──▷ ve ┄▷), 1 ışıklı yapı, Cag ◇ Canli.
+Canlıları ve arayüzleri kodla, bir çağa ekle. Önizlemede dolaşıp konuşsunlar! 🦖
+Işıklı yapını kodla ve bir çağa ekle. ✨
+<b>ZamanAjansi</b>'ni çiz (ZamanAjansi ◇ Cag, <code>1..*</code>, <code>caglar</code>) ve toplam en az <b>3 çağ</b> sınıfı.
+Ajansı kur: 3 farklı çağ, <code>zaman_cizelgesi()</code> yıla göre sıralı. 🌀 Tur açılır!
+Turizmi çiz: soyut <b>ZamanAraci</b> + 2 araç, <b>Gezgin</b> (gizli paradoks), <b>Tur</b> (→ Cag, → ZamanAraci, ◇ Gezgin).
+Turizmi kodla, bir tur kur ve gezgin ekle. 🚀
+📨 <b>Talep 1 · Işınlayıcı</b>: yeni araç, süresi hep 0. (UML + kod, eski sınıflara dokunmadan)
+📨 <b>Talep 2 · Parlayan canlı</b>: Canli + Hareketli + Isiklandirilabilir.
+📨 <b>Talep 3 · Yeni gökyüzü</b>: Gokyuzu'na yeni sabit + onu kullanan yeni çağ.
+🌀 Tur'da <b>bütün çağları</b> ziyaret et.
+Tur sekmesinde her çağın adasına yürü (ya da çağ düğmelerine tıkla).
+📄 <b>PDF</b>'i indir: UML + kod + çağlarının 3D görüntüsü.
+Üstteki 📄 PDF düğmesine tıkla.
+Dinozor, Volkan, Agac
+Mamut, Iglo, Penguen
+Piramit, Sfenks, Obelisk, Deve, Kedi
+Tapinak ◆ Sutun, Heykel
+MayaPiramidi, Kartal
+Cami ◆ Minare, Kule, Cesme, Kedi
+YelDegirmeni, Cesme, Kelebek
+UzayUssu, Roket, Uzayli
+SicakHavaBalonu, Kale, Anka
+Volkan, Kristal, Ejderha
+Kubbe (SEKER), Kelebek
+from abc import ABC, abstractmethod
+
+class Muzik(ABC):
+    def __init__(self, ad):
+        self.ad = ad
+
+    @abstractmethod
+    def tur(self):
+        pass
+
+class Caz(Muzik):
+    def tur(self):
+        return Tur.CAZ          # bir enum sabiti
+Soyut sınıftan nesne üretilmez; alt sınıf tüm @abstractmethod'ları yazmalı.
+Gizli özellik + kurallı metot
+class Hesap:
+    def __init__(self):
+        self.__bakiye = 0          # private
+
+    def get_bakiye(self):
+        return self.__bakiye
+
+    def yatir(self, miktar):
+        self.__bakiye = max(0, min(1000, self.__bakiye + miktar))
+UML: − bakiye: int · Kural metodun içinde: 0 ile 1000 arası.
+Arayüz + çoklu gerçekleştirme
+class Ucabilir(ABC):
+    @abstractmethod
+    def uc(self):
+        pass
+
+class Kus(Hayvan, Ucabilir):      # bir aile, bir yetenek
+    def uc(self):
+        return "kanat çırp"
+Önce üst sınıf, sonra arayüzler: class X(UstSinif, Arayuz1, Arayuz2)
+class Kitap(Urun):
+    def __init__(self, ad, fiyat, yazar):
+        super().__init__(ad, fiyat)   # üst sınıfın __init__'i
+        self.yazar = yazar
+Alt sınıf ek parametre alıyorsa önce super().__init__.
+Bileşim: parçaları __init__ üretir
+class Araba:
+    def __init__(self, marka, kapi_sayisi):
+        self.marka = marka
+        self.kapilar = []
+        for i in range(kapi_sayisi):
+            self.kapilar.append(Kapi(i + 1))   # ◆
+Toplamada parça dışarıdan gelir (ekle(x)); bileşimde bütün kendisi üretir.
+Kapasite kuralı ve True/False
+def ogrenci_ekle(self, ogrenci):
+    if len(self.ogrenciler) >= 30:
+        return False
+    self.ogrenciler.append(ogrenci)
+    return True
+Metot işi yapıp yapmadığını bool ile bildirir.
+Sıralama: sorted + key
+def siralama(self):
+    return sorted(self.oyuncular, key=lambda o: o.get_puan())
+key, her elemandan sıralanacak değeri çıkaran fonksiyondur.
+def sicaklik_metni(self):
+    if self.__derece < 0:
+        return "Eksi " + str(-self.__derece)
+    return str(self.__derece) + " derece"
+str() ile sayıyı metne çevir; eksi işaretini kaldırmak için -sayı.
+kronos-kayit-${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, '0')}${String(d.getDate()).padStart(2, '0')}.json
+💾 Kayıt dosyası indirildi. Başka bir bilgisayarda ☰ → Kayıt yükle ile devam edebilirsin.
+bu bir Kronos kaydı değil
+<h3>Kayıt yüklensin mi?</h3><p>Şu anki çalışman bu dosyadakiyle <b>değiştirilecek</b>.</p>
+📂 Kayıt yüklendi. Kaldığın yerden devam!
+Bu bir metot gibi görünüyor; metotlar alttaki bölmeye yazılır.
+Biçim: + ad: tip   (ör. − yil: int)
+Görünürlük işareti eksik: başına + (public), − (private) ya da # koy.
+Tip eksik: + ad: str gibi yaz.
+Parantezleri kontrol et: + gok(): Gokyuzu {abstract}
+Metot parantezle yazılır: + get_yil(): int
+Görünürlük işareti eksik: başına + koy.
+Dönüş tipi eksik: sonuna : None ya da : int ekle.
+Parametrenin tipi eksik: (yapi: Yapi)
+Enum sabitine tip, + ya da parantez yazılmaz. Sadece adını yaz: ALTIN
+Enum sabitleri BÜYÜK HARFLE ve Türkçe karakter olmadan yazılır.
+Plan'da ${name} adında bir kutu yok. «enum» düğmesiyle ekle.
+Kutunun adı tam olarak ${name} olmalı (şu an: ${c.name}).
+${name} bir «enumeration» olmalı. Kutunun başlığındaki tür seçicisinden Enum'u seç.
+${name} kutusunda eksik sabit: ${miss.join(', ')}
+${name} kutusunda ${c.lits.length} sabit var; en az ${min} olmalı.
+Plan'da ${name} adında bir kutu yok.
+${name} bir ${KIND[kind].label.toLocaleLowerCase('tr')} olmalı. Kutunun başlığındaki tür seçicisinden ${KIND[kind].label}'ı seç.
+${cn} kutusunda ${an} özelliği yok. Yaz: ${vis === '-' ? '−' : vis} ${an}: ${type}
+${cn}.${an} ${vis === '-' ? 'gizli (private) olmalı: başına − koy' : 'herkese açık olmalı: başına + koy'}.
+${cn}.${an} tipi ${type} olmalı${a.type ?
++ ${mn}(${ptypes.map(t => fold(t) === 'int' ? (mn === 'yolculuk_suresi' ? 'yil_farki' : 'miktar') + ': int' : t.toLocaleLowerCase('tr') + ': ' + t).join(', ')}): ${ret}${abs ? ' {abstract}' : ''}
+${cn} kutusunun metot bölmesinde ${mn} yok. Yaz: ${sig}
+${cn}.${mn}() herkese açık olmalı: başına + koy.
+${mn}() ${ptypes.length ? ptypes.length + ' parametre almalı' : 'parametresiz olmalı'}: ${sig}  (self UML'ye yazılmaz)
+${mn}() parametresinin tipi ${ptypes[i]} olmalı: ${sig}
+${mn}() dönüş tipi ${ret} olmalı: ${sig}
+${cn}.${mn}() soyut olmalı: satırın sonuna {abstract} ekle.
+${cn}.${mn}() soyut olmamalı: {abstract}'ı kaldır.
+${an} ve ${bn} kutuları olmalı.
+${an} ile ${bn} arasında ilişki yok. 🔗 İlişki düğmesiyle ekle.
+${an}–${bn} ilişkisinin türü ${RTYPES[type].name} ${RTYPES[type].sym} olmalı.
+Yön ters: ${type === 'assoc' ?
+${bn} ucundaki çokluk ${mb} olmalı: bir ${an}'de kaç ${bn} olabilir?
+${bn} ucundaki rol adı ${role} olmalı (kodda self.${role}).
+${name}'dan türeyen en az ${n} sınıf çiz (kalıtım ──▷, alt sınıftan ${name}'a). Şu an ${k}.
+${base} ve ${iface} kutuları olmalı.
+${n === 1 ? 'Bir' : n} sınıf hem ${base}'dan türesin (──▷) hem de ${iface}'i gerçekleştirsin (┄▷). Şu an ${k}.
+Bileşik yapının ◆ çizgisinde parça ucuna bir rol adı yaz (ör. kuleler).
+Bileşik yapı çiz: Yapi'dan türeyen bir sınıftan (ör. Kale) yine Yapi'dan türeyen parçasına (ör. Kule) bileşim ◆ çizgisi.
+Plan'a ${name}'dan türeyen YENİ bir sınıf çiz (──▷).
+Canli, Hareketli ve Isiklandirilabilir kutuları olmalı.
+Plan'a YENİ bir canlı çiz: Canli'dan türesin (──▷), Hareketli ve Isiklandirilabilir'i gerçekleştirsin (┄▷ ×2).
+Önce 📐 Plan'da bu seviyenin UML görevini bitir.
+Kodu çalıştır (yazmayı bırakınca kendiliğinden çalışır).
+UML'deki ${name} sabitleri kodda yok: ${miss.join(', ')}. Diyagram ile kod aynı olmalı.
+<svg viewBox="0 0 44 44" width="40" height="40" aria-hidden="true"><circle cx="22" cy="22" r="19" fill="#FFF6E0" stroke="#2B2350" stroke-width="2.5"/><circle cx="22" cy="22" r="14" fill="none" stroke="#B39DFF" stroke-width="2" stroke-dasharray="3 3"/><path d="M22 10 V22 L30 27" stroke="#2B2350" stroke-width="3" stroke-linecap="round" fill="none"/><circle cx="22" cy="22" r="2.5" fill="#F2A93B"/><path d="M36 8 l3 -3 M8 36 l-3 3" stroke="#F2A93B" stroke-width="2.5" stroke-linecap="round"/></svg>
+<svg viewBox="0 0 24 24" width="19" height="19"><rect x="3" y="4" width="18" height="16" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M3 9 H21 M3 14 H21" stroke="currentColor" stroke-width="2"/></svg>
+<svg viewBox="0 0 24 24" width="19" height="19"><rect x="3" y="4" width="18" height="16" rx="2" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="3 2"/><text x="12" y="16.5" text-anchor="middle" font-size="11" font-style="italic" font-weight="800" fill="currentColor">A</text></svg>
+<svg viewBox="0 0 24 24" width="19" height="19"><circle cx="12" cy="8" r="5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 13 V21" stroke="currentColor" stroke-width="2"/></svg>
+<svg viewBox="0 0 24 24" width="19" height="19"><rect x="3" y="4" width="18" height="16" rx="2" fill="#FFF3C4" stroke="currentColor" stroke-width="2"/><circle cx="8" cy="12" r="2" fill="#E5484D"/><circle cx="12" cy="12" r="2" fill="#3D8BFF"/><circle cx="16" cy="12" r="2" fill="#46A758"/></svg>
+<svg viewBox="0 0 24 24" width="19" height="19"><path d="M3 12 L6.5 9 L10 12 L6.5 15 Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M10 12 H21" stroke="currentColor" stroke-width="2"/></svg>
+<line x1="${t === 'agg' || t === 'comp' ? 24 : 3}" y1="9" x2="${t === 'gen' || t === 'real' ? 43 : 58}" y2="9" stroke="currentColor" stroke-width="2"${t === 'real' ? ' stroke-dasharray="5 4"' : ''}/>
+<path d="M3 9 L13.5 3.5 L24 9 L13.5 14.5 Z" fill="${t === 'comp' ? 'currentColor' : '#fff'}" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+<path d="M59 9 L43 2 L43 16 Z" fill="#fff" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+<path d="M47 3 L59 9 L47 15" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+<svg class="w8-ricon" viewBox="0 0 62 18" width="62" height="18" aria-hidden="true">${line}${s}</svg>
+<header class="w8-top">
+      <button class="btn" data-act="home">← Haftalar</button>
+      <div class="w8-brand"><span class="w8-logo">${ICON.logo}</span><div><small>8. Hafta · Ödev · OOP + UML</small><b>Kronos Ajansı</b></div></div>
+      <nav class="w8-modes" id="w8-modes" aria-label="Aşamalar"></nav>
+      <div class="w8-prog" id="w8-prog"></div>
+      <div class="w8-tact">
+        <span class="w8-saved" id="w8-saved" title="Çalışman bu tarayıcıda kalıcı olarak saklanır"></span>
+        <button class="btn" data-act="pdf" id="w8-pdf">📄 PDF</button>
+        <div class="w8-menu">
+          <button class="btn" data-act="menu" aria-haspopup="true" title="Diğer">☰</button>
+          <div class="w8-menu-pop" id="w8-menu" hidden>
+            <button data-act="export">💾 Kaydı indir (dosya)</button>
+            <button data-act="import">📂 Kayıt yükle</button>
+            <hr>
+            <button data-act="guide">📘 UML kopya kâğıdı</button>
+            <button data-act="help">❓ Nasıl çalışır?</button>
+            <hr>
+            <button data-act="teacher" id="w8-tbtn" hidden>👩‍🏫 Öğretmen</button>
+            <button data-act="reset" class="danger">↺ Her şeyi sıfırla</button>
+          </div>
+        </div>
+      </div>
+    </header>
+    <div class="w8-body" id="w8-body">
+      <aside class="w8-defter" id="w8-defter" aria-label="Görevler"></aside>
+      <button class="w8-dtab" data-act="defter" id="w8-dt" title="Görevleri aç/kapat"></button>
+      <main class="w8-work">
+        <section class="w8-view w8-plan" id="w8-v-plan" hidden>${planShell()}</section>
+        <section class="w8-view w8-code" id="w8-v-code" hidden>${codeShell()}</section>
+        <section class="w8-view w8-tour" id="w8-v-tour" hidden>${tourShell()}</section>
+      </main>
+      <aside class="w8-side" id="w8-side" aria-label="Önizleme">
+        <div class="w8-mtabs" id="w8-mtabs" role="tablist"></div>
+        <div class="w8-mbody" id="w8-mbody">
+          <div class="w8-pv" id="w8-pv"><div class="w8-pvbar" id="w8-pvbar"></div><div class="w8-3d" id="w8-3d"><div class="w8-3dmsg" id="w8-3dmsg">🌍 3D önizleme hazırlanıyor…</div></div><div class="w8-pvinfo" id="w8-pvinfo"></div></div>
+          <div class="w8-mpane" id="w8-mpane" hidden></div>
+        </div>
+      </aside>
+    </div>
+<button class="w8-mode ${S.mode === k ? 'on' : ''} ${locked ? 'locked' : ''}" data-act="mode" data-m="${k}" ${S.mode === k ? 'aria-current="page"' : ''}>
+        <i>${locked ? '🔒' : n}</i><span><b>${t}</b><small>${locked ? '4. seviyede' : s}</small></span></button>
+<div class="w8-dial" style="--p:${(d / MISSIONS.length) * 360}deg" title="${d} / ${MISSIONS.length} görev"><span>${d}</span></div><small>/ ${MISSIONS.length} görev</small>
+PDF tüm görevler bitince açılır (${left} görev kaldı)
+UML, kod ve çağlarının 3D görüntüsünü PDF olarak indir
+<button class="w8-lvp ${st} ${x.n === lvN ? 'on' : ''}" data-act="jlv" data-lv="${x.n}" title="${x.n}. ${x.title} · ${x.topic}" ${st === 'lock' ? 'aria-disabled="true"' : ''}><span>${st === 'lock' ? '🔒' : st === 'done' ? '✓' : x.icon}</span><small>${x.n}</small></button>
+<i class="w8-lvl"></i>
+<div class="w8-lvps">${pills}</div>
+      <div class="w8-dhead"><span class="w8-dn">${L.icon}</span><div><small>${lvN}. Seviye · ${L.topic}</small><h2>${L.title}</h2></div><span class="w8-dc">${d}/${ms.length}</span></div>
+      <div class="w8-dscroll">
+        <details class="w8-note" ${S.letterClosed[lvN] ? '' : 'open'} data-lv="${lvN}"><summary>📨 Ajans Müdürü'nden mesaj</summary><div class="w8-note-b">${L.brief}</div></details>
+        <details class="w8-concept"><summary>💡 Kavram</summary><div>${L.concept}</div></details>
+        <ul class="w8-ms">${ms.map(m => {
+          const ok = !!S.done[m.id], h = !ok && T.hints[m.id];
+          return
+${ok ? 'ok' : ''} ${T.flash === m.id ? 'flash' : ''}
+<span class="w8-hint">${esc(h)}</span>
+;
+        }).join('')}</ul>
+      </div>
+      <div class="w8-dfoot"><button class="btn" data-act="guide">📘 UML kopya kâğıdı</button><button class="btn" data-act="mktab" data-tab="katalog">📚 Katalog</button></div>
+🌀 Tur, ajans kurulunca açılır (4. seviyenin kod görevi).
+<p>🌀 <b>Tur</b> sekmesi açıldı! Çağlarının arasında yürüyebilirsin.</p>
+<p>📨 <b>Üç acil müşteri talebi</b> geldi. Eski sınıflarının şu anki hâli kaydedildi; talepleri onlara <u>dokunmadan</u> çöz.</p>
+<div class="w8-lvup-art">${L.icon}</div><span class="tag">Seviye ${L.n} açıldı</span><h3>${L.title}</h3><p class="w8-lvup-topic">${L.topic}</p><div class="w8-lvup-c">${L.concept}</div>${extra}<p>Görevlerde Ajans Müdürü'nün yeni mesajı seni bekliyor. 📨</p>
+<div class="w8-lvup-art">🏆</div><span class="tag">${MISSIONS.length} / ${MISSIONS.length} görev</span><h3>Kronos Ajansı açıldı!</h3>
+      <p>Soyut sınıflar, arayüzler, enumlar, gizli özellikler, kalıtım, bileşim, toplama ve çok biçimlilikle koca bir zaman turizmi sistemi tasarladın. Üstüne üç değişiklik talebini <b>tek bir eski satıra dokunmadan</b> karşıladın.</p>
+      <p>UML'yi artık sadece çizmiyorsun, onunla tasarlıyorsun. PDF'ini almayı unutma! 📄</p>
+<div class="modal-card" id="nyp-modal-card" role="dialog" aria-modal="true"></div>
+<div class="row">${buttons.map((b, i) =>
+<h3>📘 UML kopya kâğıdı</h3>
+      <p class="w8-sub">Bu hafta UML sınıf diyagramının bütün öğelerini kullanıyorsun. Hepsi bir sayfada:</p>
+      <h4>Kutu türleri</h4>
+      <div class="w8-tbl"><table>
+        <tr><th></th><th>UML</th><th>Python</th><th>Bu ödevde</th></tr>
+        <tr><th>Sınıf</th><td>düz başlık</td><td><code>class Tur:</code></td><td>Tur, Gezgin, ZamanAjansi</td></tr>
+        <tr><th>Soyut sınıf</th><td>«abstract», <i>italik</i> ad</td><td><code>class Cag(ABC):</code></td><td>Cag, Yapi, Canli, ZamanAraci</td></tr>
+        <tr><th>Arayüz</th><td>«interface»</td><td>yalnızca soyut metotlu <code>ABC</code></td><td>Hareketli, Isiklandirilabilir</td></tr>
+        <tr><th>Enum</th><td>«enumeration», yalnızca sabit adları</td><td><code>class Zemin(Enum):</code></td><td>Malzeme, Gokyuzu, Zemin, Hava, HareketTipi</td></tr>
+      </table></div>
+      <h4>Satırlar</h4>
+      <ul class="w8-faq">
+        <li><code>+ ad: str</code> → public <code>self.ad</code> · <code>− yil: int</code> → private <code>self.__yil</code> · <code># x: int</code> → protected <code>self._x</code></li>
+        <li><code>+ yapi_ekle(yapi: Yapi): bool</code> → <code>def yapi_ekle(self, yapi):</code> (self UML'ye yazılmaz)</li>
+        <li><code>+ gok(): Gokyuzu {abstract}</code> → <code>@abstractmethod</code></li>
+      </ul>
+      <h4>Beş çizgi</h4>
+      <div class="w8-rels">${RT_ORDER.map(t =>
+Tur → Cag: tur hangi çağa gittiğini bilir
+Cag ◇ Yapi: yapı dışarıda üretilip eklenir
+Kale ◆ Kule: kale kulelerini kendisi üretir
+Piramit ──▷ Yapi: piramit bir yapıdır
+Fener ┄▷ Isiklandirilabilir: fener ışık saçabilir
+).join('')}</div>
+      <h4>Çokluk ve rol</h4>
+      <ul class="w8-faq"><li>Çokluk <b>parçanın ucuna</b> yazılır: Cag ◇── <code>0..*</code> Yapi → "bir çağda sıfır ya da çok yapı".</li><li><code>1</code> → tek nesne · <code>0..1</code> → nesne ya da <code>None</code> · <code>0..*</code>, <code>1..*</code> → liste.</li><li>Rol adı, koddaki özelliğin adıdır: <code>yapilar</code> → <code>self.yapilar</code>.</li></ul>
+<h3>⏳ Kronos Ajansı'na hoş geldin!</h3>
+      <p>Bu bir <b>ödev</b>: kendi zaman turizmi ajansını tasarlayıp kodlayacak, sonra çağların arasında 3D yürüyeceksin. Görevler soldaki <b>📜 Görevler</b> panelinde; asıl tarif <b>Ajans Müdürü'nün mesajında</b>.</p>
+      <ol class="w8-steps">
+        <li><b>📐 Plan</b>: UML'yi <i>yazarak</i> çiz. Araç çubuğundan Sınıf, Soyut, Arayüz ya da «enum» ekle. Satırlara UML biçiminde yaz: <code>− yil: int</code> · <code>+ gok(): Gokyuzu {abstract}</code>. <kbd>Enter</kbd> yeni satır. Kutunun türünü başlıktaki seçiciden değiştirebilirsin.</li>
+        <li><b>⌨️ Kod</b>: Python'u sen yazarsın. Yazmayı bıraktığında kod çalışır ve sağdaki <b>🌍 3D önizleme</b> çağını kurar. <b>📚 Katalog</b>'da 28 yapı, 14 canlı ve 19 çağ fikri var.</li>
+        <li><b>🌀 Tur</b>: çağların zaman çizgisinde adalara dönüşür. <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> ile yürü, fareyle bak.</li>
+      </ol>
+      <p class="w8-sub">💾 Çalışman <b>bu tarayıcıda kalıcı</b>: kapatıp yarın devam edebilirsin. Başka bir bilgisayara geçeceksen ☰ → <b>Kaydı indir</b>, orada ☰ → <b>Kayıt yükle</b>. Tüm görevler bitince <b>📄 PDF</b> açılır.</p>
+<h3>👩‍🏫 Öğretmen</h3><p>Bu panel ders anlatımı içindir. Öğretmen kodunu gir.</p><input type="password" id="w8-pin" class="w8-in" autocomplete="off" placeholder="öğretmen kodu">
+.row .btn:last-child
+<h3>👩‍🏫 Öğretmen paneli</h3><p>Derste göstermek için kısayollar.</p>
+      <ul><li><b>Tüm seviyeleri aç</b>: Tur ve PDF de açılır.</li><li><b>Örnek UML / Örnek kod</b>: çözüm yüklenir (mevcut çalışma silinir).</li><li><b>Talep tabanını yenile</b>: 6. seviyede "eski sınıflar" olarak kodun şu anki hâlini kaydeder (öğrenci eski sınıflarda gerçek bir hatayı düzeltmek zorunda kaldıysa).</li></ul>
+Talep tabanını yenile
+Talep tabanı şu anki koda göre yenilendi.
+Tüm seviyeler açıldı.
+<h3>Her şey sıfırlansın mı?</h3><p>Diyagram, kod ve tamamlanan görevler <b>kalıcı olarak</b> silinir. Emin değilsen önce ☰ → Kaydı indir.</p>
+Ajans sıfırlandı. Enumlarla başla!
+<div class="w8-lvup-art">🔒</div><h3>PDF henüz kilitli</h3><p>PDF <b>tüm görevler bitince</b> açılır. Sana <b>${left}</b> görev kaldı.</p><p class="w8-sub">PDF'te UML diyagramın, Python kodun ve her çağının 3D görüntüsü yer alacak.</p>
+Önce Plan'a sınıf ekle.
+PDF modülü yüklenemedi.
+📸 Çağlarının fotoğrafları çekiliyor…
+Çağ ${i + 1}: ${e.ad}
+Gökyüzü: ${e.gok || '?'} · Zemin: ${e.zemin || '?'} · Hava: ${e.hava || '?'}.
+Yapılar: ${list(yk)}.
+Canlılar: ${list(ck)}.
+Kronos Ajansı · UML Sınıf Diyagramı
+<div class="w8-ptools">
+        <button class="w8-tool" data-act="add" data-k="class">${ICON.cls}<span>Sınıf</span></button>
+        <button class="w8-tool abs" data-act="add" data-k="abstract">${ICON.abs}<span>Soyut</span></button>
+        <button class="w8-tool ifc" data-act="add" data-k="interface">${ICON.ifc}<span>Arayüz</span></button>
+        <button class="w8-tool enum" data-act="add" data-k="enum">${ICON.enm}<span>«enum»</span></button>
+        <button class="w8-tool rel" data-act="addrel">${ICON.rel}<span>İlişki</span></button>
+        <span class="w8-ptip"><code>− yil: int</code> · <code>+ gok(): Gokyuzu {abstract}</code> · enum'da yalnızca <code>ALTIN</code> · <kbd>Enter</kbd> yeni satır</span>
+        <div class="w8-zoom"><button data-act="zout" title="Uzaklaştır">−</button><span id="w8-zv">100%</span><button data-act="zin" title="Yakınlaştır">+</button><button data-act="zfit">Sığdır</button></div>
+      </div>
+      <div class="w8-cv" id="w8-cv"><div class="w8-cvsize" id="w8-cvsize"><div class="w8-cvin" id="w8-cvin">
+        <svg class="w8-edges" id="w8-edges" width="${CV_W}" height="${CV_H}"></svg>
+        <div id="w8-boxes"></div>
+        <div class="w8-empty" id="w8-empty">📐 Boş plan. Yukarıdan <b>«enum»</b> ekleyerek başla: ilk kutun <b>Malzeme</b> olsun.</div>
+      </div></div></div>
+      <div class="w8-rels" id="w8-rels"></div>
++ metot(param: tip): dönüş
+<input class="w8-ln ${p.cls}" data-cid="${c.id}" data-sec="${sec}" data-i="${i}" value="${esc(t)}" placeholder="${ph}" spellcheck="false" autocomplete="off" title="${esc(p.err || '')}">
+<div class="w8-sec" data-sec="${sec}">${c[sec].map((_, i) => lineHTML(c, sec, i)).join('')}<button class="w8-addln" data-act="addln" data-cid="${c.id}" data-sec="${sec}" tabindex="-1">+ ${label}</button></div>
+<div class="w8-box k-${c.kind} ${T.sel === c.id ? 'sel' : ''}" data-cid="${c.id}" style="left:${c.x}px;top:${c.y}px;width:${boxWidth(c)}px">
+      <div class="w8-bh" data-drag="${c.id}" title="Başlıktan tutup taşı">
+        <select class="w8-kind" data-cid="${c.id}" title="Kutunun türü" tabindex="-1">${Object.keys(KIND).map(k =>
+).join('')}</select>
+        ${st ?
+: ''}
+        <input class="w8-bname" data-cid="${c.id}" value="${esc(c.name)}" placeholder="${en ? 'EnumAdi' : 'SinifAdi'}" spellcheck="false" autocomplete="off">
+        <button class="w8-bx" data-act="delcls" data-cid="${c.id}" title="Kutuyu sil" tabindex="-1">×</button></div>
+      ${secHTML(c, 'attrs', en ? 'sabit' : 'özellik')}
+      ${en ? '' : secHTML(c, 'meths', 'metot')}
+    </div>
+<h3>${esc(c.name || 'Bu kutu')} silinsin mi?</h3><p>Kutunun satırları ve bağlı ilişkileri silinir.</p>
+<path d="M${sh.pts.map(p =>
+).join(' L')}${sh.closed ? ' Z' : ''}" fill="${sh.fill === 'ink' ? '#2B2350' : sh.fill === 'paper' ? '#fff' : 'none'}" stroke="#2B2350" stroke-width="2" stroke-linejoin="round"/>
+<text x="${p.x.toFixed(1)}" y="${p.y.toFixed(1)}" class="${c}">${esc(t)}</text>
+<g class="w8-edge" data-rid="${r.id}"><line class="hit" x1="${d.s.x}" y1="${d.s.y}" x2="${d.e.x}" y2="${d.e.y}"/><line x1="${d.s.x}" y1="${d.s.y}" x2="${d.e.x}" y2="${d.e.y}" stroke="#2B2350" stroke-width="2"${d.dashed ? ' stroke-dasharray="8 6"' : ''}/>${shapes}${ends ? lab(r.ma, L.ma, 'm') + lab(r.mb, L.mb, 'm') + lab(r.role, L.role, 'r') : ''}</g>
+<b>${esc((a && a.name) || '?')}</b> ${RTYPES[r.type].sym} <b>${esc((b && b.name) || '?')}</b>${e && r.mb ?
+: ''}${e && r.role ?
+<span class="lbl">🔗 İlişkiler (${rs.length}):</span>${rs.length ? rs.map(r =>
+w8-rchip t-${r.type}
+).join('') : '<span class="none">henüz yok · kalıtım için de 🔗 İlişki düğmesini kullan</span>'}
+${A} <b>bir</b> ${B}'dır (kalıtım). Kodda: <code>class ${A}(${B}):</code>
+${A}, ${B} sözleşmesini <b>gerçekleştirir</b>. Kodda: <code>class ${A}(..., ${B}):</code>
+Bir ${A}, ${k}${B} nesnesini <b>toplar</b>${role ?
+: ''}. ${B} dışarıda üretilip eklenir.
+Bir ${A}, ${k}${B} nesnesinden <b>oluşur</b>${role ?
+: ''}. ${B}'leri ${A} kendi __init__'inde üretir.
+${A}, ${k}${B} nesnesini <b>bilir</b>${role ?
+İlişki için adı yazılmış en az iki kutu gerekir.
+<option value="${c.id}" ${c.id === sel ? 'selected' : ''}>${esc(c.name)}${c.kind !== 'class' ?
+<option value="${x}" ${normMult(v) === x ? 'selected' : ''}>${x || '(boş)'}</option>
+<h3>🔗 ${editing ? 'İlişkiyi düzenle' : 'Yeni ilişki'}</h3>
+      <div class="w8-rtypes">${RT_ORDER.map(t =>
+${r.type === t ? 'on' : ''}
+).join('')}</div>
+      <div class="w8-rf">
+        <label><span id="rf-al"></span><select id="rf-a"><option value="">seç…</option>${opts(r.a)}</select></label>
+        <label><span id="rf-bl"></span><select id="rf-b"><option value="">seç…</option>${opts(r.b)}</select></label>
+        <label class="e"><span>Çokluk (bütün / bilen ucu)</span><select id="rf-ma">${mopt(r.ma)}</select></label>
+        <label class="e"><span>Çokluk (parça / bilinen ucu)</span><select id="rf-mb">${mopt(r.mb)}</select></label>
+        <label class="e wide"><span>Rol adı (parça ucu = koddaki özellik adı)</span><input id="rf-role" value="${esc(r.role)}" placeholder="ör. yapilar" spellcheck="false"></label>
+      </div>
+      <p class="w8-rsent" id="rf-sent"></p>
+Bir kutu kendisiyle ilişkilendirilemez.
+def __init__(self|):
+<div class="w8-ebar">
+        <button class="w8-run" data-act="run" id="w8-run">▶ Çalıştır <kbd>Ctrl</kbd><kbd>Enter</kbd></button>
+        <label class="w8-live" title="Yazmayı bırakınca kod kendiliğinden çalışır"><input type="checkbox" id="w8-livecb"> ⚡ Canlı</label>
+        <span class="w8-pys" id="w8-pys"></span>
+      </div>
+      <div class="w8-snips" id="w8-snips" aria-label="Hızlı ekle">${SNIPS.map((s, i) =>
+Ekle: ${esc(s[1].replace('|', ''))}
+).join('')}</div>
+      <div class="w8-ed" id="w8-ed">
+        <div class="w8-gut" id="w8-gut" aria-hidden="true"></div>
+        <div class="w8-edc"><pre class="w8-hl" id="w8-hl" aria-hidden="true"></pre><textarea id="w8-ta" spellcheck="false" wrap="off" autocapitalize="off" autocomplete="off" autocorrect="off" aria-label="Python kodu"></textarea></div>
+        <div class="w8-lintchip" id="w8-lintchip" hidden></div>
+      </div>
+      <div class="w8-con">
+        <div class="w8-conh"><b>Çıktı</b><span id="w8-cstat"></span></div>
+        <div class="w8-cout" id="w8-cout"><div class="w8-cl info">print() çıktıları ve hatalar (Türkçe açıklamasıyla) burada görünür.</div></div>
+        <div class="w8-replog" id="w8-replog"></div>
+        <label class="w8-repl"><span>&gt;&gt;&gt;</span><input id="w8-repl" placeholder="Bir ifade dene, Enter: misir.yil_metni()" spellcheck="false" autocomplete="off"></label>
+      </div>
+<span class="${c}">${esc(p)}</span>
+<div class="${i + 1 === bad ? 'err' : ''}${i + 1 === ED.cur ? ' cur' : ''}">${h || ' '}</div>
+<div class="${i + 1 === bad ? 'err' : ''}${i + 1 === ED.cur ? ' cur' : ''}">${i + 1}</div>
+Kaydedildi (zaten otomatik kaydediliyor 😉)
+⚠ ${r.err.line}. satır: ${esc(x.title)}
+⏳ Python yükleniyor… (ilk seferde biraz sürer)
+🔴 Python yüklenemedi (internet?) · ▶ ile tekrar dene
+<div class="t">✖ ${esc(x.title)}${err.line ?
+: ''}${err.func && err.func !== '<module>' ?
+: ''}</div>
+      <div class="tip">${esc(x.tip)}</div><div class="raw">${esc(err.type)}: ${esc(err.msg)}${err.text ?
+✓ Kod hatasız çalıştı.
+⏱ Kod ${auto ? 5 : 8} saniyede bitmedi. Sonsuz döngü olabilir mi (while True)? Python yeniden başlatılıyor.
+<span class="p">&gt;&gt;&gt;</span> ${esc(expr)}
+<button role="tab" class="${S.mkTab === k ? 'on' : ''}" aria-selected="${S.mkTab === k}" data-act="mktab" data-tab="${k}">${t}</button>
+🌀 ${e.ad} · ${e.yil}
+⚠ 3D açılamadı (bu bilgisayarda WebGL yok ya da internet bağlantısı kesik). Ödev yine yapılabilir; nesnelerin listesi aşağıda.
+<button class="${sel === i ? 'on' : ''}" data-act="selera" data-i="${i}" title="${esc(e.cls)}">${esc(e.ad)}<small>${esc(e.yil)}</small></button>
+<button class="${sel === 'atolye' || !W.eras.length ? 'on' : ''}" data-act="selera" data-i="atolye" title="Henüz bir çağa eklenmemiş nesneler">🛠 Atölye<small>${W.atolye.yapilar.length + W.atolye.canlilar.length} nesne</small></button>
+<label class="w8-lbl"><input type="checkbox" data-act="labels" ${S.labels ? 'checked' : ''}> etiketler</label>
+<span class="w8-oc">${esc(t)}${s ?
+<div class="w8-eh"><b>${esc(sel.ad)}</b> <small>${esc(sel.cls)} · ${esc(sel.yil)}</small><div class="w8-ee"><span>☁ ${esc(sel.gok || '?')}</span><span>⛰ ${esc(sel.zemin || '?')}</span><span>🌦 ${esc(sel.hava || '?')}</span></div></div>
+<p class="w8-tipline">Henüz bir çağ nesnesi yok. Cag'dan türeyen bir sınıf yazıp nesne üret: <code>misir = AntikMisir("Antik Mısır", -2560)</code></p>
+<div class="w8-osec"><b>🏛 Yapılar (${set.yapilar.length}${sel ? '/12' : ''})</b><div>${set.yapilar.map(y => chip(y.cls,
+)).join('') || '<span class="none">yok</span>'}</div></div>
+<div class="w8-osec"><b>🦕 Canlılar (${set.canlilar.length})</b><div>${set.canlilar.map(c => chip(c.cls,
+<p class="w8-stale">⏸ Kodda şu an hata var; sahne son çalışan hâli gösteriyor.</p>
+<p class="w8-tipline">🖱 Sahneyi fareyle sürükleyip çevir, tekerlekle yakınlaş.</p>
+<code class="${c || ''}">${esc(x)}</code>
+<p class="w8-sub2">3D motoru bu adları tanır. Sınıfına bu adı ver (ya da bunlardan türet: <code>class DevPiramit(Piramit)</code>); başka bir ad verirsen etiketli bir blok çizilir.</p>
+      <details class="w8-cat" open><summary>🗺 19 çağ fikri</summary><div class="w8-eras">${ERAS.map(e =>
+).join('')}</div></details>
+      <details class="w8-cat"><summary>🏛 ${K.yapilar.length} yapı</summary><p>${chips(K.yapilar)}</p><p class="w8-sub2">Bileşik yapılar parçalarını kendi yerlerine dizer: ${Object.entries(K.bilesik).map(([a, b]) =>
+).join(' · ')}. Başka bileşikler de olur; parçalar etrafa dizilir.</p></details>
+      <details class="w8-cat"><summary>🦕 ${K.canlilar.length} canlı</summary><p>${chips(K.canlilar)}</p></details>
+      <details class="w8-cat"><summary>🎨 Enum sabitleri</summary>
+        <p><b>Malzeme</b> (değer: "#RRGGBB"): ${chips(K.malzeme)}<br><small>CAM, BUZ, KRISTAL saydam · NEON, LAV parlar · ALTIN, GUMUS, BAKIR, CELIK metalik</small></p>
+        <p><b>Gokyuzu</b>: ${chips(K.gok)}<br><small>Başka bir ad verip değerine "#RRGGBB" yazarsan o renkte gökyüzü olur.</small></p>
+        <p><b>Zemin</b>: ${chips(K.zemin)}</p><p><b>Hava</b>: ${chips(K.hava)}</p><p><b>HareketTipi</b>: ${chips(K.hareket)}</p></details>
+<p class="w8-sub2">Örnekler <b>başka konulardan</b>; kendi sınıflarına uyarla.</p>
+<div class="w8-card ${S.cardOpen === c.k ? 'open' : ''}"><button data-act="card" data-k="${c.k}">${esc(c.t)}<span>${S.cardOpen === c.k ? '−' : '+'}</span></button>${S.cardOpen === c.k ?
+<div class="w8-mempty"><div>🔗</div><p>Plan'da kutu yok. UML çizdikçe burada her kutunun kodda karşılığı var mı göreceksin.</p></div>
+<li class="${b ? 'y' : 'n'}">${b ? '✓' : '✗'} ${t}</li>
+<p class="w8-sub2">Diyagramdaki her satırın kodda karşılığı var mı?</p>
+<code>class ${esc(c.name)}</code> kodda yok
+<code>class ${esc(c.name)}(Enum):</code> olmalı
+${c.kind === 'interface' ? 'arayüz' : 'soyut'}: <code>(ABC)</code> + <code>@abstractmethod</code>
+<code>class ${esc(c.name)}(…${esc(p.name)}…)</code>
+<code>self.${esc(r.role)}</code> <small>(ilişki rolü)</small>
+<code>${esc(p.name)}()</code>${p.abstract ? ' <small>@abstractmethod</small>' : ''}
+<div class="w8-uy"><b>${c.kind !== 'class' ?
+: ''}${esc(c.name)}</b><ul>${items}</ul></div>
+<div class="w8-tour3d" id="w8-tour3d"><div class="w8-3dmsg" id="w8-tmsg">🌀 Zaman turu hazırlanıyor…</div></div>
+      <div class="w8-hud" id="w8-hud"></div>
+⚠ 3D açılamadı (WebGL yok ya da internet bağlantısı kesik).
+<div class="w8-hrow">
+        <div class="w8-seg"><button class="${walk ? 'on' : ''}" data-act="tmode" data-m="walk">🚶 Yürü</button><button class="${walk ? '' : 'on'}" data-act="tmode" data-m="orbit">🔄 Döndür</button></div>
+        <div class="w8-hint2">${walk ? 'Sahneye tıkla · <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> yürü · fareyle bak · <kbd>Shift</kbd> koş · <kbd>Esc</kbd> fareyi bırak' : 'Sürükle: çevir · tekerlek: yakınlaş'}</div>
+        <div class="w8-visit">🌀 ${vis.size} / ${W.eras.length} çağ</div>
+        <button class="btn w8-go" data-act="pdf">📄 PDF</button></div>
+      <div class="w8-eras2">${W.eras.map((e, i) =>
+${vis.has(i) ? 'v' : ''}
+${n}. seviye henüz kilitli.
+<div class="w8-hart">
+      <div class="w8-hart-sky"></div>
+      <div class="w8-hart-isl a"><span>🏜️</span><small>MÖ 2560</small></div>
+      <div class="w8-hart-portal"></div>
+      <div class="w8-hart-isl b"><span>🦕</span><small>MÖ 66 milyon</small></div>
+      <div class="w8-hart-isl c"><span>🚀</span><small>MS 2300</small></div>
+      <div class="w8-hart-uml"><div class="h"><small>«abstract»</small><i>Cag</i></div><div class="s">+ ad: str<br>− yil: int</div><div class="s"><i>+ gok(): Gokyuzu</i></div></div>
+      <div class="w8-hart-code"><span class="c">class</span> AntikMisir(<b>Cag</b>):</div>
+    </div>
+
+BAĞLANTILAR:
+

@@ -1,0 +1,426 @@
+URL: https://busraozcann.github.io/NesneTabanliProgramlama/hafta4.js#kaynak-dosya
+BAŞLIK: hafta4.js
+TÜR: resource
+
+']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '
+Parkın yıldızları: yürür, koşar, kükrer. <b>renk</b> ve <b>boy</b> özellikleri çizimi değiştirir.
+Dinozorun adı (çizimde görünür)
+Rengi; eklersen dinozor renklenir
+Boyu (metre); büyüdükçe çizim de büyür
+0-100 arası enerji; koşunca azalır, uyuyunca dolar
+0-100 arası açlık; zamanla artar, yiyince azalır
+1-10 arası hız; simülasyonda ne kadar hızlı gittiği
+Mikroçip numarası; asla değiştirilmemeli!
+Hızla koşar, enerji harcar
+Yemek yer, açlığı azalır
+Uyur, enerjisi dolar
+Kükrer; yakındaki insanlar irkilir
+Biraz büyür (boy ve yaş artar)
+Dinozorları besler, parkı korur. <b>maas</b> ve <b>sicilNo</b> gizli kalmalı!
+Personel sicil numarası; gizli bilgi
+Aylık maaş (TL); kimse görmemeli
+Kaç yıldır çalışıyor
+Şapkasının rengi (çizime yansır)
+Bağlı olduğu dinozora yemek verir. Bakıcı → Dinozor ilişkisi gerekir.
+Düdük çalar, baktığı dinozorlar yanına koşar
+Merkez, her şey yolunda!
+Cipe binip sürer. Bakıcı → Cip ilişkisi gerekir.
+Bir yuvayı temizler. Bakıcı → Yuva ilişkisi gerekir.
+Dinozorların yaşadığı çitli alan. Ağaç sayısı, gölet ve sıcaklık çizimde görünür.
+Yuvanın adı (tabelada görünür)
+Sıcaklık (°C); zemin rengini değiştirir
+En fazla kaç dinozor yaşayabilir
+0-100 arası temizlik; zamanla azalır
+Kapının şifresi; kesinlikle gizli!
+Ağaç sayısı (çizime yansır)
+Gölet var mı? True / False
+Sıcaklığı 28 dereceye ayarlar
+Parkın arazi aracı. Bakıcılar kullanır; yakıtı azalır, farları yanar.
+Plaka (çizimde görünür)
+Rengi (çizime yansır)
+Motor seri numarası; gizli
+Farlar açık mı? True / False (çizime yansır)
+Parkta sürer, yakıt harcar
+Benzinliğe gidip yakıt alır
+Çok hızlı gider, çok yakıt harcar
+Parkı gezen misafirler. <b>biletNo</b> ve <b>bakiye</b> gizli kalmalı.
+Bilet numarası; gizli
+Cüzdandaki para (TL); gizli
+Kıyafet rengi (çizime yansır)
+0-100 arası mutluluk
+Şapka takıyor mu? True / False
+Bir dinozoru izler. Ziyaretçi → Dinozor ilişkisi gerekir.
+Bir bakıcı bir ya da daha çok (1..*) dinozora bakar.
+Her dinozor tek (1) yuvada yaşar; bir yuvada çok (*) dinozor olabilir.
+Bir bakıcı en fazla bir (0..1) cip kullanır.
+Bakıcılar yuvaları temizler.
+Çok ziyaretçi çok dinozoru izleyebilir (* — *).
+Dinozorlar araba kullanamaz 🙂
+Cip ile Yuva arasında doğrudan bir ilişki yok.
+Ziyaretçiler parkın cipini kullanamaz, sadece bakıcılar!
+Ziyaretçiler yuvalara giremez, güvenlik!
+Bu parkta bakıcı ile ziyaretçi arasında bir ilişki tanımlı değil.
+sınıfın kendisi ve alt sınıfları erişir (Python’da _ ile başlar)
+yalnızca sınıfın kendi içinden erişilir (Python’da __ ile başlar)
+<b>Sınıf</b> bir şablondur: <b>adı</b>, <b>özellikleri</b> (verileri) ve <b>metotları</b> (davranışları) vardır. UML kutusu bu üç bölmeden oluşur.
+<b>Kapsülleme:</b> Bazı bilgiler dışarıdan değiştirilmemeli. <b>+</b> public: herkes · <b>#</b> protected: sınıf ve alt sınıflar · <b>−</b> private: sadece sınıfın içi.
+<b>İlişki (association):</b> Bir sınıf başka bir sınıfı kullanır. Çizginin uçlarındaki <code>1</code>, <code>*</code>, <code>1..*</code> kaç nesnenin bağlandığını söyler.
+<b>Nesne (object):</b> Sınıftan üretilen somut örnektir. Aynı sınıftan farklı değerlerle birçok nesne üretilir. UML’de <u>rexy : Dinozor</u> diye yazılır.
+Artık tasarım senin! Kendi özellik ve metotlarını yaz, bütün parkı canlandır.
+<b>Dinozor</b> sınıf kartını tuvale sürükle, kutuya büyük harfle başlayan bir ad yaz.
+Dinozor sınıfına en az <b>6 özellik</b> ekle.
+Dinozor sınıfına en az <b>5 metot</b> ekle.
+Sağdaki <b>Canlı Önizleme</b>de bir metoda tıkla, ne yaptığını gör.
+<code>cipNo</code> özelliğini <b>private (−)</b> yap. Çip numarasını kimse değiştirmemeli!
+<code>enerji</code> ya da <code>aclik</code> özelliğini <b>protected (#)</b> yap.
+<b>Bakıcı</b> sınıfını oluştur: en az 6 özellik, 5 metot.
+Bakıcının <code>maas</code> ve <code>sicilNo</code> özelliklerini <b>private</b> yap.
+🔗 düğmesiyle <b>Bakıcı → Dinozor</b> ilişkisini kur.
+Bakıcıya <code>yemVer()</code>, Dinozora <code>ye()</code> ekle. Bakıcı, dinozorun ye() metodunu çağıracak.
+<b>Yuva</b> sınıfını oluştur (en az 5 özellik, 4 metot) ve <b>Dinozor → Yuva</b> ilişkisini kur.
+<b>Cip</b> sınıfını oluştur (en az 5 özellik, 4 metot) ve <b>Bakıcı → Cip</b> ilişkisini kur.
+<b>Nesneler</b> sekmesinden <b>3 Dinozor nesnesi</b> üret; renkleri birbirinden farklı olsun.
+Bakıcı, Yuva ve Cip sınıflarından en az birer nesne üret.
+▶ <b>Simülasyonu başlat</b> ve nesnelerin metotlarını izle.
+Simülasyonda bir nesneye tıkla, <b>private</b> bir özelliği dışarıdan değiştirmeyi dene.
+<b>Ziyaretçi</b> sınıfını oluştur (en az 5 özellik, 4 metot) ve <b>Ziyaretçi → Dinozor</b> ilişkisini kur.
+<b>Bakıcı → Yuva</b> ilişkisini kur ve Bakıcıya <code>yuvaTemizle()</code> ekle.
+Bir sınıfa <b>kendi özelliğini</b> yaz (kutudaki “+ kendi özelliğin”).
+Bir sınıfa <b>kendi metodunu</b> yaz ve ona bir davranış seç.
+Simülasyonda <b>Metot çağır</b> düğmeleriyle bir metodu elle çağır.
+Final: <b>5 sınıf</b>, <b>5 ilişki</b> ve toplam <b>50+ üye</b> ile simülasyonu çalıştır.
+Adda boşluk olmamalı
+Sadece harf, rakam ve _
+Büyük harfle başlamalı (PascalCase)
+Bu ad başka sınıfta var
+Senin yazdığın özellik
+Senin yazdığın metot
+<svg class="spr" viewBox="0 0 120 96" width="${Math.round(120 * L.s)}" height="${Math.round(96 * L.s)}" style="--b:${L.color}" aria-hidden="true">
+      <path class="tail fb" d="M40 54 C22 58 8 50 1 34 C5 58 22 72 46 70 Z"/>
+      <rect class="leg l1 fd" x="40" y="68" width="11" height="22" rx="5"/>
+      <rect class="leg l2 fd" x="60" y="68" width="11" height="22" rx="5"/>
+      <path class="fd" d="M33 50 l4 -10 l5 7 l4 -11 l5 9 l5 -10 l4 9 l5 -8 l3 10 Z"/>
+      <ellipse class="fb" cx="55" cy="58" rx="25" ry="19"/>
+      <ellipse class="fl" cx="60" cy="64" rx="15" ry="11"/>
+      <path class="fb" d="M63 52 C66 38 70 30 74 24 L88 28 C84 40 82 50 80 62 Z"/>
+      <rect class="arm fd" x="77" y="53" width="6" height="12" rx="3"/>
+      <rect class="jaw fb" x="76" y="27" width="32" height="11" rx="5"/>
+      <rect class="fb" x="70" y="8" width="42" height="26" rx="13"/>
+      <g class="eye-open"><circle cx="97" cy="18" r="5.5" fill="#fff"/><circle cx="98.5" cy="18" r="3" fill="#1C2A35"/></g>
+      <path class="zz" d="M92 19 q5 3 10 0" stroke="#1C2A35" stroke-width="2" fill="none"/>
+      <circle cx="108" cy="16" r="1.4" fill="#1C2A35" opacity=".5"/>
+      <circle cx="90" cy="27" r="3" fill="#FF8FA3" opacity=".55"/>
+      <path d="M84 33 Q96 36 108 32" stroke="#1C2A35" stroke-width="1.5" fill="none" opacity=".4"/>
+    </svg>
+<ellipse class="hat" cx="30" cy="15" rx="21" ry="4.5"/><path class="hat" d="M19 15 Q20 2 30 2 Q40 2 41 15 Z"/><rect x="19" y="11" width="22" height="3" fill="#1C2A35" opacity=".3"/>
+<path class="hat" d="M17 19 a13 12 0 0 1 26 0 Z"/><rect class="hat" x="38" y="16" width="14" height="4" rx="2"/>
+<path d="M16 22 a14 14 0 0 1 28 0 q-7 -5 -14 -4 q-7 -1 -14 4Z" fill="#6B4A2E"/>
+<path d="M25 47 l5 -4 l5 4 l-2 6 h-6Z" fill="#FFD64D"/>
+<rect x="22" y="48" width="16" height="11" rx="3" fill="#1C2A35"/><circle cx="30" cy="53.5" r="3.4" fill="#9EC9FF"/>
+<svg class="spr" viewBox="0 0 60 100" width="${Math.round(60 * L.s)}" height="${Math.round(100 * L.s)}" style="--shirt:${L.shirt};--hat:${L.hat}" aria-hidden="true">
+      <rect class="leg l1" x="20" y="66" width="9" height="30" rx="4" fill="${L.pants}"/>
+      <rect class="leg l2" x="31" y="66" width="9" height="30" rx="4" fill="${L.pants}"/>
+      <rect class="arm a1 shirt" x="8" y="40" width="9" height="25" rx="4.5"/>
+      <rect class="shirt" x="14" y="37" width="32" height="34" rx="11"/>
+      <rect class="arm a2 shirt" x="43" y="40" width="9" height="25" rx="4.5"/>
+      <circle cx="30" cy="24" r="13" fill="#F3C9A1"/>
+      <g class="eye-open"><circle cx="25.5" cy="24" r="1.9" fill="#1C2A35"/><circle cx="34.5" cy="24" r="1.9" fill="#1C2A35"/></g>
+      <path d="M25 30 q5 4 10 0" stroke="#1C2A35" stroke-width="1.6" fill="none"/>
+      ${hat}${extra}
+    </svg>
+<g class="wheel"><circle cx="${x}" cy="64" r="13" fill="#2B3440"/><circle cx="${x}" cy="64" r="5.5" fill="#C9D2DA"/><rect x="${x - 1}" y="52" width="2" height="7" fill="#C9D2DA"/></g>
+<svg class="spr ${L.lights ? 'lights-on' : ''}" viewBox="0 0 132 80" width="${Math.round(132 * L.s)}" height="${Math.round(80 * L.s)}" style="--b:${L.color}" aria-hidden="true">
+      <circle cx="7" cy="46" r="8" fill="#2B3440"/>
+      <path class="fb" d="M30 36 L40 12 H88 L100 36 Z"/>
+      <path d="M43 32 L49 17 H70 V32 Z" fill="#D5F0FF"/>
+      <path d="M74 32 V17 H85 L93 32 Z" fill="#D5F0FF"/>
+      <rect class="fb" x="8" y="34" width="116" height="28" rx="9"/>
+      <rect x="8" y="44" width="116" height="5" fill="#fff" opacity=".55"/>
+      <rect class="fd" x="112" y="52" width="14" height="6" rx="3"/>
+      <circle class="light" cx="119" cy="41" r="4.5"/>
+      ${wheel(34)}${wheel(98)}
+    </svg>
+<div class="yv ${L.mini ? 'mini' : ''}" style="--ground:${L.ground}">
+      ${L.name != null ?
+: ''}
+      <div class="yv-trees">${trees}</div>${L.pond ? '<div class="yv-pond"></div>' : ''}<div class="yv-gate"></div>
+    </div>
+<span class="sp-bar"><i style="width:${clamp(+v.temizlik, 0, 100)}%;background:${BAR.temizlik}"></i></span>
+<div class="sp-bar" title="${k}"><i style="width:${clamp(+v[k] || 0, 0, 100)}%;background:${BAR[k]}"></i></div>
+<svg viewBox="0 0 40 30" width="40" height="30" aria-hidden="true"><rect x="3" y="6" width="34" height="21" rx="5" fill="#D3EDB3" stroke="#B07A1E" stroke-width="2.5" stroke-dasharray="4 3"/><circle cx="28" cy="20" r="4" fill="#7FCBF0"/><path d="M11 22 v-8 M8 15 q3 -5 6 0" stroke="#2E9E5B" stroke-width="2.5" fill="none"/></svg>
+<div style="width:${w}px;height:${Math.round(w * 0.64)}px">${yuvaHTML({ name: 'Yuva', trees: 3, pond: true, ground: '#D3EDB3', mini: true })}</div>
+<header class="w4-top">
+      <button class="btn" data-act="home">← Haftalar</button>
+      <div class="w4-title"><small>4. Hafta · UML Sınıf Diyagramı</small><b>Dino Vadisi</b></div>
+      <div class="levels" id="h4-levels"></div>
+      <div class="score" id="h4-score" title="Her görev 10 yıldız">⭐ 0</div>
+      <div class="w4-actions">
+        <button class="btn" data-act="pdf" title="UML diyagramını PDF olarak indir">📄 PDF</button>
+        <button class="btn" data-act="teacher" id="h4-tbtn" ${window.NYP_OGRETMEN ? '' : 'hidden'}>Öğretmen</button>
+        <button class="btn" data-act="reset">↺ Sıfırla</button>
+        <button class="btn lava" data-act="run">▶ Simülasyonu Başlat</button>
+      </div>
+    </header>
+    <div class="w4-main">
+      <aside class="palette">
+        <div class="ptabs" id="h4-ptabs"></div>
+        <div class="pbody" id="h4-pbody"></div>
+        <div class="p-info" id="h4-pinfo">Bir parçanın üstüne gel; ne işe yaradığını burada gör.</div>
+        <div class="legend">
+          <div class="lg-h">Erişim belirleyiciler</div>
+          <div><span class="vis-sym v-pub">+</span><span><b>public</b>: herkes erişir</span></div>
+          <div><span class="vis-sym v-prot">#</span><span><b>protected</b>: sınıf ve alt sınıflar</span></div>
+          <div><span class="vis-sym v-priv">−</span><span><b>private</b>: sadece sınıfın içi</span></div>
+          <div style="color:var(--muted);font-size:12.5px">Kutudaki simgeye tıklayarak değiştir.</div>
+        </div>
+      </aside>
+      <section class="canvas-wrap">
+        <div class="connect-banner" id="h4-banner" hidden></div>
+        <div class="canvas" id="h4-cv">
+          <div class="canvas-sizer" id="h4-sizer">
+            <div class="canvas-inner" id="h4-inner">
+              <svg class="rel-svg" id="h4-rels" width="${CV_W}" height="${CV_H}"></svg>
+              <div id="h4-boxes"></div>
+              <div class="canvas-empty" id="h4-empty"><b>UML tuvali</b>Soldaki <b>Dinozor</b> sınıf kartını tut ve buraya sürükle. Sonra özellikleri ve metotları kutunun içine bırak.</div>
+            </div>
+          </div>
+        </div>
+        <div class="canvas-tools">
+          <button data-act="zoomout" title="Uzaklaş">−</button><span id="h4-zoom">100%</span><button data-act="zoomin" title="Yakınlaş">+</button>
+          <button data-act="layout" title="Kutuları düzenli yerleştir">Düzenle</button>
+        </div>
+      </section>
+      <aside class="side">
+        <div class="side-h"><h2>Canlı Önizleme</h2><small>metoda tıkla, dene</small></div>
+        <div class="preview" id="h4-preview"></div>
+        <div class="stabs" id="h4-stabs"></div>
+        <div class="spanel" id="h4-sp"></div>
+      </aside>
+    </div>
+<span class="lv-pill ${st}" title="Seviye ${L.n}: ${L.title}">${st === 'lock' ? '🔒' : st === 'done' ? '✓' : ''} ${L.n}. ${st === 'on' ? L.title : ''}</span>
+<button class="ptab ${S.tab === k ? 'on' : ''} ${locked ? 'locked' : ''}" data-act="ptab" data-kind="${k}" style="--k:${K.color};--ks:${K.soft}">
+        <span class="mini">${miniIcon(k)}</span>${K.label}${locked ? '<span class="lk">🔒</span>' : ''}</button>
+<div class="p-locked"><div class="mini">${bigIcon(k, 118)}</div><b>${K.label}</b>${LEVELS[K.level - 1].n}. seviyede açılır. Önce görevleri tamamla!</div>
+<button class="p-class ${c ? 'placed' : ''}" data-drag="class" data-kind="${k}">
+        <span class="mini">${bigIcon(k, 62)}</span>
+        <span><b>${K.label}</b><span>${c ? '✓ Tuvalde' : 'Sınıf kartı · tuvale sürükle'}</span></span>
+      </button>
+      <p class="p-intro">${K.intro}</p>
+      <h4>Özellikler <small>kutuya sürükle</small></h4>
+      <div class="chips">${K.attrs.map(a =>
+chip ${used('attr', a.key) ? 'used' : ''}
+).join('')}</div>
+      <h4>Metotlar <small>kutuya sürükle</small></h4>
+      <div class="chips">${K.methods.map(m =>
+chip meth ${used('meth', m.key) ? 'used' : ''}
+).join('')}</div>
+      <p class="p-intro" style="font-size:12.5px">İpucu: Bir parçaya tıklamak da onu kutuya ekler.</p>
+<span class="${m.custom ? 'cu' : ''}">${m.key}</span>: <span class="ty">${typeStr(m.type)}</span>
+${d.param.name}: ${cname(REL[d.param.rel].to)}
+<span class="${m.custom ? 'cu' : ''}">${m.key}</span>(<span class="ty">${p}</span>)<span class="ty">: None</span>
+<div class="ub-row ${pop}" data-type="${type}" data-key="${m.key}">
+      <button class="vis-sym ${V.cls}" data-act="vis" title="${V.name}: ${V.info}. Değiştirmek için tıkla.">${V.sym}</button>
+      <span class="ub-txt">${txt}</span>
+      <button class="x" data-act="delm" title="Kaldır">×</button></div>
+<button class="ub-add" data-act="${sec === 'attr' ? 'addAttr' : 'addMeth'}">+ kendi ${sec === 'attr' ? 'özelliğin' : 'metodun'}</button>
+<select id="f-${c.kind}-t">${['str', 'int', 'float', 'bool'].map(t =>
+<select id="f-${c.kind}-t">${BEHAVIORS.map(b =>
+<div class="ub-form">
+      <input id="f-${c.kind}-n" placeholder="${sec === 'attr' ? 'ozellikAdi' : 'metotAdi'}" value="${esc(T.form.n || '')}" spellcheck="false" autocomplete="off">
+      ${sel}<button data-act="formOk">Ekle</button><button class="no" data-act="formNo">Vazgeç</button>
+      ${T.form.err ?
+<div class="uml-box ${T.connectFrom === c.kind ? 'connecting' : ''}" data-kind="${c.kind}" style="left:${c.x}px;top:${c.y}px;--k:${K.color};--ks:${K.soft}">
+      <div class="ub-head" data-drag="box">
+        <span class="ub-icon">${miniIcon(c.kind)}</span>
+        <div class="ub-namewrap">
+          <span class="ub-stereo">«sınıf» · ${K.label}</span>
+          <input class="ub-name" id="nm-${c.kind}" data-name="${c.kind}" value="${esc(c.name)}" placeholder="Sınıf adı yaz" spellcheck="false" autocomplete="off" aria-label="Sınıf adı">
+          <span class="ub-namehint ${nc.ok ? 'ok' : 'bad'}">${nc.msg}</span>
+        </div>
+        <button class="ub-btn link" data-act="link" title="İlişki kur: tıkla, sonra hedef sınıfa tıkla">🔗</button>
+        <button class="ub-btn" data-act="delbox" title="Sınıfı sil">✕</button>
+      </div>
+      <div class="ub-sec">
+        ${c.attrs.map(a => rowHTML(c, 'attr', a)).join('') || '<div class="ub-empty">Özellikleri buraya bırak</div>'}
+        ${formHTML(c, 'attr')}
+      </div>
+      <div class="ub-sec">
+        ${c.methods.map(m => rowHTML(c, 'meth', m)).join('') || '<div class="ub-empty">Metotları buraya bırak</div>'}
+        ${formHTML(c, 'meth')}
+      </div>
+    </div>
+🔗 <span>${cname(T.connectFrom)} ile ilişki kurulacak sınıfa tıkla</span><button data-act="cancelLink">Vazgeç (Esc)</button>
+<defs><marker id="h4-arrow" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="13" markerHeight="13" orient="auto"><path d="M1 1 L11 6 L1 11" fill="none" stroke="#405563" stroke-width="2"/></marker></defs>
+<line class="rel-line" x1="${p1.x}" y1="${p1.y}" x2="${p2.x}" y2="${p2.y}" marker-end="url(#h4-arrow)"/>
+<text class="rel-mult" x="${p1.x + ux * 24 + nx * 14}" y="${p1.y + uy * 24 + ny * 14}" text-anchor="middle" dominant-baseline="middle">${R.m1}</text>
+<text class="rel-mult" x="${p2.x - ux * 26 + nx * 14}" y="${p2.y - uy * 26 + ny * 14}" text-anchor="middle" dominant-baseline="middle">${R.m2}</text>
+<text class="rel-label" x="${mx + nx * 16}" y="${my + ny * 16}" text-anchor="middle" dominant-baseline="middle">${R.label}</text>
+<g class="rel-del" data-rdel="${key}" transform="translate(${mx - nx * 16},${my - ny * 16})"><title>İlişkiyi sil</title><circle r="10"/><text text-anchor="middle" dominant-baseline="central">×</text></g>
+<div class="sp-body" style="width:150px;height:84px">${yuvaHTML(L)}</div>
+<div class="sp-wrap">${hasA(c, lk) ?
+: ''}<div class="sp-bars">${barsInner(c, v)}</div><div class="sp-body">${spriteSVG(L)}</div></div>
+<span class="${hasA(c, k) ? '' : 'off'}" title="${hasA(c, k) ? 'Çizime yansıyor' : 'Bu özelliği eklersen çizim değişir'}">${k}</span>
+<div class="pv-empty">Bir sınıf oluşturduğunda burada canlanacak.<br>Eklediğin her özellik çizimi değiştirir, her metot burada denenebilir.</div>
+<div class="pv-card" style="--k:${K.color};--ks:${K.soft}">
+        <div class="pv-head"><b>${esc(cname(c.kind))}</b><span>${c.attrs.length} özellik · ${c.methods.length} metot${priv ?
+: ''}</span></div>
+        <div class="pv-stage"><div class="holder" id="pv-${c.kind}">${previewFigure(c)}</div><div class="pv-bubble" id="pvb-${c.kind}"></div></div>
+        <div class="pv-tags">${previewTags(c)}</div>
+        <div class="pv-methods">${c.methods.map(m =>
+).join('') || '<span class="pv-nom">Metot ekleyince burada denenebilir.</span>'}</div>
+      </div>
+<span class="cnt">${nObj}</span>
+<button class="stab ${S.side === k ? 'on' : ''}" data-act="stab" data-side="${k}">${l}</button>
+<div class="lv ${locked ? 'locked' : ''} ${all ? 'done' : ''} ${cur ? 'cur' : ''}">
+        <div class="lv-h"><span class="n">${all ? '✓' : L.n}</span><b>${L.title}</b><span>${locked ? '🔒' : d + '/' + ms.length}</span></div>
+        ${showList ?
+<li class="${S.done[m.id] ? 'ok' : ''} ${T.flash === m.id ? 'flash' : ''}"><span class="ck">${S.done[m.id] ? '✓' : ''}</span><span class="tx">${m.text}</span></li>
+<select id="${id}" data-of="${o.id}" data-key="${a.key}">${CN.map(n =>
+<input type="checkbox" id="${id}" data-of="${o.id}" data-key="${a.key}" ${v ? 'checked' : ''}>
+<input type="number" id="${id}" data-of="${o.id}" data-key="${a.key}" value="${esc(v)}" step="${a.type === 'float' ? '0.1' : '1'}">
+<input type="text" id="${id}" data-of="${o.id}" data-key="${a.key}" value="${esc(v)}" spellcheck="false">
+<label class="ob-f" for="${id}"><span class="vis-sym ${V.cls}">${V.sym}</span><span>${a.key}</span>${input}</label>
+<p class="ob-intro">Önce bir sınıf oluştur. Sınıf bir <b>kalıp</b>tır; nesneler o kalıptan üretilir.</p>
+<p class="ob-intro">🍪 Sınıf bir kurabiye kalıbıdır, nesneler o kalıptan çıkan kurabiyeler. Aynı sınıftan <b>farklı değerlerle</b> birçok nesne üretebilirsin.</p>
+<div class="ob-group" style="--k:${K.color};--ks:${K.soft}">
+          <div class="ob-gh"><span class="mini">${miniIcon(c.kind)}</span><b>${esc(cname(c.kind))} nesneleri (${os.length})</b><button data-act="newobj" data-kind="${c.kind}">+ Nesne üret</button></div>
+          <div class="ob-list">${os.map(o =>
+<span class="ob-none">Bu sınıfın hiç özelliği yok; nesneler birbirinden farksız!</span>
+).join('') || '<div class="ob-none">Henüz nesne yok.</div>'}</div>
+        </div>
+${K.label} sınıfı ${K.level}. seviyede açılır.
+Zaten bir ${K.label} sınıfı var. Aynı sınıftan çok sayıda nesne üretebilirsin (Nesneler sekmesi).
+${K.label} sınıfı oluşturuldu. Şimdi kutuya bir ad yaz (ör. ${K.suggest}).
+Önce ${KINDS[kind].label} sınıf kartını tuvale sürükle.
+“${key}” bir ${KINDS[kind].label} ${type === 'attr' ? 'özelliği' : 'metodu'}. Bu kutu ${KINDS[tk].label} sınıfı!
+${key} zaten ${cname(tk)} sınıfında var.
+İpucu: Satırın başındaki + simgesine tıklayarak erişimi değiştir: + public → − private → # protected
+${KINDS[a].label} ile ${KINDS[b].label} arasında bu parkta bir ilişki yok.
+İpucu: Kim kime bakar, kim nerede yaşar?
+Bu ilişki zaten kurulu.
+${cname(R.from)} —${R.label}→ ${cname(R.to)} · ${R.why}
+Simülasyon için en fazla ${LIMIT[kind]} ${KINDS[kind].label} nesnesi yeter.
+${nm} = ${cname(kind)}(...) · yeni nesne üretildi!
+Örnek çözüm yüklendi: 5 sınıf, 5 ilişki, 10 nesne.
+<div style="display:inline-block;margin:0 8px">${bigIcon(k)}</div>
+<div style="font-size:70px">🧩</div>
+<div class="lvup-art">${art}</div><span class="tag">Seviye ${L.n} açıldı</span><h3>${L.title}</h3>
+      <p>${L.concept}</p>${L.unlock.length ?
+: '<p>Sağdaki <b>Nesneler</b> sekmesine geç.</p>'}
+<div class="lvup-art">${bigIcon('dino')}</div><span class="tag">22 / 22 görev</span><h3>Tebrikler, Usta Tasarımcı!</h3>
+      <p>Sınıfları, erişim belirleyicileri, ilişkileri ve nesneleri kullanarak koca bir parkı tasarladın. Tasarımının PDF çıktısını almayı unutma!</p>
+Önce tuvale bir sınıf kartı sürükle.
+PDF modülü yüklenemedi.
+${VIS[a.vis].sym} ${a.key}: ${typeStr(a.type)}
+${VIS[m.vis].sym} ${m.key}(${p}): None
+Dino Vadisi · UML Sınıf Diyagramı
+<div class="row">${buttons.map((b, i) =>
+.row .btn:last-child
+<div class="p-class" style="background:#fff;width:230px">${'<span class="mini">' + bigIcon(d.kind, 62) + '</span>'}<span><b>${K.label}</b></span></div>
+<div class="chip ${d.type === 'meth' ? 'meth' : ''}" style="background:#fff">${d.key}${d.type === 'meth' ? '()' : ''}</div>
+${src.dataset.key} zaten kutuda.
+Bu sınıf zaten tuvalde. Nesne üretmek için Nesneler sekmesine bak.
+.uml-box.drop-ok, .uml-box.drop-bad
+Sınıf kartını ortadaki tuvale bırak.
+Parçayı bir sınıf kutusunun üstüne bırak.
+“${REL[key].label}” ilişkisi silindi.
+${V.sym} ${V.name}: ${V.info}.
+<h3>${esc(cname(kind))} sınıfı silinsin mi?</h3><p>Sınıfın özellikleri, metotları, ilişkileri ve bu sınıftan üretilen nesneler de silinir.</p>
+<h3>Her şey sıfırlansın mı?</h3><p>Tüm sınıflar, ilişkiler, nesneler ve kazanılan yıldızlar silinir.</p>
+Atölye sıfırlandı. Dinozor kartıyla başla!
+<h3>Öğretmen paneli</h3><p>Derste göstermek için kısayollar. Öğrenciler kendi bilgisayarında sıfırdan başlar; her tarayıcı kendi çalışmasını saklar.</p>
+          <ul><li><b>Tüm seviyeleri aç:</b> bütün sınıf kartlarını kullanıma açar, mevcut çalışma korunur.</li><li><b>Örnek çözümü yükle:</b> 5 sınıf, 5 ilişki ve 10 nesneyle hazır bir park kurar. Mevcut çalışma silinir.</li></ul>
+Tüm seviyeler açıldı.
+Küçük harfle başlamalı, boşluk olmamalı (ör. kanatSayisi).
+Bu kelime Python’a ayrılmış, başka bir ad seç.
+Bu ad zaten kullanılıyor.
+Kendi özelliğin eklendi: ${n}
+Kendi metodun eklendi: ${n}() · simülasyonda “${BEHAVIORS.find(b => b[0] === t)[1]}” davranışını yapacak.
+${names[o.id]} : ${cname(o.kind)}
+Dinozor sınıfı oluşturulmalı ve geçerli bir adı olmalı.
+Bakıcı sınıfı oluşturulmalı ve geçerli bir adı olmalı (2. seviyede açılır).
+${KINDS[c.kind].label} sınıfının adı geçersiz: ${nameCheck(c).msg}.
+${cname(c.kind)} sınıfında hiç metot yok; nesneleri hareket edemez.
+En az bir ilişki kurulmalı (kutudaki 🔗 düğmesi). Örnek: Bakıcı → Dinozor.
+<h3>Simülasyon için biraz daha tasarım lazım</h3><p>Nesnelerin canlanabilmesi için şunlar eksik:</p><ul>${miss.map(m =>
+Nesnesi olmayan sınıflar için birer nesne üretildi: ${auto.join(', ')}
+<div class="sc-deco" style="left:${x}px;top:${y}px">${e}</div>
+<div class="sc-cloud" style="left:${x}px;top:${y}px;width:${w}px;animation-delay:${d}s"></div>
+<div class="sim-top">
+        <div class="t">Dino Vadisi <small>simülasyon · ${S.objects.length} nesne</small></div>
+        <button class="btn" data-sim="pause">⏸ Duraklat</button>
+        <button class="btn" data-sim="speed">Hız: 1x</button>
+        <label class="sw"><input type="checkbox" id="sim-auto" checked> Otomatik davranış</label>
+        <button class="btn lava" data-sim="close">✕ Diyagrama dön</button>
+      </div>
+      <div class="sim-main">
+        <div class="sim-wrap" id="sim-wrap">
+          <div class="stage" id="sim-stage">
+            <div class="sc-sky"></div><div class="sc-sun"></div>${clouds}
+            <svg class="sc-hills" viewBox="0 0 1200 100" preserveAspectRatio="none" aria-hidden="true">
+              <path d="M0 100 L0 60 Q150 0 300 50 T600 40 Q700 -10 820 45 T1200 50 L1200 100Z" fill="#A6D98A"/>
+              <path d="M930 100 L1000 18 L1022 30 L1044 14 L1110 100Z" fill="#C7A27A"/>
+              <path d="M1000 18 L1022 30 L1044 14 Q1030 4 1022 10 Q1012 2 1000 18Z" fill="#FF8A3D"/>
+            </svg>
+            <div class="sc-grass"></div><div class="sc-road"></div>${deco}
+            <div class="sc-spot" style="left:${STATION.x}px;top:${STATION.y - 46}px">⛽ Benzinlik</div>
+            <div class="sc-spot" style="left:${SHOP.x}px;top:${SHOP.y - 46}px">🎁 Hediyelik</div>
+          </div>
+        </div>
+        <aside class="insp" id="sim-insp"></aside>
+      </div>
+      <div class="sim-log" id="sim-log"><div class="lh">Konsol · metot çağrıları</div></div>
+<span class="c"># Simülasyon başladı. Her satır bir nesnenin metot çağrısı. Bir nesneye tıkla: özelliklerini gör, metotlarını elle çağır.</span>
+<span class="c"># Dinozor → Yuva ilişkisi yok: dinozorlar yuvalarına bağlı değil, her yerde dolaşıyor.</span>
+<div class="yv-holder" style="width:100%;height:100%"></div>
+        <div class="ent-bubble" style="top:30px;bottom:auto"></div>
+        <div class="ent-tag" style="position:absolute;left:12px;bottom:10px">${e.name} : ${esc(cname('yuva'))}</div>
+<div class="ent-in"><div class="ent-bubble"></div><div class="ent-tag">${e.name} : ${esc(cname(o.kind))}</div>
+        <div class="sp-bars"></div><div class="ent-fig"><div class="ent-flip"></div></div><div class="ent-shadow"></div></div>
+<div class="sp-body">${spriteSVG(L)}</div>
+${VIS[a.vis].py(k)}: ${fmt(old)} → ${fmt(nv)}
+<span class="o">${e.name}</span>.<span class="m">${m.key}</span>(?)<span class="c">   # ⚠ ${cname(R.from)} → ${cname(R.to)} ilişkisi yok! Hangi ${KINDS[R.to].label.toLocaleLowerCase('tr')}? Kutudaki 🔗 ile bağla.</span>
+<span class="o">${e.name}</span>.<span class="m">${m.key}</span>()<span class="c">   # ⚠ Bağlı ${KINDS[R.to].label} nesnesi yok.</span>
+<span class="o">${e.name}</span>.<span class="m">${pyN(m)}</span>(${target ?
+<span class="c"># ⚠ ${target.name}.${key}() yok → ${esc(cname(target.kind))} sınıfına ${key}() metodunu ekle!</span>
+${target.name}.__${key}()   ✖ private metot! Sadece ${esc(cname(target.kind))} sınıfının içinden çağrılabilir.
+<span class="c"># ⚠ _${key}() protected: dışarıdan çağrılması önerilmez.</span>
+${caller.name}.${viaMethod}() içinden çağrıldı
+<span class="c"># ⚠ ${esc(cname('cip'))} sınıfında sur() metodu yok; ${keeper.name} cipi süremedi.</span>
+${jeep.name}.__sur()   ✖ private metot! Bakıcı dışarıdan çağıramaz.
+${keeper.name}.cipSur() içinden çağrıldı
+<span class="c"># ${esc(cname(e.kind))} sınıfında metot yok; ${e.name} hiçbir şey yapamıyor.</span>
+translate(${e.x}px, ${e.y - e.jump}px)
+<div class="insp-empty">👆 Sahnedeki bir nesneye tıkla.<br><br>Özelliklerini gör, metotlarını elle çağır ve gizli (private) bilgilere dışarıdan ulaşmayı dene.</div>
+<div>${REL[k].label} → ${arr.map(x =>
+<h3>${e.name} : ${esc(cname(e.kind))}</h3><div class="k">${K.label} sınıfından üretilmiş bir nesne</div>
+      <h4>Özellikler</h4>
+      ${c.attrs.map(a =>
+vis-sym ${VIS[a.vis].cls}
+Dışarıdan değiştirmeyi dene
+).join('') || '<div class="insp-empty">Bu sınıfın özelliği yok.</div>'}
+      ${rels ?
+: ''}
+      <h4>Metot çağır</h4>
+      <div class="ins-meths" style="--k:${K.color};--ks:${K.soft}">${c.methods.map(m =>
+${esc(methodDef(e.kind, m).hint || '')}
+).join('') || 'Metot yok.'}</div>
+      <div class="ins-note"><b>Dışarıdan erişim kuralı</b><br><span class="vis-sym v-pub" style="width:20px;height:20px;font-size:13px">+</span> değiştirilebilir · <span class="vis-sym v-prot" style="width:20px;height:20px;font-size:13px">#</span> uyarı alırsın · <span class="vis-sym v-priv" style="width:20px;height:20px;font-size:13px">−</span> engellenir</div>
+<select id="ied">${CN.map(n =>
+<select id="ied"><option value="1" ${v ? 'selected' : ''}>True</option><option value="0" ${!v ? 'selected' : ''}>False</option></select>
+<input id="ied" type="${a.type === 'str' ? 'text' : 'number'}" value="${esc(v)}" spellcheck="false">
+<div class="ins-edit">${input}<button data-iapply="${a.key}">Uygula</button></div>
+>>> ${e.name}.__${a.key} = ...
+🔒 Engellendi! __${a.key} private: sadece ${cn} sınıfının kendi metotları değiştirebilir.
+<span class="c"># Python bu adı _${cn}__${a.key} olarak gizler (name mangling); dışarıdan ${e.name}.__${a.key} ile gerçek değere ulaşılamaz.</span>
+🔒 ${a.key} private! Dışarıdan değiştirilemez; değiştirmek için sınıfın kendi metodu gerekir.
+>>> ${e.name}.${pyN(a)} = ${esc(pyVal(v, a.type))}
+<span class="c"># ⚠ _${a.key} protected: Python izin verir ama kural olarak yalnızca sınıf ve alt sınıfları değiştirmeli.</span>
+>>> ${e.name}.__${m.key}()
+🔒 private metot! ${m.key}() sadece ${esc(cname(e.kind))} sınıfının içinden çağrılabilir.
+<span class="c"># ⚠ _${m.key}() protected: dışarıdan çağırmak kurala aykırı ama Python izin verir.</span>
+<div class="modal-card" id="nyp-modal-card" role="dialog" aria-modal="true"></div>
+<b>${d.key}${ch.dataset.drag === 'attr' ? ': ' + typeStr(d.type) : '()'}</b> — ${esc(d.hint)}
+
+BAĞLANTILAR:
+

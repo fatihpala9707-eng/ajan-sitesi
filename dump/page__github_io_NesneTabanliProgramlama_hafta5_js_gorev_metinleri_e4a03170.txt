@@ -1,0 +1,153 @@
+URL: https://busraozcann.github.io/NesneTabanliProgramlama/hafta5.js#gorev-metinleri
+BAŞLIK: JS verisindeki görev metinleri (hafta5.js)
+TÜR: page
+
+📄 Hepsi bitti mi? Diyagramının ve ilerleme raporunun <b>PDF</b>'ini al.
+
+Tüm görevleri bitirince üst çubuktaki 🔒 PDF düğmesinin kilidi açılır.
+
+Üst çubuktaki 📄 PDF düğmesi.
+
+<svg class="w5-ricon ${cls || ''}" viewBox="0 0 62 18" width="62" height="18" aria-hidden="true">${line}${s}</svg>
+
+<header class="w5-top">
+      <button class="btn" data-act="home">← Haftalar</button>
+      <div class="w5-brand"><span class="w5-logo" aria-hidden="true">${miniDragon()}</span><div><small>5. Hafta · İlişkiler, Kalıtım, Arayüz</small><b>Vize Zindanı</b></div></div>
+      <nav class="w5-modes" id="w5-modes" aria-label="Aşamalar"></nav>
+      <div class="w5-xp" id="w5-xp"></div>
+      <div class="w5-tact">
+        <button class="btn" data-act="pdf" id="w5-pdf">📄 PDF</button>
+        <div class="w5-menu">
+          <button class="btn" data-act="menu" aria-haspopup="true" title="Diğer">☰</button>
+          <div class="w5-menu-pop" id="w5-menu" hidden>
+            <button data-act="guide">🤔 Kavram Rehberi</button>
+            <button data-act="quiz">🕵️ İlişki Dedektifi</button>
+            <button data-act="help">❓ Nasıl oynanır?</button>
+            <hr>
+            <button data-act="teacher" id="w5-tbtn" hidden>👩‍🏫 Öğretmen</button>
+            <button data-act="reset" class="danger">↺ Her şeyi sıfırla</button>
+          </div>
+        </div>
+      </div>
+    </header>
+    <div class="w5-body ${S.journal ? '' : 'j-off'}" id="w5-body">
+      <aside class="w5-journal" id="w5-journal" aria-label="Görev defteri"></aside>
+      <button class="w5-jtab" data-act="journal" id="w5-jt" title="Görev defterini aç/kapat"></button>
+      <main class="w5-area">
+        <section class="w5-view w5-design" id="w5-v-design" hidden>${designShell()}</section>
+        <section class="w5-view w5-code" id="w5-v-code" hidden>${codeShell()}</section>
+        <section class="w5-view w5-arena" id="w5-v-arena" hidden>${arenaShell()}</section>
+      </main>
+    </div>
+
+${i ? '<span class="w5-marrow" aria-hidden="true">›</span>' : ''}<button class="w5-mode ${S.mode === k ? 'on' : ''} ${locked ? 'locked' : ''}" data-act="mode" data-m="${k}" ${S.mode === k ? 'aria-current="page"' : ''}>
+        <i>${locked ? '🔒' : n}</i><span><b>${t}</b><small>${locked ? '4. seviyede' : s}</small></span></button>
+
+: 'Zirvedesin!'}"><i style="width:${(xp / max) * 100}%"></i></div>
+
+PDF tüm görevler bitince açılır (${left} görev kaldı)
+
+UML diyagramını ve ilerleme raporunu PDF olarak indir
+
+<p>⚔️ <b>Savaş</b> aşaması açıldı! Loncanı kurunca arenaya girebilirsin.</p>
+
+<div class="w5-lvup-art">${L.icon}</div><span class="tag">Seviye ${L.n} açıldı</span><h3>${L.title}</h3><p class="w5-lvup-topic">${L.topic}</p><div class="w5-lvup-c">${L.concept}</div>${extra}<p>Görev defterinde yeni mektup seni bekliyor. 📜</p>
+
+<div class="w5-lvup-art">${miniDragon(120)}</div><span class="tag">${MISSIONS.length} / ${MISSIONS.length} görev</span><h3>Bütünlemeye kalmadın! 🎓</h3>
+      <p>Soyut sınıf, arayüz, kalıtım, bileşim, toplama ve çokluklarla koca bir oyun tasarladın; sonra onu <b>kendin kodladın</b>. Üstelik oyun motoru senin sınıflarını hiç tanımadan çalıştırdı.</p>
+      <p>Tasarımının PDF'ini aldığından emin ol. Gelecek hafta bu loncayla devam edeceğiz. 😉</p>
+
+<div class="modal-card" id="nyp-modal-card" role="dialog" aria-modal="true"></div>
+
+).join('')}
+      </div>
+      <h4>Sık karışanlar</h4>
+      <ul class="w5-faq">
+        <li><b>Soyut sınıf mı, arayüz mü?</b> Ortak <i>özellik ve kod</i> paylaşılacaksa soyut sınıf. Sadece bir <i>yetenek</i> sözü veriliyorsa (ve akraba olmayan sınıflar da o yeteneğe sahip olabiliyorsa) arayüz.</li>
+        <li><b>Kalıtım mı, ilişki mi?</b> “A bir B'dir” diyebiliyor musun? Savaşçı bir Karakterdir ✅ → kalıtım. Savaşçı bir Silahtır ❌ → silahı <i>vardır</i> → ilişki.</li>
+        <li><b>Toplama mı, bileşim mi?</b> Bütün silinince parça da silinmeli mi? Evet → bileşim ◆. Hayır, parça yaşamaya devam eder → toplama ◇.</li>
+        <li><b>Çokluk hangi uca yazılır?</b> Kendi ucuna! Envanter ucundaki <code>1</code> “her karakterin <i>1 envanteri</i> var” demek. Okurken karşı taraftan başla: “bir Karakter'in kaç Envanter'i var?” → cevap Envanter ucuna.</li>
+        <li><b>Kodda ne olur?</b> <code>1</code> → tek nesne · <code>0..1</code> → nesne ya da <code>None</code> · <code>*</code>, <code>1..*</code>, <code>1..4</code> → liste. Bileşimde parça <code>__init__</code> içinde üretilir.</li>
+        <li><b>+ # − kodda?</b> <code>+ ad</code> → <code>self.ad</code> · <code># guc</code> → <code>self._guc</code> · <code>− can</code> → <code>self.__can</code></li>
+      </ul>
+
+<h3>⚔️ Vize Zindanı'na hoş geldin!</h3>
+      <p>Bu hafta üç aşamada bir oyun yapacaksın. Görevler soldaki <b>📜 Görev Defteri</b>'nde; asıl tarif <b>mektup</b>ta (brif).</p>
+      <ol class="w5-steps">
+        <li><b>📐 Tasarla</b> — UML'yi <i>yazarak</i> çiz. Sol araç çubuğundan kutu türünü seç, tuvale tıkla. Kutudaki satırlara UML biçiminde yaz:<br>
+          <code>+ ad: str</code> · <code>− can: int</code> · <code># guc: int</code><br>
+          <code>+ saldir(hedef: Karakter): None {abstract}</code><br>
+          <kbd>Enter</kbd> yeni satır, boş satırda <kbd>⌫</kbd> satırı siler. İlişki için <b>🔗 Bağla</b> aracıyla bir kutudan diğerine sürükle, sonra sağ panelden türünü, yönünü ve çokluklarını seç.</li>
+        <li><b>⌨️ Kodla</b> — Python'u <i>sen</i> yazarsın. <kbd>Ctrl</kbd>+<kbd>Enter</kbd> çalıştırır. Sağdaki <b>UML ↔ Kod</b> paneli diyagramındaki her satırın kodda karşılığı var mı gösterir. Kod Kartları başka konulardan örnekler verir.</li>
+        <li><b>⚔️ Savaş</b> — 4. seviyede açılır. Kodundaki lonca, sınav canavarlarıyla savaşır. Senin <code>print</code>'lerin konuşma balonu olur!</li>
+      </ol>
+      <p class="w5-sub">⚠️ Sayfayı yenilersen kaldığın yerden devam edersin, ama <b>uygulamayı kapatırsan her şey silinir</b>. Dersi tek oturumda bitir. Tüm görevler bitince <b>📄 PDF</b> açılır; PDF'te her görevi hangi tarih ve saatte tamamladığın yazar. Bu PDF'i öğretmenine teslim edeceksin.</p>
+
+UML dedektifi olmuşsun! 🕵️
+
+Örnek kod yüklendi. ▶ Çalıştır!
+
+<h3>Her şey sıfırlansın mı?</h3><p>Diyagram, kod, XP ve arena zaferleri silinir; görev saatleri de sıfırlanır.</p>
+
+Zindan sıfırlandı. Karakter ile başla!
+
+Oturum başlangıcı: ${fmtTime(S.startedAt)}   ·   PDF alınma: ${fmtTime(now)}   ·   Süre: ${Math.floor(mins / 60)} sa ${mins % 60} dk
+
+Tamamlanan görev: ${Object.keys(S.done).length + (S.done.p1 ? 0 : 1)} / ${MISSIONS.length}   ·   XP: ${Math.min(MISSIONS.length, Object.keys(S.done).length + (S.done.p1 ? 0 : 1)) * 10}   ·   Arena: ${[1, 2, 3].filter(k => S.wins[k] === true).length} / 3 kat
+
+Bu oturumda öğretmen paneli kullanıldı.
+
+Saatler, öğrencinin bilgisayar saatine göre kaydedilmiştir.
+
+<div class="w5-lvup-art">🔒</div><h3>PDF henüz kilitli</h3><p>PDF çıktısı <b>tüm görevler bitince</b> açılır. Sana <b>${left}</b> görev kaldı.</p><p class="w5-sub">PDF'te diyagramın, kodun ve her görevi hangi tarihte, saat kaçta tamamladığın yer alacak.</p>
+
+Önce diyagrama sınıf ekle.
+
+));
+    c.raw.meths.filter(t => t.trim()).forEach(t => L.push('# │ ' + t.trim()));
+    L.push('# └── (sınıfı bu yorumların altına yaz)', '', '', '');
+    const v = ED.ta.value, mark = v.indexOf('# ---- Deneme alanı');
+    const at = mark >= 0 ? mark : v.length;
+    ED.ta.focus(); ED.ta.setSelectionRange(at, at);
+    insertText(L.join('
+'));
+    const line = v.slice(0, at).split('
+').length;
+    gotoLine(line + L.length - 3, true);
+    toast(
+
+, 'good');
+  }
+  /* =====================================================================
+     3) SAVAŞ — arena
+     ===================================================================== */
+  const FLOORS = {
+    1: { name: 'Vize Koridoru', mons: [['Yoklama Hayaleti', 'ghost', 70, 'hayalet'], ['Sürpriz Quiz Goblini', 'goblin', 85, 'goblin']], note: 'Isınma turu: iki küçük canavar.' },
+    2: { name: 'Proje Bodrumu', mons: [['Deadline Golemi', 'golem', 330, 'golem']], note: 'Her 4 turda bir “deadline uzatılır”: golem 40 can kazanır.' },
+    3: { name: 'Bütünleme İni', mons: [['Bütünleme Ejderhası', 'dragon', 1000, 'ejderha']], note: 'Her 3 turda bir alev püskürtür: tüm lonca 14 hasar alır.' }
+  };
+  const HERO_POS = [[150, 440], [285, 505], [420, 440], [555, 505]];
+  const MON_POS = { 1: [[790, 440], [940, 505]], 2: [[870, 500]], 3: [[880, 515]] };
+  const MON_SCALE = { ghost: 1.1, goblin: 1.1, golem: 1.5, dragon: 1.9 };
+  const ST_W = 1100, ST_H = 540;
+  const DUR = { round: 450, atk: 950, heal: 900, potion: 900, crit: 850, burn: 360, aoe: 700, buff: 900 };
+
+  function arenaShell() {
+    return
+
+;
+  }
+
+  /* ---- çizimler ---- */
+  const hueOf = s => { let h = 7; for (const ch of String(s)) h = (h * 31 + ch.charCodeAt(0)) % 360; return h; };
+  const weaponEmoji = n => (/terlik/i.test(n) ? '🩴' : /klavye/i.test(n) ? '⌨️' : /kalem/i.test(n) ? '✏️' : /kitap/i.test(n) ? '📕' : '🗡️');
+  const potionEmoji = n => (/çay|cay/i.test(n) ? '🍵' : /kahve/i.test(n) ? '☕' : /ayran|süt|sut/i.test(n) ? '🥛' : '🧪');
+  const heroKind = e => (e.chain.includes('Sifaci') ? 'healer' : e.chain.includes('Savasci') ? 'warrior' : 'custom');
+  const FACE = '<circle cx="45" cy="34" r="19" fill="#F3C9A1"/><circle cx="38.5" cy="36" r="2.6" fill="#23213A"/><circle cx="51.5" cy="36" r="2.6" fill="#23213A"/><circle cx="34" cy="42" r="3" fill="#FF8FA3" opacity=".5"/><circle cx="56" cy="42" r="3" fill="#FF8FA3" opacity=".5"/><path d="M39.5 44 q5.5 4.5 11 0" stroke="#23213A" stroke-width="2" fill="none" stroke-linecap="round"/>';
+  function heroSVG(e, w) {
+    w = w || 90;
+    const k = heroKind(e), hue = hueOf(e.cls + e.ad), h = Math.round(w * 120 / 90);
+    const wpn = e.silah ?
+
+BAĞLANTILAR:
+

@@ -1,0 +1,158 @@
+URL: https://busraozcann.github.io/NesneTabanliProgramlama/hafta7.js?v=7.2#kod-parcalari
+BAŞLIK: JS verisindeki kod parçaları (hafta7.js?v=7.2)
+TÜR: source
+
+class Siparis:
+    # ... (diğer metotlar aynı)
+
+    def odemeyi_al(self):
+        tutar = self.toplam()
+        if isinstance(self.odeme, Nakit):
+            return True
+        elif isinstance(self.odeme, Kart):
+            return self.odeme.ode(tutar)
+        elif self.odeme.tur() == "Yemek Kartı":
+            return self.odeme.ode(tutar)
+        return False
+
+Tost da bir Urun'dur, yani Urun'dan miras alır. Ama fiyatını kendine göre hesaplar. Miras aldığın metodu alt sınıfta aynı adla yeniden yazmaya override denir.
+
+class Urun:
+    def __init__(self, ad, f):
+        self.ad = ad
+        self.f = f
+    def fiyat(self):
+        return self.f
+
+class Tost(Urun):
+    def fiyat(self):
+        return super().fiyat() + 15
+
+print(Urun("Çay", 10).fiyat(), Tost("Tost", 50).fiyat())
+
+Çift alt çizgiyle başlayan özellik private olur: sınıfın içinden erişilir, dışarıdan erişilemez. Bu yüzden bakiyeyi okumak için ayrı bir metot yazıyorsun.
+
+class Drone:              # hiçbir şeyden türemiyor!
+    def sure(self, km):
+        return km + 1
+
+def goster(k):
+    print(k.sure(3))
+
+goster(Drone())
+
+En tehlikeli hata budur: <b>sessiz hata</b>. Adı bir harf farklıysa bu override değil, yeni bir metot olur; ebeveynin metodu çalışmaya devam eder.
+
+class KampanyaTost(Tost):
+    def __init__(self, ad, taban_fiyat):
+        self.indirim = 10
+
+    def fiyat(self):
+        return super().fiyat() - self.indirim
+
+class BedavaCay(Icecek):
+    def fiyatt(self):
+        return 0
+
+class KahvaltiMenu(Menu):
+    def fiyat(self):
+        indirimli = super().fiyat() - 10
+
+class Hayvan:
+    def ses(self):
+        return "..."
+
+class Kedi(Hayvan):
+    def ses(self):           # override: birebir aynı ad
+        return "Miyav"
+
+class Kopek(Hayvan):
+    def seS(self):           # ❌ yanlış ad! override DEĞİL
+        return "Hav"         #    yeni bir metot oldu
+
+print(Kedi().ses())          # Miyav
+print(Kopek().ses())         # ... (ebeveyninki çalıştı!)
+
+Metot adı bir harf bile farklıysa Python hata vermez; sadece override olmaz. En sinsi hatalardan biri.
+
+class Calisan:
+    def __init__(self, ad, maas):
+        self.ad = ad
+        self.maas = maas
+
+    def odeme(self):
+        return self.maas
+
+class Mudur(Calisan):
+    def __init__(self, ad, maas, prim):
+        super().__init__(ad, maas)   # ad ve maaş ebeveynin işi
+        self.prim = prim             # prim benim işim
+
+    def odeme(self):
+        return super().odeme() + self.prim
+
+from abc import ABC, abstractmethod
+
+class Bildirim(ABC):
+    def __init__(self, kime):
+        self.kime = kime
+
+    @abstractmethod
+    def gonder(self, metin):   # nasıl? alt sınıf bilir
+        pass
+
+    def uyar(self):            # dolu metot, soyutu çağırabilir!
+        self.gonder("DİKKAT!")
+
+class Sms(Bildirim):
+    def gonder(self, metin):
+        print(self.kime, "SMS:", metin)
+
+Sms("Ali").uyar()              # Ali SMS: DİKKAT!
+# Bildirim("Ali")              → TypeError!
+
+class Bildirim: ...          # DOKUNMA
+class Sms(Bildirim): ...     # DOKUNMA
+
+def herkese_gonder(liste, metin):   # DOKUNMA
+    for b in liste:
+        b.gonder(metin)
+
+# Yeni tür mü geldi? Sadece yeni sınıf yaz:
+class Eposta(Bildirim):
+    def gonder(self, metin):
+        print(self.kime, "E-POSTA:", metin)
+
+class Ordek:
+    def yuz(self):
+        print("Vak vak, yüzüyorum")
+
+class Denizalti:             # akraba değil!
+    def yuz(self):
+        print("Bip bip, daldım")
+
+def havuza_at(x):
+    x.yuz()                  # tür sormuyor, deniyor
+
+havuza_at(Ordek())
+havuza_at(Denizalti())       # ikisi de çalışır
+
+class Playlist:
+    def __init__(self, ad, sarkilar):
+        self.ad = ad
+        self.sarkilar = sarkilar
+
+    def __str__(self):          # print(p) ve str(p)
+        return self.ad + " listesi"
+
+    def __len__(self):          # len(p)
+        return len(self.sarkilar)
+
+    def __lt__(self, diger):    # p1 < p2 ve sorted(...)
+        return len(self) < len(diger)
+
+p = Playlist("Yol", ["a", "b"])
+print(p, len(p))                # Yol listesi 2
+
+BAĞLANTILAR:
+

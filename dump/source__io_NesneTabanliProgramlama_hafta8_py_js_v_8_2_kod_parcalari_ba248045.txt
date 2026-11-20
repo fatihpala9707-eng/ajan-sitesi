@@ -1,0 +1,14 @@
+URL: https://busraozcann.github.io/NesneTabanliProgramlama/hafta8-py.js?v=8.2#kod-parcalari
+BAŞLIK: JS verisindeki kod parçaları (hafta8-py.js?v=8.2)
+TÜR: source
+
+Dosyanın en üstünde şu satır olmalı: from enum import Enum, auto
+
+Bu bir metin, enum sabiti değil
+
+.name ve .value yalnızca enum sabitlerinde vardır. Değeri "mavi" gibi bir metin değil, Renk.MAVI gibi bir sabit olarak ver.
+
+Bir enum içinde her sabit adı yalnızca bir kez kullanılabilir.
+
+BAĞLANTILAR:
+

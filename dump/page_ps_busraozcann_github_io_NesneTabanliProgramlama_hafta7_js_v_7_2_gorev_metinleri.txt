@@ -1,0 +1,71 @@
+URL: https://busraozcann.github.io/NesneTabanliProgramlama/hafta7.js?v=7.2#gorev-metinleri
+BAŞLIK: JS verisindeki görev metinleri (hafta7.js?v=7.2)
+TÜR: page
+
+Icecek("Ayran", 20, "kucuk").fiyat()
+
+Tost'a çok benziyor. Dosyasına bakıp kalıbı uygula.
+
+Buradaki if sorun değil: nesne kendi özelliğine bakıyor, başka bir nesnenin türüne değil.
+
+Aşağıda, sohbetteki soruyu oku.
+
+Kodu <b>çalıştırmadan</b> doğru cevaba tıkla. Yanlış yaparsan neden yanlış olduğunu söyler, tekrar dene.
+
+Cem Abi soruyor: Bu kod ekrana ne yazar?
+
+Menu("Öğrenci", [tost, ayran]).fiyat()
+
+Liste __init__ içinde oluşturulmuyor, nesne üretilirken dışarıdan geliyor. Örneğe bak: tost ve ayran bir listeye konup Menu'ye veriliyor.
+
+KE-06'daki döngüyü hatırla: bir toplam değişkeni, ürünleri gezen bir döngü, her adımda ürünün fiyatını toplama ekleme. İndirimi döngü bittikten sonra uygula.
+
+Fark ettin mi? Menü de bir Urun olduğu için menünün içine menü de koyabilirsin, kod hiç değişmeden çalışır.
+
+Bir metodu soyut yapmak için üstüne özel bir işaret konur. 📚 Wiki'deki "Soyut sözleşme" sayfasında başka bir sınıf üzerinde örneği var.
+
+fis_satiri içinden aynı sınıfın tur metodunu çağıracaksın. tur burada boş görünüyor ama alt sınıflar doldurunca onlarınki çalışacak. Metni örnekteki biçimde oluştur.
+
+Dikkat: <code>fis_satiri</code> soyut bir metodu çağırıyor. Ebeveyn iskeleti yazıyor, ayrıntıyı çocuklar dolduruyor.
+
+Sabahki sorunun çözümü burada. Siparis ödeme türünü bilmeyecek, sadece metodu çağıracak. İşi nesne yapacak.
+
+<code>Siparis</code> sınıfını yaz. <code>__init__</code> metodu dört bilgi alsın ve aynı adlarla özellik olarak saklasın. Sıra şöyle: <code>musteri</code>, <code>odeme</code>, <code>kurye</code>, <code>mesafe</code>. Ayrıca <code>urunler</code> adında boş bir liste oluştursun.
+
+<code>ekle</code> metodu: verilen ürünü listeye eklesin.
+
+KampanyaTost("Kampanya", 60).fiyat()
+
+AttributeError: bir özellik yok. O özelliği kim oluşturacaktı?
+
+Alt sınıf kendi __init__ metodunu yazınca miras aldığı sınıfınki kendiliğinden çalışmaz; onu senin çağırman gerekir. Tost'u yazarken de aynısını yapmıştın.
+
+__str__ de bir metot, sadece Python kendisi çağırıyor. Metni ekrana yazma, geri ver.
+
+Taban fiyatı kullanırsan ekstra kaşarlı tost yanlış fiyatla görünür. Metni örnekteki biçimde oluştur.
+
+Urun'a tek metot yazdın, hepsi güzel göründü; çünkü <code>self.fiyat()</code> çok biçimli çalışıyor. Telefondaki menüye bak.
+
+Sayıyı pencerenin üstündeki kutuya yaz, <b>Gönder</b>'e bas.
+
+Mimari penceresi açık değilse alttaki görev çubuğundan aç.
+
+Miras alan ama kendi fiyat()'ını yazmayan sınıflar sayılmaz; onların kutusunda fiyat() satırı görünmez.
+
+Sistemin kalbine hiç dokunmadan yeni ödeme ve kurye türleri ekledim: nesneler kendi işini biliyor, motor hiçbirini tanımıyor.
+
+<h3>🥪 KantinOS'a hoş geldin!</h3>
+      <p>Bugün Kantin Express'te stajyersin. Burası bir işletim sistemi gibi çalışıyor: pencereleri başlığından tutup taşı, köşesinden boyutlandır, alttaki çubuktan aç/kapat.</p>
+      <ul class="w7-how">
+        <li><b>💬 Mesajlar:</b> Görevin her zaman en üstteki kartta yazar: neden, hangi dosya, neler yapılacak ve sonuç nasıl görünmeli. Altında ekip sohbet eder.</li>
+        <li><b>⌨️ Kod:</b> Python'u sen yazarsın. Her sınıfın kendi dosyası var; bilet açılınca doğru dosya kendiliğinden açılır. <b>🚀 Canlıya Al</b> (<kbd>Ctrl</kbd>+<kbd>Enter</kbd>) kodunu derler, test eder, yayına alır.</li>
+        <li><b>📱 Canlı:</b> Uygulaman! Fiyatlar senin metotlarından gelir, kuryeler senin hesapladığın sürede yürür.</li>
+        <li><b>🏛️ Mimari:</b> Bu sefer UML çizmiyorsun: kodundan kendiliğinden çiziliyor.</li>
+        <li><b>📚 Wiki:</b> Takıldığında bak; ya da biletteki <b>💡 Cem Abi'ye sor</b>.</li>
+      </ul>
+      <p class="w7-sub">⚠️ Sayfayı yenilersen kaldığın yerden devam edersin, ama <b>sekmeyi kapatırsan her şey silinir</b>. Son bilette PDF'ini alıp teslim edeceksin.</p>
+
+<h3>👩‍🏫 Öğretmen</h3><p>Öğretmen kodunu gir.</p><input type="password" id="w7-pin-in" class="w7-in" autocomplete="off" placeholder="öğretmen kodu">
+
+BAĞLANTILAR:
+

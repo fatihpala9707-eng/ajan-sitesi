@@ -1,0 +1,104 @@
+URL: https://busraozcann.github.io/NesneTabanliProgramlama/hafta6.js?v=6.1#gorev-metinleri
+BAŞLIK: JS verisindeki görev metinleri (hafta6.js?v=6.1)
+TÜR: page
+
+class Kitaplik:
+    def __init__(self, ad):
+        self.ad = ad
+        self.kitaplar = []      # dışarıdan gelenler
+        self.raflar = []        # kitaplığın kendi ürettikleri
+
+    def kitap_ekle(self, kitap):
+        self.kitaplar.append(kitap)      # toplama ◇
+
+    def raf_tak(self, no):
+        self.raflar.append(Raf(no))      # bileşim ◆
+
+Listeyi __init__ içinde oluştur, sınıfın gövdesinde değil.
+
+Nesneleri birbirine bağlamak
+
+${bn} ucundaki rol adı ${role} olmalı (kodda self.${role} listesi olacak).
+
+Önce 📐 Plan'da bu seviyenin UML görevini bitir.
+
+Kodu çalıştır (yazmayı bırakınca kendiliğinden çalışır).
+
+<button class="w6-mode ${S.mode === k ? 'on' : ''} ${locked ? 'locked' : ''}" data-act="mode" data-m="${k}" ${S.mode === k ? 'aria-current="page"' : ''}>
+        <i>${locked ? '🔒' : n}</i><span><b>${t}</b><small>${locked ? 'mahalle kurulunca' : s}</small></span></button>
+
+<div class="w6-houses" title="Her görev bir ev: bitince ışığı yanar">${MISSIONS.map(m =>
+
+${S.done[m.id] ? 'on' : ''}
+
+).join('')}</div><small>${d} / ${MISSIONS.length} görev</small>
+
+PDF tüm görevler bitince açılır (${left} görev kaldı)
+
+UML, kod ve sahneyi PDF olarak indir
+
+;
+        }).join('')}</ul>
+      </div>
+      <div class="w6-dfoot"><button class="btn" data-act="guide">📘 Enum nedir?</button><button class="btn" data-act="quiz">🎯 Enum Testi</button></div>
+
+🎬 Sahne, mahalleni kurunca açılır (4. seviyenin son görevi).
+
+<p>🎬 <b>Sahne</b> açıldı! Üstteki sekmeden mahalleni görebilirsin.</p>
+
+<div class="w6-lvup-art">${L.icon}</div><span class="tag">Seviye ${L.n} açıldı</span><h3>${L.title}</h3><p class="w6-lvup-topic">${L.topic}</p><div class="w6-lvup-c">${L.concept}</div>${extra}<p>Defterde Muhtar'ın yeni notu seni bekliyor. 📌</p>
+
+<div class="w6-lvup-art">🏘️</div><span class="tag">${MISSIONS.length} / ${MISSIONS.length} görev</span><h3>Masal Mahallesi kuruldu!</h3>
+      <p>Enum ile seçenekleri sınırladın, sınıfla kalıbı çizdin, her nesneye kendi değerlerini verdin, metotlarla evleri değiştirdin ve hepsini bir mahallede topladın.</p>
+      <p>Gelecek hafta bu mahalleye yeni sınıflar ekleyeceğiz. 😉</p>
+
+<div class="modal-card" id="nyp-modal-card" role="dialog" aria-modal="true"></div>
+
+<h3>📘 Enum nedir?</h3>
+      <p class="w6-sub">Değerleri <b>önceden belli ve sınırlı</b> olan bir türdür. Haftanın günleri, trafik ışığı, tişört bedenleri... Seçenekler bellidir, dışarıdan yenisi uydurulamaz.</p>
+      <div class="w6-tbl"><table>
+        <tr><th></th><th>Metin (str) ile</th><th>Enum ile</th></tr>
+        <tr><th>Tanım</th><td><code>renk = "mavi"</code></td><td><code>class Renk(Enum):</code><br><code>&nbsp;&nbsp;&nbsp;&nbsp;MAVI = "#3D8BFF"</code></td></tr>
+        <tr><th>Yazım hatası</th><td><code>"mavı"</code> sessizce geçer 😬</td><td><code>Renk.MAVİ</code> → hemen hata ✅</td></tr>
+        <tr><th>Seçenekleri görmek</th><td>bilinmez</td><td><code>for r in Renk: print(r.name)</code></td></tr>
+        <tr><th>Ek bilgi taşımak</th><td>ayrı bir değişken gerekir</td><td><code>Renk.MAVI.value</code> → renk kodu</td></tr>
+      </table></div>
+      <h4>Enum sabiti bir nesnedir</h4>
+      <ul class="w6-faq">
+        <li><code>Renk</code> bir sınıftır; <code>Renk.MAVI</code> ise o sınıfın <b>önceden üretilmiş</b> bir nesnesidir: <code>isinstance(Renk.MAVI, Renk)</code> → <code>True</code>.</li>
+        <li>Her sabitin adı ve değeri vardır: <code>Renk.MAVI.name</code> → <code>'MAVI'</code>, <code>Renk.MAVI.value</code> → <code>'#3D8BFF'</code></li>
+        <li>Sabite iki yoldan ulaşılır: adıyla <code>Renk["MAVI"]</code>, değeriyle <code>Renk("#3D8BFF")</code>.</li>
+        <li>Sabitler değiştirilemez ve yenisi üretilemez. Aynı değeri iki sabite verirsen ikincisi yeni sabit olmaz, birincinin <b>takma adı</b> (alias) olur.</li>
+        <li>Değer önemli değilse <code>auto()</code> kullan: <code>UCGEN = auto()</code></li>
+      </ul>
+      <h4>UML'de</h4>
+      <div class="w6-umlmini"><div class="h"><small>«enumeration»</small><b>Renk</b></div><div class="s">KIRMIZI<br>MAVI<br>SARI</div></div>
+      <p class="w6-sub">Bölmeye yalnızca sabit adları yazılır: tip, + işareti ya da değer yazılmaz. Ev'in özelliği ise <code>+ renk: Renk</code> diye yazılır: tipi enum'un adıdır.</p>
+      <h4>Sınıf ve nesne</h4>
+      <p class="w6-sub"><b>Sınıf</b> kalıptır: hangi özelliklerin olacağını söyler. <b>Nesne</b> o kalıptan üretilen üründür ve kendi değerlerini taşır. Maketteki gri ev kalıptır; <code>Ev(...)</code> yazdığın anda ondan renkli bir ev çıkar.</p>
+
+<h3>🏘️ Masal Mahallesi'ne hoş geldin!</h3>
+      <p>Bu hafta kendi mahalleni kuracaksın. Görevler soldaki <b>📒 Defter</b>'de; asıl tarif <b>Muhtar'ın notu</b>nda.</p>
+      <ol class="w6-steps">
+        <li><b>📐 Plan</b> — UML'yi <i>yazarak</i> çiz. Araç çubuğundan <b>Sınıf</b> ya da <b>«enum»</b> ekle, satırlara UML biçiminde yaz:<br>
+          <code>+ kat: int</code> · <code>+ boya(yeni_renk: Renk): None</code> · enum kutusunda yalnızca <code>KIRMIZI</code><br>
+          <kbd>Enter</kbd> yeni satır, boş satırda <kbd>⌫</kbd> satırı siler. Kutuyu başlığından tutup taşıyabilirsin.</li>
+        <li><b>⌨️ Kod</b> — Python'u <i>sen</i> yazarsın. Yazmayı bıraktığında kod kendiliğinden çalışır ve sağdaki <b>Maket</b> canlanır: ürettiğin her nesne, verdiğin değerlerle çizilir.</li>
+        <li><b>🎬 Sahne</b> — mahallen kurulunca açılır: tüm evler, ağaçlar, mevsim ve nesnelerinin yazdığı hikâye.</li>
+      </ol>
+      <p class="w6-sub">Her seviyede önce UML, sonra kod. Sayfayı yenilersen kaldığın yerden devam edersin; ama <b>sekmeyi kapatırsan her şey silinir</b>. Tüm görevler bitince <b>📄 PDF</b> açılır: UML diyagramın, kodun ve sahnen.</p>
+
+Az kaldı, bir daha dene!
+
+Tüm seviyeler açıldı.
+
+<h3>Her şey sıfırlansın mı?</h3><p>Diyagram, kod ve tamamlanan görevler silinir.</p>
+
+Mahalle sıfırlandı. Renk ile başla!
+
+<div class="w6-lvup-art">🔒</div><h3>PDF henüz kilitli</h3><p>PDF <b>tüm görevler bitince</b> açılır. Sana <b>${left}</b> görev kaldı.</p><p class="w6-sub">PDF'te UML diyagramın, Python kodun ve mahallenin sahnesi yer alacak.</p>
+
+Önce Plan'a sınıf ekle.
+
+BAĞLANTILAR:
+

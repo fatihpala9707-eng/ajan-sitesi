@@ -1,0 +1,149 @@
+URL: https://busraozcann.github.io/NesneTabanliProgramlama#etkilesim-1-8_Hafta_devi
+BAŞLIK: 8. Hafta Ödevi ▶ | NYP Atölyesi
+TÜR: page
+
+← Haftalar
+8. HAFTA · ÖDEV · OOP + UML
+Kronos Ajansı
+1
+Plan
+UML
+2
+Kod
+Python
+🔒
+Tur
+4. seviyede
+0
+/ 19 görev
+🔒 PDF
+☰
+⏳
+1
+🔒
+2
+🔒
+3
+🔒
+4
+🔒
+5
+🔒
+6
+🔒
+7
+⏳
+1. SEVİYE · ENUM + SOYUT SINIF + KAPSÜLLEME
+Ajansın Temeli
+0/4
+📨 Ajans Müdürü'nden mesaj
+
+Kronos Ajansı Müdürü'nden: Hoş geldin baş mimar! Yıl 2300; zaman yolculuğu artık bir turizm sektörü. Müşterilerimiz dinozorları, piramitleri, Mars kolonilerini görmek istiyor. Ama önce çağların ne olduğunu tanımlamalıyız.
+
+4 enum: Malzeme (en az 6, değerleri "#RRGGBB" renk kodu), Gokyuzu, Zemin, Hava (her biri en az 3 sabit; değerler auto() olabilir). Hangi sabitlerin 3D'de özel göründüğü 📚 Katalog'da.
+Cag soyut bir sınıftır: ad (str) ve gizli yil (int; MÖ yıllar eksi: -2560). Yıla dışarıdan yalnızca get_yil() ile bakılır.
+yil_metni(): -2560 → "MÖ 2560", 1453 → "MS 1453"
+Her çağ kendi gok(), zemin() ve hava()'sını bilir; Cag bunları bilemez (soyut metotlar). Hepsi ilgili enum'dan bir sabit döndürür.
+Sonra ilk çağını kodla: class AntikMisir(Cag): ve bir nesne üret: misir = AntikMisir("Antik Mısır", -2560). Sağdaki önizlemede çağın gökyüzü ve zemini belirecek!
+
+🤔 Neden yıl private? Biri misir.yil = 99999 yazarsa ne olurdu?
+
+💡 Kavram
+Soyut sınıf yarım bir tariftir: "her çağın bir gökyüzü vardır" der ama hangisi olduğunu alt sınıfa bırakır. Python: class Cag(ABC): + @abstractmethod. UML: «abstract», metot sonunda {abstract}.
+Kapsülleme: − yil: int → kodda self.__yil. Değere yalnızca sınıfın metotları dokunur.
+Enum: seçenekler sabit; 3D motoru Gokyuzu.AURORA'yı tanır ama "aurora" metnini tanımaz.
+📐
+Plan'a 4 «enumeration» çiz: Malzeme (en az 6), Gokyuzu, Zemin, Hava (en az 3'er).
+Plan'da Malzeme adında bir kutu yok. «enum» düğmesiyle ekle.
+📐
+Soyut Cag'ı çiz: + ad, gizli − yil, get_yil(), yil_metni() ve 3 soyut metot.
+Plan'da Cag adında bir kutu yok.
+⌨️
+4 enum'u Python'da yaz (Malzeme değerleri "#RRGGBB").
+Önce 📐 Plan'da bu seviyenin UML görevini bitir.
+⌨️
+Cag'ı ve ilk çağını kodla, bir nesne üret. Önizlemede çağın açılışını izle! (İlk çağı Plan'a da çiz: ──▷ Cag)
+Önce 📐 Plan'da bu seviyenin UML görevini bitir.
+📘 UML kopya kâğıdı
+📚 Katalog
+‹
+Sınıf
+A
+Soyut
+Arayüz
+«enum»
+İlişki
+−
+80%
++
+Sığdır
+📐 Boş plan. Yukarıdan «enum» ekleyerek başla: ilk kutun Malzeme olsun.
+🔗 İlişkiler (0):
+henüz yok · kalıtım için de 🔗 İlişki düğmesini kullan
+🌍 Önizleme
+📚 Katalog
+🃏 Kartlar
+🔗 UML↔Kod
+🛠 Atölye
+0 nesne
+etiketler
+
+Henüz bir çağ nesnesi yok. Cag'dan türeyen bir sınıf yazıp nesne üret: misir = AntikMisir("Antik Mısır", -2560)
+
+🏛 Yapılar (0)
+yok
+🦕 Canlılar (0)
+yok
+
+🖱 Sahneyi fareyle sürükleyip çevir, tekerlekle yakınlaş.
+
+⏳ Kronos Ajansı'na hoş geldin!
+
+Bu bir ödev: kendi zaman turizmi ajansını tasarlayıp kodlayacak, sonra çağların arasında 3D yürüyeceksin. Görevler soldaki 📜 Görevler panelinde; asıl tarif Ajans Müdürü'nün mesajında.
+
+📐 Plan: UML'yi yazarak çiz. Araç çubuğundan Sınıf, Soyut, Arayüz ya da «enum» ekle. Satırlara UML biçiminde yaz: − yil: int · + gok(): Gokyuzu {abstract}. Enter yeni satır. Kutunun türünü başlıktaki seçiciden değiştirebilirsin.
+⌨️ Kod: Python'u sen yazarsın. Yazmayı bıraktığında kod çalışır ve sağdaki 🌍 3D önizleme çağını kurar. 📚 Katalog'da 28 yapı, 14 canlı ve 19 çağ fikri var.
+🌀 Tur: çağların zaman çizgisinde adalara dönüşür. WASD ile yürü, fareyle bak.
+
+💾 Çalışman bu tarayıcıda kalıcı: kapatıp yarın devam edebilirsin. Başka bir bilgisayara geçeceksen ☰ → Kaydı indir, orada ☰ → Kayıt yükle. Tüm görevler bitince 📄 PDF açılır.
+
+Başlayalım!
+
+KOD BLOKLARI:
+class AntikMisir(Cag):
+
+misir = AntikMisir("Antik Mısır", -2560)
+
+misir.yil = 99999
+
+class Cag(ABC):
+
+@abstractmethod
+
++ gok(): Gokyuzu {abstract}
+
+# ⏳ Kronos Ajansı — senin Python kodun
+# UML'de çizdiğin her şeyi burada koda çevir.
+# Yazmayı bıraktığında kod kendiliğinden çalışır, sağdaki 3D önizleme çağlarını kurar.
+# 📚 Katalog'daki sınıf adlarını kullanırsan (Piramit, Ejderha, Roket...) 3D'de o modeller çizilir.
+
+from abc import ABC, abstractmethod
+from enum import Enum, auto
+
+
+# ---- Enum'lar ----
+
+
+
+# ---- Arayüzler ----
+
+
+
+# ---- Sınıflar ----
+
+
+
+# ---- Nesneler: çağlarını kur ----
+
+BAĞLANTILAR:
+

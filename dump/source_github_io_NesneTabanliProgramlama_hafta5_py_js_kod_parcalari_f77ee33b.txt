@@ -1,0 +1,10 @@
+URL: https://busraozcann.github.io/NesneTabanliProgramlama/hafta5-py.js#kod-parcalari
+BAŞLIK: JS verisindeki kod parçaları (hafta5-py.js)
+TÜR: source
+
+__${x[3]} başka bir sınıfta (ya da üst sınıfta) private tanımlanmış. Private özelliğe ALT SINIF bile dışarıdan ulaşamaz. O sınıfa bir metot ekleyip (ör. get_${x[3]}() ya da ${x[3]}_kazan()) onu çağır.
+
+${cls} sınıfı ${meths}() metodunu yazmamış (override etmemiş). Üst sınıftaki soyut metodu ${cls} içinde aynı adla yazmalısın.
+
+BAĞLANTILAR:
+

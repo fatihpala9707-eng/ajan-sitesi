@@ -1,0 +1,608 @@
+URL: https://busraozcann.github.io/NesneTabanliProgramlama/hafta6.js?v=6.1#kaynak-dosya
+BAŞLIK: hafta6.js?v=6.1
+TÜR: resource
+
+']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '
+parça dışarıdan gelir, bütün olmadan da yaşar
+parçayı bütün üretir, bütünle doğar ve ölür
+<p><b>Muhtar Hüsnü'den not:</b> Hoş geldin mimar! Masal Mahallesi'ni birlikte kuracağız. Ama önce geçen yılın derdini dinle: herkes evinin rengini kendi yazdı. Biri <code>"mavi"</code>, biri <code>"Mavi"</code>, biri <code>"mavı"</code> yazdı. Boya ustası şaşırdı, bir ev pembeye boyandı! 😅</p>
+<p>Bu yıl seçenekler <b>önceden belli</b> olacak:</p>
+<ul>
+<li><b>Renk</b>: mahallede kullanılabilecek renkler, en az <b>5</b> tane. Her rengin bir <i>adı</i> (<code>KIRMIZI</code>) ve bir <i>değeri</i> var: boya ustasının anladığı renk kodu <code>"#E5484D"</code>.</li>
+<li><b>CatiTipi</b>: yalnızca üç çeşit çatı yapılabilir: <code>UCGEN</code>, <code>DUZ</code>, <code>KUBBE</code>. Değerleri önemli değil (1, 2, 3 ya da <code>auto()</code>).</li>
+</ul>
+<p>Önce 📐 <b>Plan</b>'da iki «enumeration» kutusu çiz, sonra ⌨️ <b>Kod</b>'da yaz. Renkleri yazdıkça maketin paletinde belirecekler.</p>
+<p class="w6-q">🤔 Düşün: Renkleri neden metin (str) olarak değil de bir enum olarak tutuyoruz?</p>
+<b>Enum (numaralandırma)</b>, seçenekleri <u>önceden belli ve sınırlı</u> olan bir türdür: haftanın günleri, trafik ışığının renkleri, tişört bedenleri...
+<ul><li>Enum bir <b>sınıftır</b>. İçindeki her <b>sabit</b> (KIRMIZI, MAVI...) o sınıfın <b>önceden üretilmiş bir nesnesidir</b>. Yeni nesne üretilmez, sabitler değiştirilemez.</li>
+<li>Her sabitin bir adı (<code>Renk.MAVI.name</code> → <code>'MAVI'</code>) ve bir değeri (<code>Renk.MAVI.value</code> → <code>'#3D8BFF'</code>) vardır.</li>
+<li><b>UML</b>: kutunun başında «enumeration», bölmede yalnızca sabit adları (tip ve + işareti yok).</li>
+<li><b>Python</b>: <code>from enum import Enum</code> → <code>class Renk(Enum):</code> → <code>KIRMIZI = "#E5484D"</code>. Kullanırken: <code>Renk.KIRMIZI</code></li>
+<li>Yanlış yazarsan (<code>Renk.MAVİ</code>) Python hemen hata verir. Metinde (<code>"mavı"</code>) ise hata sessizce geçer.</li></ul>
+<p><b>Muhtar'dan not:</b> Renkler hazır, sıra evlerde! Mahalledeki her ev aynı <b>kalıba</b> göre yapılır ama her evin değerleri farklıdır.</p>
+<ul>
+<li><b>Ev</b> sınıfının 4 özelliği var, hepsi herkese açık (+): <code>sahip</code> (evin sahibinin adı, str), <code>renk</code> (Renk), <code>kat</code> (kat sayısı, int, 1–5) ve <code>cati</code> (CatiTipi).</li>
+<li>Ev üretilirken değerler bu sırayla verilir: <code>Ev("Ayşe", Renk.KIRMIZI, 3, CatiTipi.KUBBE)</code></li>
+<li>Sonra Nesneler bölümünde <b>en az 3 komşu</b> için 3 farklı ev üret: renk, kat ya da çatı farklı olsun.</li>
+</ul>
+<p>Sağdaki makette gri bir <b>kalıp ev</b> göreceksin. Nesneyi ürettiğin anda kalıp, senin verdiğin değerlerle gerçek bir eve dönüşür.</p>
+<p class="w6-q">🤔 Düşün: Ev sınıfı tek, ama 3 ev var. Bir evin rengi sınıfta mı, nesnede mi saklanıyor?</p>
+<b>Sınıf = kalıp, nesne = kalıptan çıkan ürün.</b> <code>class Ev</code> hangi özelliklerin olacağını söyler ama değer taşımaz. <code>Ev(...)</code> her çağrıldığında <b>yeni</b> bir nesne üretilir ve <code>__init__</code> çalışarak değerleri o nesneye yazar (<code>self.renk = renk</code>).<br>
+<b>UML</b>: özellik satırı <code>+ renk: Renk</code>. Tipi bir enum olan özellik böyle yazılır.<br>
+<b>Nesne gösterimi</b>: UML'de bir nesne <u>ayse_evi : Ev</u> diye altı çizili yazılır; maketteki kartlar gibi.
+<p><b>Muhtar'dan not:</b> Komşular boş durmuyor! Ayşe Hanım bir kat çıkmak, Mert boyacı çağırmak istiyor. Evlerin <b>davranışları</b> olmalı:</p>
+<ul>
+<li><code>kat_ekle()</code>: katı 1 artırır. Ama belediye kuralı: <b>5 kattan yüksek ev olmaz</b>. Kat 5 ise değişmez.</li>
+<li><code>boya(yeni_renk)</code>: evin rengini verilen Renk ile değiştirir.</li>
+<li><code>pencere_sayisi()</code>: her katta 2 pencere var. Toplam pencere sayısını <b>döndürür</b> (int).</li>
+</ul>
+<p>Kodladıktan sonra Nesneler bölümünde dene: <code>ayse_evi.kat_ekle()</code> ve <code>mert_evi.boya(Renk.YESIL)</code>. Makette evin büyüdüğünü ve boyandığını izle. Maketteki pencereleri artık senin <code>pencere_sayisi()</code> metodun çizecek!</p>
+<p class="w6-q">🤔 Düşün: pencere_sayisi() içinde return yerine print yazarsan maket kaç pencere çizer?</p>
+<b>Metot</b>, nesnenin yapabildiği bir iştir. <code>ayse_evi.kat_ekle()</code> çağrısında Python <code>self</code> yerine <code>ayse_evi</code>'yi koyar; yani yalnızca O evin katı değişir. Özelliklerin o anki değerlerine nesnenin <b>durumu</b> denir; metotlar durumu değiştirebilir.<br>
+<b>return ile print farkı:</b> <code>print</code> ekrana yazar ve biter. <code>return</code> sonucu çağıran yere geri verir. Maket sonucu kullanabilmek için return bekler.<br>
+<b>UML</b>: <code>+ kat_ekle(): None</code> · <code>+ boya(yeni_renk: Renk): None</code> · <code>+ pencere_sayisi(): int</code>
+<p><b>Muhtar'dan not:</b> Evler hazır, sıra mahallede!</p>
+<ul>
+<li><b>Mevsim</b> enum'u: <code>ILKBAHAR</code>, <code>YAZ</code>, <code>SONBAHAR</code>, <code>KIS</code>. Mahallenin mevsimi tüm sahneyi değiştirecek.</li>
+<li><b>Agac</b>: tek özelliği <code>boy</code> (int, 1–10). Örnek: <code>Agac(6)</code></li>
+<li><b>Mahalle</b>: <code>ad</code> (str) ve <code>mevsim</code> (Mevsim) ile kurulur: <code>Mahalle("Papatya", Mevsim.KIS)</code>. Yeni kurulan mahallede ev ve ağaç yoktur.</li>
+<li><code>ev_ekle(ev)</code>: <b>dışarıda</b> üretilmiş bir evi mahalleye katar. Ev mahalleden önce de vardı, mahalle olmasa da yaşar → <b>toplama</b> ◇.</li>
+<li><code>agac_dik(boy)</code>: ağacı <b>mahallenin kendisi</b> üretir ve listesine koyar. Ağaç mahalleyle doğar → <b>bileşim</b> ◆.</li>
+<li>UML'de evler ve ağaçlar özellik satırı olarak değil, <b>ilişki çizgisiyle</b> gösterilir: Ev ucunda çokluk <code>0..*</code> ve rol adı <code>evler</code>, Agac ucunda <code>0..*</code> ve <code>agaclar</code>.</li>
+</ul>
+<p>Son olarak mahalleni kur: en az <b>3 ev</b> ve <b>2 ağaç</b>. Bitince 🎬 <b>Sahne</b> açılacak!</p>
+<b>Nesneler birlikte çalışır.</b> Mahalle nesnesi ev nesnelerini bir <b>listede</b> tutar: <code>self.evler = []</code>. Listedeki her eleman gerçek bir Ev nesnesidir: <code>papatya.evler[0].sahip</code><br>
+<b>Toplama ◇ ile bileşim ◆ kodda nasıl ayrılır?</b> Parçayı kim üretiyor? Dışarıdan geliyorsa (<code>ev_ekle(ev)</code>) toplama. Bütün kendi içinde üretiyorsa (<code>agac_dik</code> içinde <code>Agac(boy)</code>) bileşim.<br>
+<b>Enum'un gücü:</b> sahne <code>mahalle.mevsim</code> değerine bakar. <code>Mevsim.KIS</code> verirsen kar yağar. Yalnızca dört seçenek olduğu için sahne hepsini tanır.
+<p><b>Muhtar'dan not:</b> Tebrikler mimar, Masal Mahallesi hazır! 🎉</p>
+<ul><li>🎬 <b>Sahne</b> sekmesini aç: mahallen seçtiğin mevsimle canlanıyor. Altındaki hikâyeyi senin nesnelerin yazdı; her cümle bir özelliğin değeri.</li>
+<li>İstersen Kod'a dönüp mevsimi, renkleri ya da kat sayılarını değiştir; sahne de değişir.</li>
+<li>Son olarak 📄 <b>PDF</b>'i indir: UML diyagramın, kodun ve sahnen.</li></ul>
+Bu hafta: <b>enum</b> (sabit seçenekler), <b>sınıf</b> (kalıp), <b>nesne</b> (ürün), <code>__init__</code>, <b>metot</b> ve <b>durum</b>, nesneleri bir arada tutan nesne. Hepsi tek bir sahnede.
+Plan'da «enumeration» <b>Renk</b> (en az 5 renk) ve <b>CatiTipi</b> (UCGEN, DUZ, KUBBE) kutularını çiz.
+<b>Renk</b> enum'unu Python'da yaz. Her rengin değeri <code>"#RRGGBB"</code> biçiminde bir renk kodu olsun.
+<b>CatiTipi</b> enum'unu Python'da yaz.
+🎯 <b>Enum Testi</b>: 5 sorudan en az 4 doğru.
+En iyi skorun: ${S.quizBest}/5
+Plan'a <b>Ev</b> sınıfını çiz: 4 özelliği tipleriyle.
+<b>Ev</b> sınıfını ve <code>__init__</code> metodunu yaz: <code>Ev(sahip, renk, kat, cati)</code>
+Nesneler bölümünde en az <b>3 farklı Ev</b> nesnesi üret ve maketi izle.
+Ev'e <b>3 metodu</b> parametre ve dönüş tipleriyle ekle.
+<code>kat_ekle()</code> ve <code>boya()</code> metotlarını yaz. Nesneler bölümünde bir evin katını artır, bir evi boya.
+<code>pencere_sayisi()</code> metodunu yaz. Maketteki pencereleri artık bu metot çiziyor!
+<b>Mevsim</b>, <b>Agac</b> ve <b>Mahalle</b>'yi çiz. Mahalle'den Ev'e toplama ◇, Agac'a bileşim ◆ çizgisi çek.
+<b>Mevsim</b>, <b>Agac</b> ve <b>Mahalle</b>'yi kodla.
+Mahalleni kur: en az <b>3 ev</b>, <b>2 ağaç</b> ve bir mevsim. 🎬 Sahne açılır!
+🎬 <b>Sahne</b>'yi aç: mahallen ve nesnelerinin yazdığı hikâye.
+Üstteki 🎬 Sahne sekmesine tıkla.
+📄 <b>PDF</b>'i indir: UML + kod + sahne.
+Üstteki 📄 PDF düğmesine tıkla.
+class Renk(Enum):
+    KIRMIZI = "#E5484D"
+    MAVI = "#3D8BFF"
+    SARI = "#FFC53D"
+.name sabitin adını metin olarak verir.
+.value sabite verdiğin değerdir: renk kodu.
+print(isinstance(Renk.MAVI, Renk))
+Her enum sabiti, o enum sınıfının önceden üretilmiş bir nesnesidir.
+Enum üzerinde len() sabit sayısını verir: 3.
+print(Renk.MAVI == "#3D8BFF")
+Sabit ile değeri aynı şey değildir. Değerle karşılaştırmak için Renk.MAVI.value yazılır.
+Yeni bir renk üretir
+Renk(değer) yeni nesne üretmez; o DEĞERE sahip sabiti bulur.
+Renk["AD"] sabiti adıyla bulur.
+Renk.MAVI = "#000000"
+Yeni bir sabit eklenir
+Enum sabitleri değiştirilemez; Python AttributeError verir.
+MOR tanımlı değil. Enum yazım hatalarını böyle hemen yakalar.
+for r in Renk:
+    print(r.name, end=" ")
+Enum üzerinde for ile gezinilir; sabitler tanım sırasıyla gelir.
+print(Renk.KIRMIZI is Renk.KIRMIZI)
+Her sabitin programda tek bir kopyası vardır; bu yüzden enum karşılaştırmasında is de kullanılabilir.
+class Boy(Enum):
+    KISA = 1
+    MINI = 1
+    UZUN = 2
+print(len(Boy))
+MINI ile KISA aynı değerde. Python MINI'yi yeni sabit saymaz, KISA'nın takma adı (alias) yapar.
+from enum import Enum
+
+class Gun(Enum):
+    PAZARTESI = 1
+    SALI = 2
+    CARSAMBA = 3
+
+print(Gun.SALI)          # Gun.SALI
+print(Gun.SALI.name)     # SALI
+print(Gun.SALI.value)    # 2
+Sabit adları BÜYÜK HARFLE ve Türkçe karakter olmadan yazılır.
+Değer önemli değilse: auto()
+from enum import Enum, auto
+
+class Beden(Enum):
+    S = auto()      # 1
+    M = auto()      # 2
+    L = auto()      # 3
+auto() her sabite sırayla farklı bir değer verir.
+class Kupa:
+    def __init__(self, sahip, hacim):
+        self.sahip = sahip
+        self.hacim = hacim
+
+k1 = Kupa("Ece", 300)      # nesne üret
+k2 = Kupa("Can", 450)      # başka bir nesne
+print(k1.sahip, k2.hacim)
+Parametreleri self.ozellik içine yazmayı unutma.
+Enum'u özellik olarak kullanmak
+class Tisort:
+    def __init__(self, sahip, beden):
+        self.sahip = sahip
+        self.beden = beden       # bir Beden sabiti
+
+t = Tisort("Ece", Beden.M)
+if t.beden is Beden.M:
+    print("Orta beden")
+Değer olarak metin değil, enum sabiti ver: Beden.M
+Durumu değiştiren metot ve return
+class Termometre:
+    def __init__(self, derece):
+        self.derece = derece
+
+    def isit(self):
+        if self.derece < 100:     # sınır kuralı
+            self.derece += 10
+
+    def fahrenhayt(self):
+        return self.derece * 9 / 5 + 32
+
+t = Termometre(20)
+t.isit()
+print(t.fahrenhayt())
+print ekrana yazar; return sonucu geri verir.
+Liste tutan sınıf: toplama ve bileşim
+class Kitaplik:
+    def __init__(self, ad):
+        self.ad = ad
+        self.kitaplar = []      # dışarıdan gelenler
+        self.raflar = []        # kitaplığın kendi ürettikleri
+
+    def kitap_ekle(self, kitap):
+        self.kitaplar.append(kitap)      # toplama ◇
+
+    def raf_tak(self, no):
+        self.raflar.append(Raf(no))      # bileşim ◆
+Listeyi __init__ içinde oluştur, sınıfın gövdesinde değil.
+Nesneleri birbirine bağlamak
+kitaplik = Kitaplik("Ev")
+kitaplik.kitap_ekle(Kitap("Küçük Prens"))
+kitaplik.raf_tak(1)
+
+for k in kitaplik.kitaplar:
+    print(k.ad)
+
+print(kitaplik.kitaplar[0].ad)    # nokta zinciri
+Listedeki her eleman gerçek bir nesnedir.
+Bu bir metot gibi görünüyor; metotlar alttaki bölmeye yazılır.
+Biçim: + ad: tip   (ör. + kat: int)
+Görünürlük işareti eksik: başına + koy.
+Tip eksik: + kat: int gibi yaz.
+Parantezleri kontrol et: + boya(yeni_renk: Renk): None
+Metot parantezle yazılır: + kat_ekle(): None
+Dönüş tipi eksik: sonuna : None ya da : int ekle.
+Parametrenin tipi eksik: (yeni_renk: Renk)
+Enum sabitine tip, + ya da parantez yazılmaz. Sadece adını yaz: KIRMIZI
+Enum sabitleri BÜYÜK HARFLE ve Türkçe karakter olmadan yazılır (MAVI, YESIL).
+Plan'da ${name} adında bir kutu yok. Araç çubuğundan «enum» ekle ve adını ${name} yap.
+Kutunun adı tam olarak ${name} olmalı (şu an: ${c.name}).
+${name} bir «enumeration» kutusu olmalı. Bu kutuyu silip araç çubuğundan «enum» ile yeniden ekle.
+${name} kutusunda eksik sabit: ${miss.join(', ')}
+${name} kutusunda ${c.lits.length} sabit var; en az ${min} olmalı.
+Plan'da ${name} adında bir sınıf yok.
+Sınıfın adı tam olarak ${name} olmalı (şu an: ${c.name}).
+${name} bir sınıf olmalı, enum değil.
+${cn} kutusunda ${an} özelliği yok. Yaz: + ${an}: ${type}
+${cn}.${an} herkese açık olmalı: başına + koy.
+${cn}.${an} tipini kontrol et: ${type} olmalı${a.type ?
++ ${mn}(${ptypes.map((t, i) => (mn === 'boya' ? 'yeni_renk' : mn === 'ev_ekle' ? 'ev' : mn === 'agac_dik' ? 'boy' : 'p' + i) + ': ' + t).join(', ')}): ${ret}
+${cn} kutusunun metot bölmesinde ${mn} yok. Yaz: ${sig}
+${cn}.${mn}() herkese açık olmalı: başına + koy.
+${mn}() ${ptypes.length ? ptypes.length + ' parametre' : 'parametresiz'} olmalı: ${sig}  (self UML'ye yazılmaz)
+${mn}() parametresinin tipi ${ptypes[i]} olmalı: ${sig}
+${mn}() dönüş tipi ${ret} olmalı: ${sig}
+${an} ve ${bn} kutuları olmalı.
+${an} ile ${bn} arasında ilişki yok. 🔗 İlişki düğmesiyle ekle.
+${an}–${bn} ilişkisinin türü ${RTYPES[type].name} ${RTYPES[type].sym} olmalı.
+${RTYPES[type].sym} ${an} ucunda olmalı: "Bütün" ${an}, "Parça" ${bn}.
+${bn} ucundaki çokluk ${mb} olmalı: bir ${an}'nin kaç ${bn} nesnesi olabilir?
+${bn} ucundaki rol adı ${role} olmalı (kodda self.${role} listesi olacak).
+Önce 📐 Plan'da bu seviyenin UML görevini bitir.
+Kodu çalıştır (yazmayı bırakınca kendiliğinden çalışır).
+UML'deki ${name} sabitleri kodda yok: ${miss.join(', ')}. Diyagram ile kod aynı olmalı.
+Nesneler bölümünde (girintisiz bir satırda) ${meth}() metodunu bir ev üzerinde çağır: ornek_evi.${meth}(${meth === 'boya' ? 'Renk.YESIL' : ''})
+<svg viewBox="0 0 40 40" width="40" height="40" aria-hidden="true"><path d="M6 19 L20 7 L34 19" fill="#E2553F" stroke="#26303F" stroke-width="2.5" stroke-linejoin="round"/><rect x="10" y="18" width="20" height="16" fill="#FFC53D" stroke="#26303F" stroke-width="2.5"/><rect x="17" y="24" width="6" height="10" fill="#26303F"/></svg>
+<svg viewBox="0 0 24 24" width="20" height="20"><rect x="3" y="4" width="18" height="16" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M3 9 H21 M3 14 H21" stroke="currentColor" stroke-width="2"/></svg>
+<svg viewBox="0 0 24 24" width="20" height="20"><rect x="3" y="4" width="18" height="16" rx="2" fill="#FFF3C4" stroke="currentColor" stroke-width="2"/><circle cx="8" cy="12" r="2" fill="#E5484D"/><circle cx="12" cy="12" r="2" fill="#3D8BFF"/><circle cx="16" cy="12" r="2" fill="#46A758"/></svg>
+<svg viewBox="0 0 24 24" width="20" height="20"><path d="M3 12 L6.5 9 L10 12 L6.5 15 Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M10 12 H21" stroke="currentColor" stroke-width="2"/></svg>
+<line x1="${t === 'assoc' ? 3 : 24}" y1="9" x2="58" y2="9" stroke="currentColor" stroke-width="2"/>
+<path d="M3 9 L13.5 3.5 L24 9 L13.5 14.5 Z" fill="${t === 'comp' ? 'currentColor' : '#fff'}" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+<path d="M47 3 L59 9 L47 15" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+<svg class="w6-ricon" viewBox="0 0 62 18" width="62" height="18" aria-hidden="true">${line}${s}</svg>
+<header class="w6-top">
+      <button class="btn" data-act="home">← Haftalar</button>
+      <div class="w6-brand"><span class="w6-logo">${ICON.house}</span><div><small>6. Hafta · Enum, Sınıf, Nesne</small><b>Masal Mahallesi</b></div></div>
+      <nav class="w6-modes" id="w6-modes" aria-label="Aşamalar"></nav>
+      <div class="w6-prog" id="w6-prog"></div>
+      <div class="w6-tact">
+        <button class="btn" data-act="pdf" id="w6-pdf">📄 PDF</button>
+        <div class="w6-menu">
+          <button class="btn" data-act="menu" aria-haspopup="true" title="Diğer">☰</button>
+          <div class="w6-menu-pop" id="w6-menu" hidden>
+            <button data-act="guide">📘 Enum nedir?</button>
+            <button data-act="quiz">🎯 Enum Testi</button>
+            <button data-act="help">❓ Nasıl çalışır?</button>
+            <hr>
+            <button data-act="teacher" id="w6-tbtn" hidden>👩‍🏫 Öğretmen</button>
+            <button data-act="reset" class="danger">↺ Her şeyi sıfırla</button>
+          </div>
+        </div>
+      </div>
+    </header>
+    <div class="w6-body" id="w6-body">
+      <aside class="w6-defter" id="w6-defter" aria-label="Muhtar'ın defteri"></aside>
+      <button class="w6-dtab" data-act="defter" id="w6-dt" title="Defteri aç/kapat"></button>
+      <main class="w6-work">
+        <section class="w6-view w6-plan" id="w6-v-plan" hidden>${planShell()}</section>
+        <section class="w6-view w6-code" id="w6-v-code" hidden>${codeShell()}</section>
+        <section class="w6-view w6-scene" id="w6-v-scene" hidden></section>
+      </main>
+      <aside class="w6-maket" id="w6-maket" aria-label="Maket">
+        <div class="w6-mtabs" id="w6-mtabs" role="tablist"></div>
+        <div class="w6-mbody" id="w6-mbody"></div>
+      </aside>
+    </div>
+<button class="w6-mode ${S.mode === k ? 'on' : ''} ${locked ? 'locked' : ''}" data-act="mode" data-m="${k}" ${S.mode === k ? 'aria-current="page"' : ''}>
+        <i>${locked ? '🔒' : n}</i><span><b>${t}</b><small>${locked ? 'mahalle kurulunca' : s}</small></span></button>
+<div class="w6-houses" title="Her görev bir ev: bitince ışığı yanar">${MISSIONS.map(m =>
+${S.done[m.id] ? 'on' : ''}
+).join('')}</div><small>${d} / ${MISSIONS.length} görev</small>
+PDF tüm görevler bitince açılır (${left} görev kaldı)
+UML, kod ve sahneyi PDF olarak indir
+<button class="w6-lvp ${st} ${x.n === lvN ? 'on' : ''}" data-act="jlv" data-lv="${x.n}" title="${x.n}. ${x.title} · ${x.topic}" ${st === 'lock' ? 'aria-disabled="true"' : ''}>
+        <span>${st === 'lock' ? '🔒' : st === 'done' ? '✓' : x.icon}</span><small>${x.n}</small></button>
+<div class="w6-lvps">${pills}</div>
+      <div class="w6-dhead"><span class="w6-dn">${L.icon}</span><div><small>${lvN}. Seviye · ${L.topic}</small><h2>${L.title}</h2></div><span class="w6-dc">${d}/${ms.length}</span></div>
+      <div class="w6-dscroll">
+        <details class="w6-note" ${S.letterClosed[lvN] ? '' : 'open'} data-lv="${lvN}"><summary>📌 Muhtar'ın notu</summary><div class="w6-note-b">${L.brief}</div></details>
+        <details class="w6-concept" open><summary>💡 Kavram</summary><div>${L.concept}</div></details>
+        <ul class="w6-ms">${ms.map(m => {
+          const ok = !!S.done[m.id], h = !ok && T.hints[m.id];
+          return
+${ok ? 'ok' : ''} ${T.flash === m.id ? 'flash' : ''}
+<span class="w6-hint">${esc(h)}</span>
+;
+        }).join('')}</ul>
+      </div>
+      <div class="w6-dfoot"><button class="btn" data-act="guide">📘 Enum nedir?</button><button class="btn" data-act="quiz">🎯 Enum Testi</button></div>
+🎬 Sahne, mahalleni kurunca açılır (4. seviyenin son görevi).
+<p>🎬 <b>Sahne</b> açıldı! Üstteki sekmeden mahalleni görebilirsin.</p>
+<div class="w6-lvup-art">${L.icon}</div><span class="tag">Seviye ${L.n} açıldı</span><h3>${L.title}</h3><p class="w6-lvup-topic">${L.topic}</p><div class="w6-lvup-c">${L.concept}</div>${extra}<p>Defterde Muhtar'ın yeni notu seni bekliyor. 📌</p>
+<div class="w6-lvup-art">🏘️</div><span class="tag">${MISSIONS.length} / ${MISSIONS.length} görev</span><h3>Masal Mahallesi kuruldu!</h3>
+      <p>Enum ile seçenekleri sınırladın, sınıfla kalıbı çizdin, her nesneye kendi değerlerini verdin, metotlarla evleri değiştirdin ve hepsini bir mahallede topladın.</p>
+      <p>Gelecek hafta bu mahalleye yeni sınıflar ekleyeceğiz. 😉</p>
+<div class="modal-card" id="nyp-modal-card" role="dialog" aria-modal="true"></div>
+<div class="row">${buttons.map((b, i) =>
+<h3>📘 Enum nedir?</h3>
+      <p class="w6-sub">Değerleri <b>önceden belli ve sınırlı</b> olan bir türdür. Haftanın günleri, trafik ışığı, tişört bedenleri... Seçenekler bellidir, dışarıdan yenisi uydurulamaz.</p>
+      <div class="w6-tbl"><table>
+        <tr><th></th><th>Metin (str) ile</th><th>Enum ile</th></tr>
+        <tr><th>Tanım</th><td><code>renk = "mavi"</code></td><td><code>class Renk(Enum):</code><br><code>&nbsp;&nbsp;&nbsp;&nbsp;MAVI = "#3D8BFF"</code></td></tr>
+        <tr><th>Yazım hatası</th><td><code>"mavı"</code> sessizce geçer 😬</td><td><code>Renk.MAVİ</code> → hemen hata ✅</td></tr>
+        <tr><th>Seçenekleri görmek</th><td>bilinmez</td><td><code>for r in Renk: print(r.name)</code></td></tr>
+        <tr><th>Ek bilgi taşımak</th><td>ayrı bir değişken gerekir</td><td><code>Renk.MAVI.value</code> → renk kodu</td></tr>
+      </table></div>
+      <h4>Enum sabiti bir nesnedir</h4>
+      <ul class="w6-faq">
+        <li><code>Renk</code> bir sınıftır; <code>Renk.MAVI</code> ise o sınıfın <b>önceden üretilmiş</b> bir nesnesidir: <code>isinstance(Renk.MAVI, Renk)</code> → <code>True</code>.</li>
+        <li>Her sabitin adı ve değeri vardır: <code>Renk.MAVI.name</code> → <code>'MAVI'</code>, <code>Renk.MAVI.value</code> → <code>'#3D8BFF'</code></li>
+        <li>Sabite iki yoldan ulaşılır: adıyla <code>Renk["MAVI"]</code>, değeriyle <code>Renk("#3D8BFF")</code>.</li>
+        <li>Sabitler değiştirilemez ve yenisi üretilemez. Aynı değeri iki sabite verirsen ikincisi yeni sabit olmaz, birincinin <b>takma adı</b> (alias) olur.</li>
+        <li>Değer önemli değilse <code>auto()</code> kullan: <code>UCGEN = auto()</code></li>
+      </ul>
+      <h4>UML'de</h4>
+      <div class="w6-umlmini"><div class="h"><small>«enumeration»</small><b>Renk</b></div><div class="s">KIRMIZI<br>MAVI<br>SARI</div></div>
+      <p class="w6-sub">Bölmeye yalnızca sabit adları yazılır: tip, + işareti ya da değer yazılmaz. Ev'in özelliği ise <code>+ renk: Renk</code> diye yazılır: tipi enum'un adıdır.</p>
+      <h4>Sınıf ve nesne</h4>
+      <p class="w6-sub"><b>Sınıf</b> kalıptır: hangi özelliklerin olacağını söyler. <b>Nesne</b> o kalıptan üretilen üründür ve kendi değerlerini taşır. Maketteki gri ev kalıptır; <code>Ev(...)</code> yazdığın anda ondan renkli bir ev çıkar.</p>
+<h3>🏘️ Masal Mahallesi'ne hoş geldin!</h3>
+      <p>Bu hafta kendi mahalleni kuracaksın. Görevler soldaki <b>📒 Defter</b>'de; asıl tarif <b>Muhtar'ın notu</b>nda.</p>
+      <ol class="w6-steps">
+        <li><b>📐 Plan</b> — UML'yi <i>yazarak</i> çiz. Araç çubuğundan <b>Sınıf</b> ya da <b>«enum»</b> ekle, satırlara UML biçiminde yaz:<br>
+          <code>+ kat: int</code> · <code>+ boya(yeni_renk: Renk): None</code> · enum kutusunda yalnızca <code>KIRMIZI</code><br>
+          <kbd>Enter</kbd> yeni satır, boş satırda <kbd>⌫</kbd> satırı siler. Kutuyu başlığından tutup taşıyabilirsin.</li>
+        <li><b>⌨️ Kod</b> — Python'u <i>sen</i> yazarsın. Yazmayı bıraktığında kod kendiliğinden çalışır ve sağdaki <b>Maket</b> canlanır: ürettiğin her nesne, verdiğin değerlerle çizilir.</li>
+        <li><b>🎬 Sahne</b> — mahallen kurulunca açılır: tüm evler, ağaçlar, mevsim ve nesnelerinin yazdığı hikâye.</li>
+      </ol>
+      <p class="w6-sub">Her seviyede önce UML, sonra kod. Sayfayı yenilersen kaldığın yerden devam edersin; ama <b>sekmeyi kapatırsan her şey silinir</b>. Tüm görevler bitince <b>📄 PDF</b> açılır: UML diyagramın, kodun ve sahnen.</p>
+Az kaldı, bir daha dene!
+📘 Enum nedir? sayfasına bir göz at, sonra tekrar dene.
+<div class="w6-qend"><div class="w6-qscore">${Q.score}<small>/5</small></div><h3>${msg}</h3><p>${rec ? 'Yeni rekor!' : 'En iyi skorun: ' + best + '/5'}</p></div>
+<div class="w6-qtop"><span>🎯 Enum Testi</span><span>Soru ${Q.i + 1}/5 · ✓ ${Q.score}</span></div>
+        <div class="w6-qbar"><i style="width:${Q.i * 20}%"></i></div>
+        <p class="w6-qask">Bu enum tanımlıyken alttaki kod ne yapar?</p>
+        <pre class="w6-qcode"><span class="dim">${esc(QUIZ_HEAD)}</span>
+
+${esc(q.c)}</pre>
+        <div class="w6-qopts">${q.o.map((o, i) => {
+          const st = P == null ? '' : i === q.a ? 'right' : i === P ? 'wrong' : 'dim';
+          return
+;
+        }).join('')}</div>
+        ${P != null ?
+w6-qwhy ${P === q.a ? 'ok' : 'no'}
+<h3>👩‍🏫 Öğretmen</h3><p>Bu panel ders anlatımı içindir. Öğretmen kodunu gir.</p>
+        <input type="password" id="w6-pin" class="w6-in" autocomplete="off" placeholder="öğretmen kodu">
+.row .btn:last-child
+<h3>👩‍🏫 Öğretmen paneli</h3><p>Derste göstermek için kısayollar. Öğrenciler kendi bilgisayarında sıfırdan başlar.</p>
+      <ul><li><b>Tüm seviyeleri aç</b>: çalışma korunur; Sahne ve PDF de açılır.</li><li><b>Örnek UML</b>: çözüm diyagramını yükler (mevcut diyagram silinir).</li><li><b>Örnek kod</b>: çözüm Python kodunu yükler (mevcut kod silinir).</li></ul>
+Tüm seviyeler açıldı.
+<h3>Her şey sıfırlansın mı?</h3><p>Diyagram, kod ve tamamlanan görevler silinir.</p>
+Mahalle sıfırlandı. Renk ile başla!
+<div class="w6-lvup-art">🔒</div><h3>PDF henüz kilitli</h3><p>PDF <b>tüm görevler bitince</b> açılır. Sana <b>${left}</b> görev kaldı.</p><p class="w6-sub">PDF'te UML diyagramın, Python kodun ve mahallenin sahnesi yer alacak.</p>
+Önce Plan'a sınıf ekle.
+PDF modülü yüklenemedi.
+${mahalleAdi(mv.ad)} · Sahne
+Masal Mahallesi · UML Sınıf Diyagramı
+<div class="w6-ptools">
+        <button class="w6-tool" data-act="addcls">${ICON.cls}<span>Sınıf</span></button>
+        <button class="w6-tool enum" data-act="addenum">${ICON.enm}<span>«enum»</span></button>
+        <button class="w6-tool" data-act="addrel">${ICON.rel}<span>İlişki</span></button>
+        <span class="w6-ptip">Satırlara UML biçiminde yaz: <code>+ kat: int</code> · <code>+ boya(yeni_renk: Renk): None</code> · enum'da yalnızca <code>KIRMIZI</code> · <kbd>Enter</kbd> yeni satır</span>
+        <div class="w6-zoom"><button data-act="zout" title="Uzaklaştır">−</button><span id="w6-zv">100%</span><button data-act="zin" title="Yakınlaştır">+</button><button data-act="zfit">Sığdır</button></div>
+      </div>
+      <div class="w6-cv" id="w6-cv"><div class="w6-cvsize" id="w6-cvsize"><div class="w6-cvin" id="w6-cvin">
+        <svg class="w6-edges" id="w6-edges" width="${CV_W}" height="${CV_H}"></svg>
+        <div id="w6-boxes"></div>
+        <div class="w6-empty" id="w6-empty">📐 Boş plan. Yukarıdan <b>«enum»</b> ekleyerek başla: ilk kutun <b>Renk</b> olsun.</div>
+      </div></div></div>
+      <div class="w6-rels" id="w6-rels"></div>
++ metot(param: tip): dönüş
+<input class="w6-ln ${p.cls}" data-cid="${c.id}" data-sec="${sec}" data-i="${i}" value="${esc(t)}" placeholder="${ph}" spellcheck="false" autocomplete="off" title="${esc(p.err || '')}">
+<div class="w6-sec" data-sec="${sec}">${c[sec].map((_, i) => lineHTML(c, sec, i)).join('')}<button class="w6-addln" data-act="addln" data-cid="${c.id}" data-sec="${sec}" tabindex="-1">+ ${label}</button></div>
+<div class="w6-box ${en ? 'enum' : ''} ${T.sel === c.id ? 'sel' : ''}" data-cid="${c.id}" style="left:${c.x}px;top:${c.y}px;width:${boxWidth(c)}px">
+      <div class="w6-bh" data-drag="${c.id}" title="Başlıktan tutup taşı">${en ? '<small>«enumeration»</small>' : ''}
+        <input class="w6-bname" data-cid="${c.id}" value="${esc(c.name)}" placeholder="${en ? 'EnumAdı' : 'SinifAdi'}" spellcheck="false" autocomplete="off">
+        <button class="w6-bx" data-act="delcls" data-cid="${c.id}" title="Kutuyu sil" tabindex="-1">×</button></div>
+      ${secHTML(c, 'attrs', en ? 'sabit' : 'özellik')}
+      ${en ? '' : secHTML(c, 'meths', 'metot')}
+    </div>
+<h3>${esc(c.name || 'Bu kutu')} silinsin mi?</h3><p>Kutunun satırları ve bağlı ilişkileri silinir.</p>
+<path d="M${sh.pts.map(p =>
+).join(' L')}${sh.closed ? ' Z' : ''}" fill="${sh.fill === 'ink' ? '#26303F' : sh.fill === 'paper' ? '#fff' : 'none'}" stroke="#26303F" stroke-width="2" stroke-linejoin="round"/>
+<text x="${p.x.toFixed(1)}" y="${p.y.toFixed(1)}" class="${c}">${esc(t)}</text>
+<g class="w6-edge" data-rid="${r.id}"><line class="hit" x1="${d.s.x}" y1="${d.s.y}" x2="${d.e.x}" y2="${d.e.y}"/><line x1="${d.s.x}" y1="${d.s.y}" x2="${d.e.x}" y2="${d.e.y}" stroke="#26303F" stroke-width="2"/>${shapes}${lab(r.ma, L.ma, 'm')}${lab(r.mb, L.mb, 'm')}${lab(r.role, L.role, 'r')}</g>
+<b>${esc((a && a.name) || '?')}</b> ${RTYPES[r.type].sym} <b>${esc((b && b.name) || '?')}</b>${r.mb ?
+<span class="lbl">🔗 İlişkiler:</span>${rs.length ? rs.map(r =>
+).join('') : '<span class="none">henüz yok · 4. seviyede gerekecek</span>'}
+Bir ${A}, ${k}${B} nesnesini <b>toplar</b>${role ?
+: ''}. ${B} dışarıda üretilir; ${A} olmadan da yaşar.
+Bir ${A}, ${k}${B} nesnesinden <b>oluşur</b>${role ?
+: ''}. ${B} nesnelerini ${A} kendisi üretir; ${A} ile doğar, onunla yok olur.
+${A}, ${k}${B} nesnesini <b>bilir</b>${role ?
+<option value="${c.id}" ${c.id === sel ? 'selected' : ''}>${esc(c.name)}${c.kind === 'enum' ? ' «enum»' : ''}</option>
+İlişki için adı yazılmış en az iki kutu gerekir.
+<option value="${x}" ${normMult(v) === x ? 'selected' : ''}>${x || '(boş)'}</option>
+<h3>🔗 ${editing ? 'İlişkiyi düzenle' : 'Yeni ilişki'}</h3>
+      <div class="w6-rtypes">${RT_ORDER.map(t =>
+${r.type === t ? 'on' : ''}
+).join('')}</div>
+      <div class="w6-rf">
+        <label><span id="rf-al">Bütün</span><select id="rf-a"><option value="">seç…</option>${opts(r.a)}</select></label>
+        <label><span id="rf-bl">Parça</span><select id="rf-b"><option value="">seç…</option>${opts(r.b)}</select></label>
+        <label><span>Çokluk (bütün ucu)</span><select id="rf-ma">${mopt(r.ma)}</select></label>
+        <label><span>Çokluk (parça ucu)</span><select id="rf-mb">${mopt(r.mb)}</select></label>
+        <label class="wide"><span>Rol adı (parça ucu = koddaki liste adı)</span><input id="rf-role" value="${esc(r.role)}" placeholder="ör. evler" spellcheck="false"></label>
+      </div>
+      <p class="w6-rsent" id="rf-sent"></p>
+Bir kutu kendisiyle ilişkilendirilemez.
+def __init__(self|):
+<div class="w6-ebar">
+        <button class="w6-run" data-act="run" id="w6-run">▶ Çalıştır <kbd>Ctrl</kbd><kbd>Enter</kbd></button>
+        <label class="w6-live" title="Yazmayı bırakınca kod kendiliğinden çalışır"><input type="checkbox" id="w6-livecb"> ⚡ Canlı</label>
+        <span class="w6-pys" id="w6-pys"></span>
+      </div>
+      <div class="w6-snips" id="w6-snips" aria-label="Hızlı ekle">${SNIPS.map((s, i) =>
+Ekle: ${esc(s[1].replace('|', ''))}
+).join('')}</div>
+      <div class="w6-ed" id="w6-ed">
+        <div class="w6-gut" id="w6-gut" aria-hidden="true"></div>
+        <div class="w6-edc">
+          <pre class="w6-hl" id="w6-hl" aria-hidden="true"></pre>
+          <textarea id="w6-ta" spellcheck="false" wrap="off" autocapitalize="off" autocomplete="off" autocorrect="off" aria-label="Python kodu"></textarea>
+        </div>
+        <div class="w6-lintchip" id="w6-lintchip" hidden></div>
+      </div>
+      <div class="w6-con">
+        <div class="w6-conh"><b>Çıktı</b><span id="w6-cstat"></span></div>
+        <div class="w6-cout" id="w6-cout"><div class="w6-cl info">print() çıktıları ve hatalar (Türkçe açıklamasıyla) burada görünür.</div></div>
+        <div class="w6-replog" id="w6-replog"></div>
+        <label class="w6-repl"><span>&gt;&gt;&gt;</span><input id="w6-repl" placeholder="Bir ifade dene, Enter: Renk.MAVI.value" spellcheck="false" autocomplete="off"></label>
+      </div>
+<span class="${c}">${esc(p)}</span>
+<div class="${i + 1 === bad ? 'err' : ''}${i + 1 === ED.cur ? ' cur' : ''}">${h || ' '}</div>
+<div class="${i + 1 === bad ? 'err' : ''}${i + 1 === ED.cur ? ' cur' : ''}">${i + 1}</div>
+Kaydedildi (zaten otomatik kaydediliyor 😉)
+⚠ ${r.err.line}. satır: ${esc(x.title)}
+⏳ Python yükleniyor… (ilk seferde biraz sürer)
+🔴 Python yüklenemedi (internet?) · ▶ ile tekrar dene
+<div class="t">✖ ${esc(x.title)}${err.line ?
+: ''}${err.func && err.func !== '<module>' ?
+: ''}</div>
+      <div class="tip">${esc(x.tip)}</div><div class="raw">${esc(err.type)}: ${esc(err.msg)}${err.text ?
+✓ Kod hatasız çalıştı.
+⏱ Kod ${auto ? 4 : 6} saniyede bitmedi. Sonsuz döngü olabilir mi (while True)? Python yeniden başlatılıyor.
+<span class="p">&gt;&gt;&gt;</span> ${esc(expr)}
+<small class="dim">← bir ${esc(obj[1])} nesnesi</small>
+<small class="dim">← ${esc(en[1])} enum'unun ${esc(en[2])} sabiti (değeri ${esc(en[3])})</small>
+[${v.i.length} eleman]
+${re.c}.${re.n} değeri bir renk kodu değil ("#RRGGBB" olmalı).
+renk bir metin: ${JSON.stringify(re.v)}. Renk.MAVI gibi bir enum sabiti ver!
+renk geçersiz: ${valText(re)}
+kat ${ka.v}: 1 ile 5 arasında olmalı.
+kat bir tam sayı değil: ${valText(ka)}
+cati bir CatiTipi sabiti değil: ${valText(ca)}
+pencere_sayisi() hata verdi:
+pencere_sayisi() None döndürdü: return unutulmuş!
+pencere_sayisi() sayı döndürmedi.
+stroke="#9AA3B2" stroke-dasharray="6 5"
+<ellipse cx="100" cy="${G + 3}" rx="80" ry="7" fill="#000" opacity=".1"/>
+<rect x="${X + W - 38}" y="${top - 38}" width="14" height="30" fill="${kalip ? 'none' : '#B4533F'}" ${st} stroke-width="2.5"/>
+<rect x="${wx.toFixed(1)}" y="${y + 9}" width="16" height="16" rx="1.5" fill="${kalip ? 'none' : winFill}" ${st} stroke-width="2"/>
+<path d="M${(wx + 8).toFixed(1)} ${y + 9} V${y + 25} M${wx.toFixed(1)} ${y + 17} H${(wx + 16).toFixed(1)}" stroke="${ink}" stroke-width="1.2"/>
+<g class="h6-fl${isNew ? ' new' : ''}"${isNew ?
+animation-delay:${(i - an.newFrom) * 130}ms
+: ''}><rect x="${X}" y="${y}" width="${W}" height="${FH}" fill="${kalip ? '#F4F6F9' : col}" ${st} stroke-width="2.5"/>${wins}</g>
+<rect class="h6-wipe" x="${X + 1.3}" y="${top + 1.3}" width="${W - 2.6}" height="${kat * FH - 2.6}" fill="${an.paintFrom}"/>
+<rect x="${X + W - 32}" y="${G - 27}" width="20" height="27" rx="2" fill="${kalip ? 'none' : shade(col, -0.45)}" ${st} stroke-width="2.5"/>
+<circle cx="${X + W - 16}" cy="${G - 13}" r="1.8" fill="#FFC53D"/>
+<polygon points="${X - 12},${top + 1} ${X + W / 2},${top - 46} ${X + W + 12},${top + 1}" fill="${kalip ? '#F4F6F9' : '#D9553F'}" ${st} stroke-width="2.5" stroke-linejoin="round"/>
+<polygon points="${X + W / 2 - 26},${top - 25} ${X + W / 2},${top - 46} ${X + W / 2 + 26},${top - 25} ${X + W / 2 + 12},${top - 29} ${X + W / 2},${top - 26} ${X + W / 2 - 13},${top - 30}" fill="#fff" stroke="#C8D3E0" stroke-width="1"/>
+<rect x="${X - 7}" y="${top - 11}" width="${W + 14}" height="12" rx="2" fill="${kalip ? '#F4F6F9' : '#7C8796'}" ${st} stroke-width="2.5"/>
+<line x1="${X + 4 + k * 29}" y1="${top - 11}" x2="${X + 4 + k * 29}" y2="${top - 22}" stroke="${ink}" stroke-width="2"/>
+<line x1="${X}" y1="${top - 22}" x2="${X + W + 2}" y2="${top - 22}" stroke="${ink}" stroke-width="2"/>
+<rect x="${X - 5}" y="${top - 16}" width="${W + 10}" height="6" rx="3" fill="#fff" stroke="#C8D3E0" stroke-width="1"/>
+<path d="M${X + 4} ${top + 1} A ${R} ${h} 0 0 1 ${X + W - 4} ${top + 1} Z" fill="${kalip ? '#F4F6F9' : shade(col, -0.22)}" ${st} stroke-width="2.5"/><line x1="${X + W / 2}" y1="${top - h}" x2="${X + W / 2}" y2="${top - h - 12}" ${st} stroke-width="2.5"/><circle cx="${X + W / 2}" cy="${top - h - 15}" r="4" fill="${kalip ? 'none' : '#FFC53D'}" ${st} stroke-width="2"/>
+<path d="M${X + 22} ${top - h * 0.62} A ${R} ${h} 0 0 1 ${X + W - 22} ${top - h * 0.62} Q ${X + W / 2} ${top - h * 0.45} ${X + 22} ${top - h * 0.62} Z" fill="#fff" stroke="#C8D3E0" stroke-width="1"/>
+<polygon points="${X - 12},${top + 1} ${X + W / 2},${top - 46} ${X + W + 12},${top + 1}" fill="none" stroke="#9AA3B2" stroke-width="2.5" stroke-dasharray="6 5" stroke-linejoin="round"/><text x="${X + W / 2}" y="${top - 12}" text-anchor="middle" style="font: 800 20px Nunito, Segoe UI, sans-serif" fill="#9AA3B2">?</text>
+<g class="h6-roof${an.roofDrop ? ' drop' : ''}">${roof}</g>
+<circle class="h6-smoke" cx="${X + W - 31}" cy="${top - 44}" r="${5 + k}" fill="#fff" opacity=".85" style="animation-delay:${k * 0.9}s"/>
+<text x="100" y="${G + 24}" text-anchor="middle" style="font: 800 15px Nunito, Segoe UI, sans-serif" fill="${ink}">${esc(v.sahip.slice(0, 16))}</text>
+<g><circle cx="${X + W + 4}" cy="${top + 8}" r="11" fill="#D64545"/><text x="${X + W + 4}" y="${top + 13}" text-anchor="middle" style="font: 900 15px Nunito, Segoe UI, sans-serif" fill="#fff">!</text></g>
+<g class="h6-house${an.build ? ' build' : ''}">${s}</g>
+<svg viewBox="0 -14 200 284" class="h6-svg" xmlns="http://www.w3.org/2000/svg">${houseG(v, an, opt)}</svg>
+<ellipse cx="60" cy="191" rx="${r * 0.9}" ry="5" fill="#000" opacity=".1"/><rect x="${60 - tw / 2}" y="${190 - th}" width="${tw}" height="${th + 1}" rx="2" fill="#8B5A3C" stroke="#2B2F3A" stroke-width="2"/>
+<circle cx="${cx - r * 0.62}" cy="${cy + r * 0.32}" r="${r * 0.72}" fill="${c2}" stroke="#2B2F3A" stroke-width="2"/><circle cx="${cx + r * 0.62}" cy="${cy + r * 0.32}" r="${r * 0.72}" fill="${c2}" stroke="#2B2F3A" stroke-width="2"/><circle cx="${cx}" cy="${cy}" r="${r}" fill="${c1}" stroke="#2B2F3A" stroke-width="2"/>
+<circle cx="${(cx + (R() - 0.5) * r * 1.6).toFixed(1)}" cy="${(cy + (R() - 0.4) * r * 1.2).toFixed(1)}" r="${rr}" fill="${col}"/>
+<path d="M60 ${y0} L${60 - r * 0.8} ${y0 - r * 0.9} M60 ${y0 + 6} L${60 + r * 0.85} ${y0 - r * 0.7} M60 ${y0} L${60 + 4} ${y0 - r * 1.3} M${60 - r * 0.45} ${y0 - r * 0.5} L${60 - r * 0.6} ${y0 - r * 1.1}" stroke="#6B4630" stroke-width="5" stroke-linecap="round" fill="none"/>
+<ellipse cx="${60 - r * 0.8}" cy="${y0 - r * 0.92}" rx="8" ry="3.5" fill="#fff"/><ellipse cx="${60 + r * 0.85}" cy="${y0 - r * 0.72}" rx="8" ry="3.5" fill="#fff"/><ellipse cx="64" cy="${y0 - r * 1.32}" rx="7" ry="3" fill="#fff"/>
+<svg viewBox="0 0 120 200" class="h6-svg" xmlns="http://www.w3.org/2000/svg">${treeG(t, mev, 11)}</svg>
+<defs><linearGradient id="h6sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${se.sky[0]}"/><stop offset="1" stop-color="${se.sky[1]}"/></linearGradient></defs>
+<rect width="${W}" height="${H}" fill="url(#h6sky)"/>
+<circle cx="${W - 150}" cy="100" r="44" fill="#FFF6D6" opacity=".9"/>
+<circle cx="${W - 150}" cy="100" r="46" fill="#FFD34D"/><circle cx="${W - 150}" cy="100" r="62" fill="#FFD34D" opacity=".25"/>
+<g class="${still ? '' : 'h6-cloud'}" style="animation-duration:${60 + k * 25}s"><ellipse cx="${x}" cy="${y}" rx="52" ry="20" fill="#fff" opacity=".95"/><ellipse cx="${x + 30}" cy="${y - 12}" rx="34" ry="20" fill="#fff" opacity=".95"/><ellipse cx="${x - 28}" cy="${y - 6}" rx="26" ry="15" fill="#fff" opacity=".95"/></g>
+<path d="M0 ${base - 70} Q ${W * 0.2} ${base - 150} ${W * 0.42} ${base - 80} T ${W * 0.85} ${base - 90} T ${W} ${base - 70} V ${H} H 0 Z" fill="${se.hill[0]}"/>
+<path d="M0 ${base - 30} Q ${W * 0.3} ${base - 90} ${W * 0.6} ${base - 40} T ${W} ${base - 40} V ${H} H 0 Z" fill="${se.hill[1]}"/>
+<rect x="0" y="${base}" width="${W}" height="${H - base}" fill="${se.ground}"/>
+<rect x="0" y="${base + 52}" width="${W}" height="38" fill="${se.road}"/>
+<rect x="${k * 70 + 10}" y="${base + 69}" width="36" height="4" rx="2" fill="#fff" opacity=".8"/>
+<rect x="88" y="${base - 120}" width="8" height="124" fill="#8B5A3C" stroke="#2B2F3A" stroke-width="2"/><rect x="${bx}" y="${base - 150}" width="${tw}" height="44" rx="8" fill="#2E6FD8" stroke="#2B2F3A" stroke-width="2.5"/><text x="${bx + tw / 2}" y="${base - 121}" text-anchor="middle" style="font: 800 18px Nunito, Segoe UI, sans-serif" fill="#fff">${esc(ad)}</text>
+<g transform="translate(${(x - 21 * sz).toFixed(1)} ${(base - 236 * sz + 4).toFixed(1)}) scale(${sz.toFixed(3)})">${houseG(it.v, {}, { snow: mv.mevsim === 'KIS', smoke: mv.mevsim === 'KIS' && !still })}</g>
+<g transform="translate(${(x - 18 * sz).toFixed(1)} ${(base - 190 * sz + 6).toFixed(1)}) scale(${sz.toFixed(3)})">${treeG(it.v, mv.mevsim, 100 + i * 17)}</g>
+<ellipse cx="${(x + 42 * sz).toFixed(1)}" cy="${base + 8}" rx="${26 * sz}" ry="5" fill="#E8862A" opacity=".8"/>
+<path class="${cls}"${style} d="M${px} ${py} q 8 -8 16 0 q 8 -8 16 0" fill="none" stroke="${P[0]}" stroke-width="2.5" stroke-linecap="round"/>
+<ellipse class="${cls}"${style} cx="${px}" cy="${py}" rx="6" ry="3.5" fill="${i % 2 ? '#E2553F' : P[0]}"/>
+<circle class="${cls}"${style} cx="${px}" cy="${py}" r="${P[1] === 'snow' ? (2 + R() * 3).toFixed(1) : 3.5}" fill="${P[0]}" ${P[1] === 'snow' ? 'stroke="#C8D3E0" stroke-width=".8"' : ''}/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" class="h6-scene">${s}</svg>
+${n}'${/[aeıioöuü]$/.test(low) ? 'n' : ''}${suf}
+ilkbahar gelmişti; ağaçlar pembe çiçekler açmıştı.
+yaz güneşi kaldırımları ısıtıyordu.
+sonbaharın turuncu yaprakları sokağı kaplamıştı.
+kar, çatıları beyaz bir örtüyle kaplamıştı.
+mevsim henüz belli değildi.
+Mahallede ${mv.evler.length} ev ve ${mv.agaclar.length} ağaç vardı.
+${kimin(e)} ${e.kat} katlı, ${renkAdi(e.cname)}, ${CATI_AD[e.cati] || 'çatısı belirsiz'}
+${ev} bir evi vardı.
+${ev} evinin ${e.win} penceresinden içeri ışık giriyordu.
+${ev} evinin hiç penceresi yoktu; belli ki biri return yazmayı unutmuştu!
+Mahallenin en yüksek evi ${kimin(t).replace(/^B/, 'b')} eviydi.
+Ağaçların en uzunu ${Math.max(...mv.agaclar.map(a => a.boy))} metreye ulaşmıştı.
+Kuşlar çatıdan çatıya konup şarkı söylüyordu.
+Çocuklar ağaçların gölgesinde top oynuyordu.
+Komşular yaprakları süpürüp birbirine elma ikram ediyordu. 🍎
+Bacalardan tüten duman, komşuların çay demlediğini haber veriyordu. ☕
+Ve hikâye burada başladı.
+<button role="tab" class="${S.mkTab === k ? 'on' : ''}" aria-selected="${S.mkTab === k}" data-act="mktab" data-tab="${k}">${t}</button>
+<div class="w6-msec"><h4>🎨 Enumlar <small>${enums[0].code ? 'koddan' : 'UML'den (henüz kodda yok)'}</small></h4>${enums.map(e => {
+      let body;
+      if (e.name === 'Renk') body =
+<div class="${m.alias ? 'alias' : ''}" title="Renk.${esc(m.n)}${m.v != null ? ' · value = ' + esc(JSON.stringify(m.v)) : ''}"><i style="background:${isHex(m.v) ? m.v : NAMED[m.n] || '#fff'}" class="${isHex(m.v) || !e.code ? '' : 'bad'}"></i><b>${esc(m.n)}</b><small>${m.alias ? 'takma ad!' : m.v != null ? esc(String(m.v)) : '…'}</small></div>
+;
+      else if (e.name === 'CatiTipi') body =
+<span class="${m.alias ? 'alias' : ''}">${roofIcon(m.n)}${esc(m.n)}</span>
+;
+      else if (e.name === 'Mevsim') body =
+<span class="${m.alias ? 'alias' : ''}">${(SEASON[m.n] || {}).icon || '❔'} ${esc(m.n)}</span>
+;
+      const al = e.members.filter(m => m.alias);
+      return
+<p class="w6-warn">⚠ ${al.map(m => m.n).join(', ')} başka bir sabitle aynı değerde: yeni sabit değil, takma ad oldu.</p>
+;
+    }).join('')}
+    ${enums.some(e => e.name === 'Renk' && e.code) ? '<p class="w6-tipline">Her sabit bir nesne: <code>Renk.MAVI.name</code> → adı, <code>Renk.MAVI.value</code> → renk kodu. Konsolda dene!</p>' : ''}</div>
+<polygon points="3,15 14,4 25,15" fill="#D9553F" stroke="#2B2F3A" stroke-width="2" stroke-linejoin="round"/>
+<rect x="2" y="9" width="24" height="6" rx="1" fill="#7C8796" stroke="#2B2F3A" stroke-width="2"/>
+<path d="M4 15 A 10 9 0 0 1 24 15 Z" fill="#46A758" stroke="#2B2F3A" stroke-width="2"/>
+<text x="14" y="15" text-anchor="middle" font-size="13" font-weight="800" fill="#9AA3B2">?</text>
+<svg viewBox="0 0 28 18" width="28" height="18" aria-hidden="true">${p}</svg>
+<i class="dot" style="background:${isHex(v.v) ? v.v : NAMED[v.n] || '#ccc'}"></i>${val}
+${(SEASON[v.n] || {}).icon || ''} ${val}
+<tr><th>${esc(k)}</th><td>${val}</td><td class="ty">${esc(typ)}</td></tr>
+<tr class="calc"><th>pencere_sayisi()</th><td>${o.pencere.ok ? esc(valText(o.pencere.v)) : '⚠ hata'}</td><td class="ty">metot</td></tr>
+<tr class="calc dim"><th>pencere_sayisi()</th><td colspan="2">henüz yok · şimdilik her katta 2 pencere</td></tr>
+<div class="w6-mini">${sceneSVG(mahalleObjView(o), { w: 900, h: 460 })}</div>
+<div class="w6-objbox"><u>${esc(sel.name)} : ${esc(o.cls)}</u></div>
+<div class="w6-stage ${o.cls === 'Mahalle' ? 'wide' : ''}">
+        <div class="w6-oname"><u>${esc(sel.name)} : ${esc(o.cls)}</u><small>nesne</small></div>
+        <div class="w6-art">${art}</div>
+        ${warn.length ?
+: ''}
+        <table class="w6-otbl">${attrRows(o)}${extra}</table>
+        ${T.stale ? '<p class="w6-stale">⏸ Kodda şu an hata var; maket son çalışan hâli gösteriyor.</p>' : ''}
+      </div>
+<div class="w6-stage kalip">
+        <div class="w6-oname"><b>Ev</b><small>kalıp (sınıf)</small></div>
+        <div class="w6-art">${houseSVG({ kat: 2, cati: '', win: 4 }, {}, { kalip: true })}</div>
+        <div class="w6-slots">${(slots.length ? slots : ['?']).map(sl =>
+).join('')}</div>
+        <p class="w6-tipline">Bu gri ev bir <b>kalıp</b>: değerleri yok. Kodun en altına bir nesne üret, kalıp senin değerlerinle eve dönüşsün:<br><code>ayse_evi = Ev("Ayşe", Renk.KIRMIZI, 3, CatiTipi.KUBBE)</code></p>
+      </div>
+<div class="w6-msec"><h4>📦 Nesneler <small>${list.length} nesne · tıkla, büyüt</small></h4><div class="w6-thumbs">${list.map(x => {
+      let mini = '';
+      if (x.o.cls === 'Ev') mini = houseSVG(evView(x.o), {}, { noName: true });
+      else if (x.o.cls === 'Agac') { const mv = mahalleView(); mini = treeSVG(agacView(x.o), mv ? mv.mevsim : ''); }
+      else if (x.o.cls === 'Mahalle') mini = '<span class="big">🏘️</span>';
+      else mini = '<span class="big">📦</span>';
+      return
+w6-th ${sel && x.name === sel.name ? 'on' : ''}
+;
+    }).join('')}</div></div>
+<div class="w6-mempty"><div>🏗️</div><p><b>Maket masası boş.</b></p><p>Plan'a ya da koda bir enum yazınca paleti, Ev sınıfını yazınca kalıbı, nesne üretince de evleri burada göreceksin.</p></div>
+<p class="w6-sub2">Örnekler <b>başka konulardan</b>; kendi sınıflarına uyarla.</p>
+<div class="w6-card ${S.cardOpen === c.k ? 'open' : ''}">
+      <button data-act="card" data-k="${c.k}">${esc(c.t)}<span>${S.cardOpen === c.k ? '−' : '+'}</span></button>
+      ${S.cardOpen === c.k ?
+<div class="w6-mempty"><div>🔗</div><p>Plan'da kutu yok. UML çizdikçe burada her kutunun kodda karşılığı var mı göreceksin.</p></div>
+<li class="${b ? 'y' : 'n'}">${b ? '✓' : '✗'} ${t}</li>
+<p class="w6-sub2">Diyagramdaki her satırın kodda karşılığı var mı?</p>
+<code>class ${esc(c.name)}${c.kind === 'enum' ? '(Enum)' : ''}:</code> kodda yok
+<code>class ${esc(c.name)}(Enum):</code> olmalı
+<li class="x">＋ <code>${esc(l)}</code> kodda var, UML'de yok</li>
+<code>self.${esc(r.role)}</code> <small>(ilişki rolü)</small>
+<div class="w6-uy"><b>${c.kind === 'enum' ? '«enum» ' : ''}${esc(c.name)}</b><ul>${items}</ul></div>
+<div class="w6-mempty big"><div>🏘️</div><p><b>Sahnede gösterilecek bir mahalle yok.</b></p><p>Kodda bir Mahalle nesnesi kur, evleri ve ağaçları ekle. (Kod sekmesinde ▶ Çalıştır)</p><button class="btn w6-go" data-act="mode" data-m="code">⌨️ Koda dön</button></div>
+<div class="w6-shead"><div><small>${se ? se.icon + ' ' + se.ad : 'Mevsim yok'} · ${mv.evler.length} ev · ${mv.agaclar.length} ağaç</small><h2>${esc(mahalleAdi(mv.ad))}</h2></div>
+      <button class="btn" data-act="mode" data-m="code">⌨️ Kodu değiştir</button><button class="btn w6-go" data-act="pdf">📄 PDF indir</button></div>
+      <div class="w6-sframe">${sceneSVG(mv, { w: 1200, h: 600 })}</div>
+      <div class="w6-story"><h3>📖 Mahallenin hikâyesi</h3><p class="w6-sub2">Bu hikâyeyi senin nesnelerin yazdı: her cümle bir özelliğin ya da bir metodun sonucu.</p>${story(mv).map(t =>
+${n}. seviye henüz kilitli.
+<div class="w6-hart">
+      <div class="w6-hart-uml"><div class="h"><small>«enumeration»</small><b>Renk</b></div><div class="s"><i style="background:#E5484D"></i>KIRMIZI<br><i style="background:#3D8BFF"></i>MAVI<br><i style="background:#FFC53D"></i>SARI</div></div>
+      <div class="w6-hart-code"><span class="v">ayse_evi</span> = <span class="c">Ev</span>(<span class="s">"Ayşe"</span>, Renk.KIRMIZI, <span class="n">3</span>, CatiTipi.KUBBE)</div>
+      <div class="w6-hart-kalip">${houseSVG({ kat: 2, cati: '', win: 4 }, {}, { kalip: true })}<small>kalıp</small></div>
+      <div class="w6-hart-arrow">➜</div>
+      <div class="w6-hart-ev">${houseSVG(v)}<small><u>ayse_evi : Ev</u></small></div>
+    </div>
+
+BAĞLANTILAR:
+

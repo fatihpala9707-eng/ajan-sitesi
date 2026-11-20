@@ -1,0 +1,108 @@
+URL: https://busraozcann.github.io/NesneTabanliProgramlama/hafta8.js?v=8.1#kod-parcalari
+BAŞLIK: JS verisindeki kod parçaları (hafta8.js?v=8.1)
+TÜR: source
+
+<p><b>Kronos Ajansı Müdürü'nden:</b> Hoş geldin baş mimar! Yıl 2300; zaman yolculuğu artık bir turizm sektörü. Müşterilerimiz dinozorları, piramitleri, Mars kolonilerini görmek istiyor. Ama önce <b>çağların ne olduğunu</b> tanımlamalıyız.</p>
+<ul>
+<li><b>4 enum</b>: <code>Malzeme</code> (en az 6, değerleri <code>"#RRGGBB"</code> renk kodu), <code>Gokyuzu</code>, <code>Zemin</code>, <code>Hava</code> (her biri en az 3 sabit; değerler <code>auto()</code> olabilir). Hangi sabitlerin 3D'de özel göründüğü <b>📚 Katalog</b>'da.</li>
+<li><b>Cag</b> soyut bir sınıftır: <code>ad</code> (str) ve <b>gizli</b> <code>yil</code> (int; MÖ yıllar eksi: -2560). Yıla dışarıdan yalnızca <code>get_yil()</code> ile bakılır.</li>
+<li><code>yil_metni()</code>: -2560 → <code>"MÖ 2560"</code>, 1453 → <code>"MS 1453"</code></li>
+<li>Her çağ kendi <code>gok()</code>, <code>zemin()</code> ve <code>hava()</code>'sını bilir; Cag bunları <b>bilemez</b> (soyut metotlar). Hepsi ilgili enum'dan bir sabit döndürür.</li>
+<li>Sonra ilk çağını kodla: <code>class AntikMisir(Cag):</code> ve bir nesne üret: <code>misir = AntikMisir("Antik Mısır", -2560)</code>. Sağdaki önizlemede çağın gökyüzü ve zemini belirecek!</li>
+</ul>
+<p class="w8-q">🤔 Neden yıl private? Biri <code>misir.yil = 99999</code> yazarsa ne olurdu?</p>
+
+<b>Soyut sınıf</b> yarım bir tariftir: "her çağın bir gökyüzü vardır" der ama hangisi olduğunu alt sınıfa bırakır. Python: <code>class Cag(ABC):</code> + <code>@abstractmethod</code>. UML: «abstract», metot sonunda <code>{abstract}</code>.<br><b>Kapsülleme</b>: <code>− yil: int</code> → kodda <code>self.__yil</code>. Değere yalnızca sınıfın metotları dokunur.<br><b>Enum</b>: seçenekler sabit; 3D motoru <code>Gokyuzu.AURORA</code>'yı tanır ama <code>"aurora"</code> metnini tanımaz.
+
+<p><b>Müdür'den:</b> Yapılar güzel ama çağlar ıssız. <b>Canlılar</b> geliyor!</p>
+<ul>
+<li><b>Canli</b> soyut: <code>ad</code>, <code>boy</code> (int), <code>malzeme</code> (Malzeme, rengi). Her canlı ses çıkarır: soyut <code>ses()</code> → metin (3D'de konuşma balonu olur!).</li>
+<li><b>HareketTipi</b> enum (en az 3): <code>YURU</code>, <code>UC</code>, <code>YUZ</code>, <code>ZIPLA</code>, <code>SUZUL</code>, <code>DON</code>, <code>DUR</code>…</li>
+<li><b>«interface» Hareketli</b>: <code>hareket_et()</code> → HareketTipi. 3D motoru canlıyı bu sabite göre hareket ettirir.</li>
+<li><b>«interface» Isiklandirilabilir</b>: <code>isik()</code> → Malzeme (ışığın rengi).</li>
+<li>En az <b>2 canlı türü</b>: Canli'dan türesin <b>ve</b> Hareketli'yi gerçekleştirsin: <code>class Dinozor(Canli, Hareketli):</code>. Cag'a <code>canlilar</code> listesi ve <code>canli_ekle(canli)</code> ekle.</li>
+<li>Bir de <b>ışıklı yapı</b>: hem Yapi hem Isiklandirilabilir (Fener, Kristal, Volkan…).</li>
+</ul>
+<p class="w8-q">🤔 Ejderha neden Yapi'dan değil de Canli'dan türer ama Isiklandirilabilir olabilir?</p>
+
+<b>Arayüz</b> bir yetenek sözleşmesidir: "ne" olduğunu değil, "ne yapabildiğini" söyler. Python'da yalnızca soyut metotlu bir ABC. UML: «interface», çizgi kesikli ┄▷ (gerçekleştirme).<br>Bir sınıfın <b>tek bir ailesi</b> (kalıtım) ama <b>birçok yeteneği</b> (arayüz) olabilir: <code>class Fener(Yapi, Isiklandirilabilir)</code>.<br>3D motoru senin sınıflarını tanımaz; yalnızca <code>hareket_et()</code> ve <code>isik()</code> çağırır. Bu çok biçimliliktir.
+
+<p><b>Müdür'den:</b> Tek çağla turizm olmaz. Ajans kuruluyor!</p>
+<ul>
+<li><b>ZamanAjansi</b>: <code>ad</code>, <code>caglar</code> listesi (◇), <code>cag_ekle(cag)</code>.</li>
+<li><code>zaman_cizelgesi()</code>: çağları <b>yıla göre eskiden yeniye</b> sıralı bir liste olarak döndürür. Yıl private olduğu için <code>get_yil()</code> kullanmalısın. İpucu: <code>sorted(self.caglar, key=lambda c: c.get_yil())</code></li>
+<li>En az <b>3 farklı çağ sınıfı</b> yaz ve ajansa ekle. Gökyüzü, zemin ve havaları birbirinden farklı olsun. Fikir mi lazım? <b>📚 Katalog</b>'da 19 çağ önerisi var: Mezozoyik, Lale Devri, Mars Kolonisi, Atlantis, Şeker Diyarı…</li>
+</ul>
+<p>Bitince <b>🌀 Tur</b> sekmesi açılır: çağların zaman çizgisi boyunca adalara dönüşür, aralarında portallar açılır!</p>
+
+from abc import ABC, abstractmethod
+
+class Muzik(ABC):
+    def __init__(self, ad):
+        self.ad = ad
+
+    @abstractmethod
+    def tur(self):
+        pass
+
+class Caz(Muzik):
+    def tur(self):
+        return Tur.CAZ          # bir enum sabiti
+
+class Hesap:
+    def __init__(self):
+        self.__bakiye = 0          # private
+
+    def get_bakiye(self):
+        return self.__bakiye
+
+    def yatir(self, miktar):
+        self.__bakiye = max(0, min(1000, self.__bakiye + miktar))
+
+class Ucabilir(ABC):
+    @abstractmethod
+    def uc(self):
+        pass
+
+class Kus(Hayvan, Ucabilir):      # bir aile, bir yetenek
+    def uc(self):
+        return "kanat çırp"
+
+Önce üst sınıf, sonra arayüzler: class X(UstSinif, Arayuz1, Arayuz2)
+
+class Kitap(Urun):
+    def __init__(self, ad, fiyat, yazar):
+        super().__init__(ad, fiyat)   # üst sınıfın __init__'i
+        self.yazar = yazar
+
+class Araba:
+    def __init__(self, marka, kapi_sayisi):
+        self.marka = marka
+        self.kapilar = []
+        for i in range(kapi_sayisi):
+            self.kapilar.append(Kapi(i + 1))   # ◆
+
+<h3>📘 UML kopya kâğıdı</h3>
+      <p class="w8-sub">Bu hafta UML sınıf diyagramının bütün öğelerini kullanıyorsun. Hepsi bir sayfada:</p>
+      <h4>Kutu türleri</h4>
+      <div class="w8-tbl"><table>
+        <tr><th></th><th>UML</th><th>Python</th><th>Bu ödevde</th></tr>
+        <tr><th>Sınıf</th><td>düz başlık</td><td><code>class Tur:</code></td><td>Tur, Gezgin, ZamanAjansi</td></tr>
+        <tr><th>Soyut sınıf</th><td>«abstract», <i>italik</i> ad</td><td><code>class Cag(ABC):</code></td><td>Cag, Yapi, Canli, ZamanAraci</td></tr>
+        <tr><th>Arayüz</th><td>«interface»</td><td>yalnızca soyut metotlu <code>ABC</code></td><td>Hareketli, Isiklandirilabilir</td></tr>
+        <tr><th>Enum</th><td>«enumeration», yalnızca sabit adları</td><td><code>class Zemin(Enum):</code></td><td>Malzeme, Gokyuzu, Zemin, Hava, HareketTipi</td></tr>
+      </table></div>
+      <h4>Satırlar</h4>
+      <ul class="w8-faq">
+        <li><code>+ ad: str</code> → public <code>self.ad</code> · <code>− yil: int</code> → private <code>self.__yil</code> · <code># x: int</code> → protected <code>self._x</code></li>
+        <li><code>+ yapi_ekle(yapi: Yapi): bool</code> → <code>def yapi_ekle(self, yapi):</code> (self UML'ye yazılmaz)</li>
+        <li><code>+ gok(): Gokyuzu {abstract}</code> → <code>@abstractmethod</code></li>
+      </ul>
+      <h4>Beş çizgi</h4>
+      <div class="w8-rels">${RT_ORDER.map(t =>
+
+<p class="w8-sub2">3D motoru bu adları tanır. Sınıfına bu adı ver (ya da bunlardan türet: <code>class DevPiramit(Piramit)</code>); başka bir ad verirsen etiketli bir blok çizilir.</p>
+      <details class="w8-cat" open><summary>🗺 19 çağ fikri</summary><div class="w8-eras">${ERAS.map(e =>
+
+BAĞLANTILAR:
+
